@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#08090d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Train">
+<title>Train · Agus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Geist:wght@300..700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #08090d;
+    --surface: #0f131a;
+    --surface-2: #131822;
+    --border: #1a2233;
+    --border-strong: #243047;
+    --text: #eef2f7;
+    --text-muted: #6b7689;
+    --text-dim: #4a5466;
+    --accent: #93c5fd;
+    --accent-bright: #3b82f6;
+    --accent-warm: #f59e0b;
+    --rest: #7dd3fc;
+    --game: #f87171;
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Geist', system-ui, sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  body {
+    background:
+      radial-gradient(ellipse at top, rgba(147, 197, 253, 0.05) 0%, transparent 50%),
+      var(--bg);
+    min-height: 100vh;
+    padding-bottom: 80px;
+  }
+
+  /* HEADER */
+  .header {
+    padding: 28px 24px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin: 0 0 6px;
+    font-weight: 500;
+  }
+
+  .title {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 34px;
+    line-height: 1;
+    margin: 0;
+    letter-spacing: -0.02em;
+    font-variation-settings: 'opsz' 144, 'SOFT' 50;
+  }
+
+  .title em {
+    font-style: italic;
+    font-variation-settings: 'opsz' 144, 'SOFT' 100;
+    color: var(--accent);
+  }
+
+  .subtitle {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin: 8px 0 0;
+    line-height: 1.5;
+  }
+
+  /* DAY TABS */
+  .tabs-wrap {
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 10;
+    padding: 14px 16px 12px;
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(8px);
+  }
+
+  .tabs {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+
+  .tab {
+    flex: 1;
+    min-width: 48px;
+    padding: 10px 4px 8px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-dim);
+    border-radius: 12px;
+    font-family: 'Geist', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .tab-day {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--text-dim);
+  }
+
+  .tab.today {
+    border-color: var(--border-strong);
+    color: var(--text-muted);
+  }
+  .tab.today .tab-day { color: var(--text-muted); }
+
+  .tab.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg);
+  }
+  .tab.active .tab-day { color: var(--bg); opacity: 0.7; }
+
+  /* Yoga tab — subtle accent so it reads as a library, not a day */
+  .tab-yoga { border-color: var(--border-strong); }
+  .tab-yoga .tab-day { color: var(--accent); }
+  .tab-yoga.active .tab-day { color: var(--bg); opacity: 0.7; }
+
+  .today-dot {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--accent-bright);
+    border-radius: 50%;
+    margin-top: -8px;
+  }
+
+  /* PANELS */
+  .panel {
+    display: none;
+    padding: 24px 20px 0;
+    animation: fadeIn 0.35s ease;
+  }
+
+  .panel.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .panel-header {
+    margin-bottom: 24px;
+  }
+
+  .panel-day {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin: 0 0 8px;
+  }
+
+  .panel-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 1.1;
+    margin: 0;
+    letter-spacing: -0.015em;
+  }
+
+  .panel-title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .panel-note {
+    margin: 10px 0 0;
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.55;
+    max-width: 340px;
+  }
+
+  /* SECTIONS */
+  .section {
+    margin-bottom: 28px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 14px;
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin: 0;
+  }
+
+  .section-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+  }
+
+  /* EXERCISES */
+  .ex {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(26, 34, 51, 0.5);
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .ex:last-child { border-bottom: none; }
+
+  .ex-check {
+    width: 18px;
+    height: 18px;
+    border-radius: 5px;
+    border: 1.5px solid var(--border-strong);
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .ex.done .ex-check {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .ex.done .ex-check::after {
+    content: '';
+    width: 8px;
+    height: 5px;
+    border-left: 2px solid var(--bg);
+    border-bottom: 2px solid var(--bg);
+    transform: rotate(-45deg);
+    margin-top: -2px;
+  }
+
+  .ex-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .ex-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    margin: 0 0 3px;
+    line-height: 1.3;
+    transition: color 0.2s;
+  }
+
+  .ex.done .ex-name {
+    color: var(--text-muted);
+    text-decoration: line-through;
+    text-decoration-color: var(--text-dim);
+  }
+
+  .ex-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+  }
+
+  .ex.done .ex-meta { color: var(--text-dim); }
+
+  .ex-note {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin: 4px 0 0;
+    line-height: 1.4;
+    font-style: italic;
+  }
+
+  .ex-or {
+    color: var(--text-dim);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  /* SUPERSET INDICATOR */
+  .superset {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 4px 14px;
+    margin: 10px 0;
+    position: relative;
+  }
+
+  .superset::before {
+    content: 'SUPERSET';
+    position: absolute;
+    top: -7px;
+    left: 14px;
+    background: var(--bg);
+    padding: 0 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+  }
+
+  .superset .ex:first-child { padding-top: 14px; }
+  .superset .ex:last-child { border-bottom: none; padding-bottom: 14px; }
+
+  /* SPECIAL CARDS — Game day, rest day */
+  .special {
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 24px;
+    text-align: center;
+    background:
+      radial-gradient(ellipse at top, rgba(96, 165, 250, 0.06) 0%, transparent 60%),
+      var(--surface);
+    margin-top: 12px;
+  }
+
+  .special.game {
+    background:
+      radial-gradient(ellipse at top, rgba(248, 113, 113, 0.06) 0%, transparent 60%),
+      var(--surface);
+  }
+
+  .special-icon {
+    font-family: 'Fraunces', serif;
+    font-size: 48px;
+    font-style: italic;
+    color: var(--rest);
+    margin-bottom: 12px;
+    line-height: 1;
+  }
+
+  .special.game .special-icon { color: var(--game); }
+
+  .special-title {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 400;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .special-body {
+    color: var(--text-muted);
+    font-size: 13.5px;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* PHILOSOPHY FOOTER */
+  .principles {
+    margin: 36px 20px 0;
+    padding: 24px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--surface);
+  }
+
+  .principles-title {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    font-weight: 400;
+    margin: 0 0 14px;
+    color: var(--text);
+  }
+
+  .principles-title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .principles ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .principles li {
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.6;
+    padding: 6px 0 6px 16px;
+    position: relative;
+  }
+
+  .principles li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 32px 24px 16px;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+  }
+
+  /* RESET BUTTON */
+  .reset {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    color: var(--text-muted);
+    padding: 10px 14px;
+    border-radius: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.2s;
+    z-index: 5;
+  }
+
+  .reset:hover { color: var(--accent); border-color: var(--accent); }
+  .reset:active { transform: scale(0.96); }
+
+  /* MOBILE TWEAKS */
+  @media (max-width: 480px) {
+    .header { padding: 22px 18px 14px; }
+    .title { font-size: 30px; }
+    .panel { padding: 22px 16px 0; }
+    .panel-title { font-size: 24px; }
+    .principles { margin: 32px 16px 0; padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <p class="eyebrow">Mornings · 5 days · ATL/Looking good</p>
+  <h1 class="title">Train like an <em>athlete</em>.</h1>
+  <p class="subtitle">Five lifts, one conditioning block, two yoga sessions, one game. Built for upper-body emphasis without trashing your legs before Saturday.</p>
+</header>
+
+<nav class="tabs-wrap">
+  <div class="tabs" id="tabs"></div>
+</nav>
+
+<main id="panels"></main>
+
+<section class="principles">
+  <p class="principles-title">A few <em>principles</em>.</p>
+  <ul>
+    <li>Progress matters more than the specific exercises — add a rep or a pound every week on the main lifts.</li>
+    <li>Mornings = stiff body. The warm-up isn't optional, especially before pressing or pulling heavy.</li>
+    <li>Soccer is conditioning. Don't add more on top of Wed's circuit and Saturday's game.</li>
+    <li>If you feel beat up Thursday, swap with Friday — the plan serves you, not the other way around.</li>
+    <li>Sleep and protein move the needle as much as the workout.</li>
+  </ul>
+</section>
+
+<div class="footer">v1 · Updated May 14 2026</div>
+
+<button class="reset" onclick="resetAll()">Reset checks</button>
+
+<script>
+const plan = [
+  {
+    id: 'yoga',
+    day: 'YOGA',
+    name: 'Yoga library',
+    title: 'A library of <em>flows</em>',
+    code: 'Anytime',
+    note: "Friday's pre-game flow and Sunday's restorative session are already slotted into your week. These five are extras — pick one any day you want to add mobility, undo a heavy session, or wake the body up. They aren't a replacement for the workouts; they sit alongside them.",
+    sections: [
+      {
+        label: 'Hip openers',
+        time: '~10 min',
+        items: [
+          { name: 'Low lunge (anjaneyasana)', meta: '60 sec / side', note: 'Hands frame the front foot, sink the back hip forward. Hip flexor on the rear leg should light up.' },
+          { name: 'Pigeon pose', meta: '90 sec / side', note: 'Front shin parallel-ish to the mat, square the hips. Forearms down if it\'s a lot, chest down if you can go deeper.' },
+          { name: 'Frog pose', meta: '1 min', note: 'Knees wide, ankles in line with knees, hips sink back. Brutal — breathe through it.' },
+          { name: '90/90 stretch', meta: '60 sec / side', note: 'Front shin parallel to body, back shin parallel to side. Sit tall, then lean over the front leg.' },
+          { name: 'Happy baby', meta: '1 min', note: 'Soles up, grip outer feet or shins, rock gently side to side.' },
+          { name: 'Reclined bound angle', meta: '2 min', note: 'Lie back, soles together, knees fall open. Hands on belly, slow breath.' }
+        ]
+      },
+      {
+        label: 'Posterior chain',
+        time: '~10 min',
+        items: [
+          { name: 'Downward dog', meta: '1 min', note: 'Pedal the feet, hips high. Don\'t obsess about heels touching the floor.' },
+          { name: 'Half splits', meta: '60 sec / side', note: 'From low lunge, straighten the front leg and flex the foot. Fold over it — heel stays anchored.' },
+          { name: 'Standing forward fold', meta: '1 min', note: 'Soft knees if hamstrings are tight. Let the head hang heavy.' },
+          { name: 'Seated forward fold', meta: '90 sec', note: 'Hinge from the hips, not the spine. Walk hands forward; don\'t round hard.' },
+          { name: 'Reclined hamstring stretch (strap or towel)', meta: '90 sec / side', note: 'Loop strap around foot, leg extends straight up. Other leg long on the floor.' },
+          { name: 'Calf stretch against wall', meta: '30 sec / side', note: 'Ball of foot on wall, heel grounded, lean in.' }
+        ]
+      },
+      {
+        label: 'Upper body & T-spine',
+        time: '~10 min',
+        items: [
+          { name: 'Cat-cow', meta: '10 cycles', note: 'Move with breath — inhale belly drops, exhale spine rounds.' },
+          { name: 'Thread the needle', meta: '60 sec / side', note: 'From tabletop, slide one arm under the other. Shoulder and ear rest on the floor.' },
+          { name: "Puppy pose (extended child's)", meta: '1 min', note: 'Hips stay over knees, arms reach forward, chest melts down. Killer T-spine opener.' },
+          { name: 'Sphinx pose', meta: '1 min', note: 'Forearms down, chest lifts. Gentle backbend that undoes hours of sitting.' },
+          { name: 'Eagle arms', meta: '45 sec / side', note: 'Cross arms, wrap forearms, lift elbows. Rear delts and rhomboids.' },
+          { name: 'Cow face arms', meta: '45 sec / side', note: 'One arm up and behind, other arm down and behind. Clasp hands; use a strap if you can\'t reach.' },
+          { name: 'Doorway chest stretch', meta: '30 sec / side', note: 'Forearm on doorframe at 90°, step through. Opens pecs after press days.' }
+        ]
+      },
+      {
+        label: 'Full recovery (long)',
+        time: '~25 min',
+        items: [
+          { name: "Child's pose", meta: '2 min' },
+          { name: 'Cat-cow', meta: '10 cycles' },
+          { name: 'Downward dog → low lunge → half splits', meta: '3 rounds / side' },
+          { name: 'Pigeon pose', meta: '90 sec / side' },
+          { name: 'Seated forward fold', meta: '1 min' },
+          { name: 'Reclined bound angle', meta: '3 min' },
+          { name: 'Supine pigeon (figure-4)', meta: '90 sec / side' },
+          { name: 'Legs up the wall', meta: '5 min', note: 'The single best recovery pose. Hands on belly, breath slow and long.' },
+          { name: 'Reclined twist', meta: '1 min / side' },
+          { name: 'Savasana', meta: '3–5 min' }
+        ]
+      },
+      {
+        label: 'Quick morning wake-up',
+        time: '~5 min',
+        items: [
+          { name: 'Cat-cow', meta: '10 cycles' },
+          { name: 'Downward dog → upward dog', meta: '3 rounds' },
+          { name: 'Standing forward fold', meta: '30 sec' },
+          { name: "World's greatest stretch", meta: '30 sec / side', note: 'Low lunge → drop opposite elbow inside front foot → rotate the top arm to the sky. Hips, T-spine, hamstrings in one move.' },
+          { name: 'Standing side bend', meta: '20 sec / side' },
+          { name: 'Roll up to standing', meta: '— slow', note: 'Vertebra by vertebra. Head last.' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'mon',
+    day: 'MON',
+    name: 'Monday',
+    title: 'Lower body — <em>strength + power</em>',
+    code: 'Day 01',
+    note: "Two days off your legs means today is the day to lift heavy and jump high. This is your one true leg day; soccer handles the rest.",
+    sections: [
+      {
+        label: 'Warm-up',
+        time: '~5 min',
+        items: [
+          { name: 'Jump rope', meta: '2 min easy' },
+          { name: 'Leg swings, walking lunges, glute bridges', meta: '1 round' },
+          { name: 'Light goblet squats', meta: '2×8 to grease the groove' }
+        ]
+      },
+      {
+        label: 'Main',
+        time: '~35 min',
+        items: [
+          { name: 'Trap bar deadlift <span class="ex-or">or</span> back squat', meta: '4 × 5', note: 'Heavy. Leave one or two reps in the tank.' },
+          { name: 'Box jumps', meta: '4 × 4', note: 'Max height. Full rest. Power, not conditioning.' },
+          { name: 'Single-leg RDL', meta: '3 × 8 / side' },
+          { name: 'Bulgarian split squat', meta: '3 × 8 / side' },
+          { name: 'KB swings', meta: '3 × 15', note: 'Explosive hip drive — not a squat.' }
+        ]
+      },
+      {
+        label: 'Finisher',
+        time: '~5 min',
+        items: [
+          { name: 'Plank', meta: '3 × 45 sec' },
+          { name: 'Hanging leg raise', meta: '3 × 10' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'tue',
+    day: 'TUE',
+    name: 'Tuesday',
+    title: 'Upper body — <em>push</em>',
+    code: 'Day 02',
+    note: "First of two dedicated upper days. This is where the look-good and the can-press-things lives. Keep the bench and overhead press heavy and progressive — they're the lifts that change shoulders, chest, and arms.",
+    sections: [
+      {
+        label: 'Warm-up',
+        time: '~5 min',
+        items: [
+          { name: 'Band pull-aparts', meta: '2 × 15' },
+          { name: 'Scapular push-ups', meta: '2 × 10' },
+          { name: 'Arm circles + shoulder dislocates', meta: '~1 min' }
+        ]
+      },
+      {
+        label: 'Main',
+        time: '~40 min',
+        items: [
+          { name: 'Bench press <span class="ex-or">or</span> DB bench', meta: '4 × 6–8' },
+          { name: 'Standing overhead press', meta: '4 × 6–8', note: 'Strict — no leg drive. Core tight.' },
+          { name: 'Incline DB press', meta: '3 × 10' },
+          { name: 'Lateral raise', meta: '3 × 12–15', note: 'Slow, controlled. Felt in side delts, not traps.' },
+          { name: 'Dips <span class="ex-or">or</span> weighted push-ups', meta: '3 × 8–12' }
+        ]
+      },
+      {
+        label: 'Finisher',
+        time: '~5 min',
+        items: [
+          { name: 'Med ball chest pass against wall', meta: '3 × 8', note: 'Explosive — your upper-body power work for the week.' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'wed',
+    day: 'WED',
+    name: 'Wednesday',
+    title: 'Athletic <em>conditioning</em>',
+    code: 'Day 03',
+    note: "The 100s-style day. Five rounds, full intensity, 25–30 min total. This is your scratch-the-itch session — full body, sweat-drenched, work capacity. Don't make it into a leg day.",
+    sections: [
+      {
+        label: 'Warm-up',
+        time: '~3 min',
+        items: [
+          { name: 'Jump rope + dynamic mobility', meta: '3 min flow' }
+        ]
+      },
+      {
+        label: '5 rounds',
+        time: '~25 min',
+        items: [
+          { name: 'KB swings', meta: '20 reps' },
+          { name: 'Push-ups', meta: '15 reps' },
+          { name: 'Goblet squats', meta: '12 reps' },
+          { name: 'Burpees', meta: '10 reps' },
+          { name: 'Jump rope', meta: '50 reps' }
+        ]
+      },
+      {
+        label: 'Optional swap-ins',
+        time: '— for variety',
+        items: [
+          { name: 'Med ball slams, broad jumps, KB clean & press', meta: '— rotate weekly', note: 'Swap one or two movements every couple of weeks so the body doesn\'t adapt.' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'thu',
+    day: 'THU',
+    name: 'Thursday',
+    title: 'Upper body — <em>pull</em>',
+    code: 'Day 04',
+    note: "The other half of the upper-body story. Back work is what makes you look strong from behind and keeps your shoulders healthy for everything else. Pull-ups are the headline lift.",
+    sections: [
+      {
+        label: 'Warm-up',
+        time: '~5 min',
+        items: [
+          { name: 'Band pulls + cat-cow', meta: '~2 min' },
+          { name: 'Scapular pull-ups', meta: '2 × 6', note: 'Hang from the bar, just shrug down — wakes up the lats.' }
+        ]
+      },
+      {
+        label: 'Main',
+        time: '~40 min',
+        items: [
+          { name: 'Pull-ups', meta: '4 × 6–8', note: 'Add weight if you can do 8+ bodyweight.' },
+          { name: 'Barbell <span class="ex-or">or</span> DB row', meta: '4 × 8' },
+          { name: 'Chest-supported row', meta: '3 × 10' },
+          { name: 'Face pulls', meta: '3 × 15', note: 'Cheap insurance for shoulder health. Don\'t skip.' },
+          { name: 'Lat pulldown', meta: '3 × 12' },
+          { name: 'Bicep curls (any variation)', meta: '3 × 10' }
+        ]
+      },
+      {
+        label: 'Finisher',
+        time: '~5 min',
+        items: [
+          { name: 'Ab wheel <span class="ex-or">or</span> hanging leg raise', meta: '3 × 10' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'fri',
+    day: 'FRI',
+    name: 'Friday',
+    title: 'Yoga + <em>mobility</em>',
+    code: 'Day 05',
+    note: "Pre-game day. The job is to feel loose, not fatigued. Yoga handles the mobility better than static stretching ever did, and a focused flow on hips and hamstrings is exactly what soccer asks for.",
+    sections: [
+      {
+        label: 'Yoga flow',
+        time: '~30 min',
+        items: [
+          { name: "Child's pose", meta: '1 min', note: 'Settle the breath. Long exhales.' },
+          { name: 'Cat-cow', meta: '10 cycles' },
+          { name: 'Downward dog → low lunge → half splits', meta: '3 rounds / side', note: 'The hip and hamstring opener — soccer asks a lot of these.' },
+          { name: 'Pigeon pose', meta: '90 sec / side', note: 'Sit deep. Breathe through the discomfort.' },
+          { name: 'Seated forward fold', meta: '1 min' },
+          { name: 'Reclined spinal twist', meta: '45 sec / side' },
+          { name: "Savasana", meta: '2 min' }
+        ]
+      },
+      {
+        label: 'Activation',
+        time: '~5 min',
+        items: [
+          { name: 'Banded glute bridges', meta: '2 × 15' },
+          { name: 'Banded clamshells', meta: '2 × 12 / side' }
+        ]
+      },
+      {
+        label: 'Optional pump',
+        time: '~10 min',
+        items: [
+          { name: 'DB curls, lateral raises, rear delt flyes', meta: '3 × 12–20', note: 'Pump only. Nothing heavy. Skip if you feel zapped — game is tomorrow.' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'sat',
+    day: 'SAT',
+    name: 'Saturday',
+    title: 'Game <em>day</em>',
+    code: 'Day 06',
+    note: '',
+    special: {
+      type: 'game',
+      icon: '⚽',
+      title: 'Match day.',
+      body: "Eat well, hydrate, warm up properly. The week was built around making you fresh and explosive for ninety minutes. Trust the work."
+    }
+  },
+  {
+    id: 'sun',
+    day: 'SUN',
+    name: 'Sunday',
+    title: 'Restorative <em>yoga</em>',
+    code: 'Day 07',
+    note: "The day after a game your body wants gentle movement more than it wants total stillness. Twenty to thirty minutes of soft yoga, parasympathetic and breath-led — or full rest if you genuinely need it. Listen to the body.",
+    sections: [
+      {
+        label: 'Restorative flow',
+        time: '~25 min',
+        items: [
+          { name: "Child's pose", meta: '2 min', note: 'Slow nasal breathing. No effort.' },
+          { name: 'Reclined bound angle', meta: '3 min', note: 'Soles of feet together, knees fall open. Hands on belly.' },
+          { name: 'Supine pigeon (figure-4)', meta: '90 sec / side' },
+          { name: 'Happy baby', meta: '1 min' },
+          { name: 'Legs up the wall', meta: '5 min', note: 'The single best thing you can do the day after a match.' },
+          { name: 'Reclined spinal twist', meta: '1 min / side' },
+          { name: 'Savasana', meta: '3–5 min' }
+        ]
+      },
+      {
+        label: 'Alternative',
+        time: '— full rest',
+        items: [
+          { name: 'Walk + stretch + nothing else', meta: '— as needed', note: 'If the body is genuinely beat up, take it. The plan serves you.' }
+        ]
+      }
+    ]
+  }
+];
+
+// RENDER
+const tabsEl = document.getElementById('tabs');
+const panelsEl = document.getElementById('panels');
+const todayIdx = ((new Date()).getDay() + 6) % 7 + 1; // Mon = 1 now that Yoga occupies 0
+
+plan.forEach((d, i) => {
+  // Tab
+  const btn = document.createElement('button');
+  const isYoga = d.id === 'yoga';
+  btn.className = 'tab' + (isYoga ? ' tab-yoga' : '') + (i === todayIdx ? ' today' : '');
+  const sub = isYoga ? '—' : String(i).padStart(2, '0');
+  btn.innerHTML = `${d.day}<span class="tab-day">${sub}</span>`;
+  btn.onclick = () => activate(i);
+  tabsEl.appendChild(btn);
+
+  // Panel
+  const panel = document.createElement('section');
+  panel.className = 'panel';
+  panel.id = `panel-${d.id}`;
+
+  let html = `
+    <div class="panel-header">
+      <p class="panel-day">${d.code} · ${d.name.toUpperCase()}</p>
+      <h2 class="panel-title">${d.title}</h2>
+      ${d.note ? `<p class="panel-note">${d.note}</p>` : ''}
+    </div>
+  `;
+
+  if (d.special) {
+    html += `
+      <div class="special ${d.special.type}">
+        <div class="special-icon">${d.special.icon}</div>
+        <h3 class="special-title">${d.special.title}</h3>
+        <p class="special-body">${d.special.body}</p>
+      </div>
+    `;
+  } else {
+    d.sections.forEach(s => {
+      html += `
+        <div class="section">
+          <div class="section-header">
+            <p class="section-label">${s.label}</p>
+            <span class="section-time">${s.time}</span>
+          </div>
+          ${s.items.map((it, idx) => `
+            <div class="ex" onclick="this.classList.toggle('done')">
+              <div class="ex-check"></div>
+              <div class="ex-body">
+                <p class="ex-name">${it.name}</p>
+                <span class="ex-meta">${it.meta}</span>
+                ${it.note ? `<p class="ex-note">${it.note}</p>` : ''}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    });
+  }
+
+  panel.innerHTML = html;
+  panelsEl.appendChild(panel);
+});
+
+function activate(i) {
+  document.querySelectorAll('.tab').forEach((t, idx) => t.classList.toggle('active', idx === i));
+  document.querySelectorAll('.panel').forEach((p, idx) => p.classList.toggle('active', idx === i));
+}
+
+function resetAll() {
+  document.querySelectorAll('.ex.done').forEach(e => e.classList.remove('done'));
+}
+
+// Activate today by default
+activate(todayIdx);
+</script>
+
+</body>
+</html>
