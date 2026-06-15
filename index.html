@@ -479,9 +479,9 @@
 <body>
 
 <header class="header">
-  <p class="eyebrow">Mornings · 5 days · ATL/Looking good</p>
+  <p class="eyebrow">Mornings · Legs×2 · Push · Pull · Back+Arms</p>
   <h1 class="title">Train like an <em>athlete</em>.</h1>
-  <p class="subtitle">Five lifts, one conditioning block, two yoga sessions, one game. Built for upper-body emphasis without trashing your legs before Saturday.</p>
+  <p class="subtitle">Two leg days for the hips and the knee, one push, one pull, and a back-and-arms combo day — the volume tilts toward your priorities, legs and back, while the Saturday game stands in as your weekend lower-body stress test.</p>
 </header>
 
 <nav class="tabs-wrap">
@@ -493,15 +493,16 @@
 <section class="principles">
   <p class="principles-title">A few <em>principles</em>.</p>
   <ul>
-    <li>Progress matters more than the specific exercises — add a rep or a pound every week on the main lifts.</li>
+    <li>Two leg days, staggered on purpose — Monday goes heavy and explosive while you're fresh; Thursday goes lighter and unilateral so it doesn't bleed into Saturday's game.</li>
+    <li>Back and hips lead the week — push the pull-ups, rows, and hip work hardest, and add a rep or a pound there before anywhere else.</li>
+    <li>Lead every single-leg and single-arm movement with the left, then match the right to it. That's how the gap closes instead of widening.</li>
+    <li>Friday's combo day is for back and arms — keep the pressing light there so Tuesday stays your real push day. It's also the session to drop first on a 4-day week.</li>
     <li>Mornings = stiff body. The warm-up isn't optional, especially before pressing or pulling heavy.</li>
-    <li>Soccer is conditioning. Don't add more on top of Wed's circuit and Saturday's game.</li>
-    <li>If you feel beat up Thursday, swap with Friday — the plan serves you, not the other way around.</li>
     <li>Sleep and protein move the needle as much as the workout.</li>
   </ul>
 </section>
 
-<div class="footer">v1 · Updated May 14 2026</div>
+<div class="footer">v3 · legs×2 / push / pull / back+arms · Updated Jun 15 2026</div>
 
 <button class="reset" onclick="resetAll()">Reset checks</button>
 
@@ -586,35 +587,36 @@ const plan = [
     id: 'mon',
     day: 'MON',
     name: 'Monday',
-    title: 'Lower body — <em>strength + power</em>',
+    title: 'Legs <em>A</em> — strength + power',
     code: 'Day 01',
-    note: "Two days off your legs means today is the day to lift heavy and jump high. This is your one true leg day; soccer handles the rest.",
+    note: "Leg day #1. Fresh from the weekend, this is the heavy, explosive one — load the main lift, jump hard, build the raw strength soccer can't. Thursday's leg day stays lighter so this one can go big. Lead every single-leg movement with the left.",
     sections: [
       {
         label: 'Warm-up',
-        time: '~5 min',
+        time: '~6 min',
         items: [
           { name: 'Jump rope', meta: '2 min easy' },
           { name: 'Leg swings, walking lunges, glute bridges', meta: '1 round' },
+          { name: 'Banded lateral walks + monster walks', meta: '2 × 12 / direction', note: 'Wake the glute med up before you load. Left side should work as hard as the right.' },
           { name: 'Light goblet squats', meta: '2×8 to grease the groove' }
         ]
       },
       {
-        label: 'Main',
+        label: 'Strength & power',
         time: '~35 min',
         items: [
           { name: 'Trap bar deadlift <span class="ex-or">or</span> back squat', meta: '4 × 5', note: 'Heavy. Leave one or two reps in the tank.' },
           { name: 'Box jumps', meta: '4 × 4', note: 'Max height. Full rest. Power, not conditioning.' },
-          { name: 'Single-leg RDL', meta: '3 × 8 / side' },
-          { name: 'Bulgarian split squat', meta: '3 × 8 / side' },
-          { name: 'KB swings', meta: '3 × 15', note: 'Explosive hip drive — not a squat.' }
+          { name: 'Bulgarian split squat', meta: '3 × 8 / side', note: 'Left first, +1 set on the left. Knee tracks over the foot.' },
+          { name: 'Barbell <span class="ex-or">or</span> DB hip thrust', meta: '4 × 8–10', note: 'The headline hip lift. Full lockout, squeeze the glutes hard, two-second hold.' }
         ]
       },
       {
-        label: 'Finisher',
-        time: '~5 min',
+        label: 'Knee & core',
+        time: '~10 min',
         items: [
-          { name: 'Plank', meta: '3 × 45 sec' },
+          { name: 'Spanish squat <span class="ex-or">or</span> wall sit', meta: '3 × 30–45 sec', note: 'VMO and patellar tendon — big for the post-surgical knee. Slow and braced.' },
+          { name: 'Standing calf + tibialis raise', meta: '3 × 12–15', note: 'Superset. Ankle resilience = knee insurance.' },
           { name: 'Hanging leg raise', meta: '3 × 10' }
         ]
       }
@@ -626,7 +628,7 @@ const plan = [
     name: 'Tuesday',
     title: 'Upper body — <em>push</em>',
     code: 'Day 02',
-    note: "First of two dedicated upper days. This is where the look-good and the can-press-things lives. Keep the bench and overhead press heavy and progressive — they're the lifts that change shoulders, chest, and arms.",
+    note: "Your one pure push day, so it spans the full range — heavy pressing up top for strength, then volume for the shoulders and chest that make you look the part. Friday's combo day adds a lighter second touch, with the real emphasis there on back and arms.",
     sections: [
       {
         label: 'Warm-up',
@@ -644,15 +646,16 @@ const plan = [
           { name: 'Bench press <span class="ex-or">or</span> DB bench', meta: '4 × 6–8' },
           { name: 'Standing overhead press', meta: '4 × 6–8', note: 'Strict — no leg drive. Core tight.' },
           { name: 'Incline DB press', meta: '3 × 10' },
-          { name: 'Lateral raise', meta: '3 × 12–15', note: 'Slow, controlled. Felt in side delts, not traps.' },
+          { name: 'Lateral raise', meta: '4 × 12–20', note: 'Shoulder width is your biggest aesthetic lever — push the volume. Side delts, not traps.' },
           { name: 'Dips <span class="ex-or">or</span> weighted push-ups', meta: '3 × 8–12' }
         ]
       },
       {
         label: 'Finisher',
-        time: '~5 min',
+        time: '~8 min',
         items: [
-          { name: 'Med ball chest pass against wall', meta: '3 × 8', note: 'Explosive — your upper-body power work for the week.' }
+          { name: 'Overhead triceps extension + pushdown', meta: '3 × 12', note: 'Superset. Direct triceps to round out the pressing.' },
+          { name: 'Med ball chest pass against wall', meta: '3 × 8', note: 'Explosive — your upper-body power touch for the week.' }
         ]
       }
     ]
@@ -661,44 +664,9 @@ const plan = [
     id: 'wed',
     day: 'WED',
     name: 'Wednesday',
-    title: 'Athletic <em>conditioning</em>',
-    code: 'Day 03',
-    note: "The 100s-style day. Five rounds, full intensity, 25–30 min total. This is your scratch-the-itch session — full body, sweat-drenched, work capacity. Don't make it into a leg day.",
-    sections: [
-      {
-        label: 'Warm-up',
-        time: '~3 min',
-        items: [
-          { name: 'Jump rope + dynamic mobility', meta: '3 min flow' }
-        ]
-      },
-      {
-        label: '5 rounds',
-        time: '~25 min',
-        items: [
-          { name: 'KB swings', meta: '20 reps' },
-          { name: 'Push-ups', meta: '15 reps' },
-          { name: 'Goblet squats', meta: '12 reps' },
-          { name: 'Burpees', meta: '10 reps' },
-          { name: 'Jump rope', meta: '50 reps' }
-        ]
-      },
-      {
-        label: 'Optional swap-ins',
-        time: '— for variety',
-        items: [
-          { name: 'Med ball slams, broad jumps, KB clean & press', meta: '— rotate weekly', note: 'Swap one or two movements every couple of weeks so the body doesn\'t adapt.' }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'thu',
-    day: 'THU',
-    name: 'Thursday',
     title: 'Upper body — <em>pull</em>',
-    code: 'Day 04',
-    note: "The other half of the upper-body story. Back work is what makes you look strong from behind and keeps your shoulders healthy for everything else. Pull-ups are the headline lift.",
+    code: 'Day 03',
+    note: "Pull day, and back is the headline — heavy rows and pull-ups for thickness and width. Lead the single-arm work with the left to keep the sides even. Friday's combo day gives the back its second dose of the week.",
     sections: [
       {
         label: 'Warm-up',
@@ -709,22 +677,62 @@ const plan = [
         ]
       },
       {
-        label: 'Main',
-        time: '~40 min',
+        label: 'Back — width & thickness',
+        time: '~45 min',
         items: [
-          { name: 'Pull-ups', meta: '4 × 6–8', note: 'Add weight if you can do 8+ bodyweight.' },
-          { name: 'Barbell <span class="ex-or">or</span> DB row', meta: '4 × 8' },
-          { name: 'Chest-supported row', meta: '3 × 10' },
-          { name: 'Face pulls', meta: '3 × 15', note: 'Cheap insurance for shoulder health. Don\'t skip.' },
-          { name: 'Lat pulldown', meta: '3 × 12' },
-          { name: 'Bicep curls (any variation)', meta: '3 × 10' }
+          { name: 'Pull-ups', meta: '4 × 6–8', note: 'The priority lift. Add weight once you clear 8+ clean bodyweight reps.' },
+          { name: 'Barbell <span class="ex-or">or</span> DB row', meta: '4 × 8', note: 'Heavy thickness builder. Flat back, drive the elbows past the ribs.' },
+          { name: 'Single-arm DB row', meta: '3 × 10 / side', note: 'Left first; match the right to it. Evens out any side-to-side gap.' },
+          { name: 'Lat pulldown (wide grip)', meta: '3 × 12', note: 'Width. Pull the elbows down and in; let the lats do it.' },
+          { name: 'Chest-supported row', meta: '3 × 10', note: 'Strict mid-back — no momentum.' },
+          { name: 'Face pulls', meta: '3 × 15', note: 'Rear delts and shoulder health. Don\'t skip.' }
         ]
       },
       {
-        label: 'Finisher',
-        time: '~5 min',
+        label: 'Arms',
+        time: '~8 min',
         items: [
-          { name: 'Ab wheel <span class="ex-or">or</span> hanging leg raise', meta: '3 × 10' }
+          { name: 'Bicep curls (any variation)', meta: '3 × 10' },
+          { name: 'Hammer curls', meta: '3 × 10' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'thu',
+    day: 'THU',
+    name: 'Thursday',
+    title: 'Legs <em>B</em> — hips + stability',
+    code: 'Day 04',
+    note: "Leg day #2 — lighter on the spine and the nervous system than Monday so it doesn't bleed into Saturday's game, but heavy on the single-leg, posterior-chain, and glute-med work that closes your left-right gap and steadies the knee. Lead everything with the left.",
+    sections: [
+      {
+        label: 'Warm-up',
+        time: '~6 min',
+        items: [
+          { name: 'Jump rope', meta: '2 min easy' },
+          { name: 'Leg swings, walking lunges, glute bridges', meta: '1 round' },
+          { name: 'Banded lateral walks + monster walks', meta: '2 × 12 / direction', note: 'Glute med primer. Left side works as hard as the right.' }
+        ]
+      },
+      {
+        label: 'Hips & posterior',
+        time: '~30 min',
+        items: [
+          { name: 'Romanian deadlift', meta: '3 × 8', note: 'Hamstrings and glutes. Slow eccentric, hinge from the hip.' },
+          { name: 'Single-leg RDL', meta: '3 × 8 / side', note: 'Left first. Balance and posterior chain in one.' },
+          { name: 'Reverse lunge <span class="ex-or">or</span> step-up', meta: '3 × 10 / side', note: 'Left first, +1 set left. Controlled, knee tracking over the foot.' },
+          { name: 'Single-leg glute bridge', meta: '3 × 12 / side', note: 'Left first. Drive the heel, keep hips level — don\'t let the weak side dip.' }
+        ]
+      },
+      {
+        label: 'Stability & knee',
+        time: '~12 min',
+        items: [
+          { name: 'Nordic curl progression <span class="ex-or">or</span> lying leg curl', meta: '3 × 6–10', note: 'Hamstring strength is ACL and knee insurance. Progress Nordics slowly.' },
+          { name: 'Copenhagen plank', meta: '3 × 20–40 sec / side', note: 'Adductor and hip stability — the side soccer beats up most.' },
+          { name: 'Banded clamshells + lateral walks', meta: '3 × 15 / side', note: 'Glute med — the hidden link in hip stability.' },
+          { name: 'Single-leg balance hold', meta: '30 sec / side', note: 'Eyes closed on the left. Cheap, and it works the stabilizers.' }
         ]
       }
     ]
@@ -733,36 +741,54 @@ const plan = [
     id: 'fri',
     day: 'FRI',
     name: 'Friday',
-    title: 'Yoga + <em>mobility</em>',
+    title: 'Push / Pull — <em>back & arms</em>',
     code: 'Day 05',
-    note: "Pre-game day. The job is to feel loose, not fatigued. Yoga handles the mobility better than static stretching ever did, and a focused flow on hips and hamstrings is exactly what soccer asks for.",
+    note: "The combo day, weighted toward your priorities: back and arms get the volume, with just enough pressing to keep the chest and shoulders ticking over. Keep a rep or two in the tank everywhere — the game's tomorrow — and finish with the hip-and-hamstring flow so you feel loose Saturday.",
     sections: [
       {
-        label: 'Yoga flow',
-        time: '~30 min',
-        items: [
-          { name: "Child's pose", meta: '1 min', note: 'Settle the breath. Long exhales.' },
-          { name: 'Cat-cow', meta: '10 cycles' },
-          { name: 'Downward dog → low lunge → half splits', meta: '3 rounds / side', note: 'The hip and hamstring opener — soccer asks a lot of these.' },
-          { name: 'Pigeon pose', meta: '90 sec / side', note: 'Sit deep. Breathe through the discomfort.' },
-          { name: 'Seated forward fold', meta: '1 min' },
-          { name: 'Reclined spinal twist', meta: '45 sec / side' },
-          { name: "Savasana", meta: '2 min' }
-        ]
-      },
-      {
-        label: 'Activation',
+        label: 'Warm-up',
         time: '~5 min',
         items: [
-          { name: 'Banded glute bridges', meta: '2 × 15' },
-          { name: 'Banded clamshells', meta: '2 × 12 / side' }
+          { name: 'Band pulls + cat-cow', meta: '~2 min' },
+          { name: 'Scapular pull-ups', meta: '2 × 6' }
         ]
       },
       {
-        label: 'Optional pump',
-        time: '~10 min',
+        label: 'Back (emphasis)',
+        time: '~25 min',
         items: [
-          { name: 'DB curls, lateral raises, rear delt flyes', meta: '3 × 12–20', note: 'Pump only. Nothing heavy. Skip if you feel zapped — game is tomorrow.' }
+          { name: 'Lat pulldown <span class="ex-or">or</span> pull-ups', meta: '4 × 10–12', note: 'Width. A touch higher rep than Wednesday so the back gets a different stimulus.' },
+          { name: 'Seated cable <span class="ex-or">or</span> chest-supported row', meta: '3 × 10–12', note: 'Thickness. Squeeze and control.' },
+          { name: 'Straight-arm pulldown', meta: '3 × 12–15', note: 'Lat isolation — pure mind-muscle. Big stretch at the top.' },
+          { name: 'Rear delt fly', meta: '3 × 15–20' },
+          { name: 'Face pulls', meta: '3 × 15' }
+        ]
+      },
+      {
+        label: 'Push (light touch)',
+        time: '~8 min',
+        items: [
+          { name: 'Incline DB press', meta: '3 × 10', note: 'Maintenance for the chest and front delts — nothing maximal.' },
+          { name: 'Lateral raise', meta: '3 × 15' }
+        ]
+      },
+      {
+        label: 'Arms',
+        time: '~12 min',
+        items: [
+          { name: 'Incline DB curl', meta: '3 × 12' },
+          { name: 'Hammer curl', meta: '3 × 12' },
+          { name: 'Overhead triceps extension', meta: '3 × 12' },
+          { name: 'Cable pushdown', meta: '3 × 12–15' }
+        ]
+      },
+      {
+        label: 'Pre-game loosener',
+        time: '~8 min',
+        items: [
+          { name: 'Downward dog → low lunge → half splits', meta: '2 rounds / side', note: 'Hips and hamstrings — what soccer asks for tomorrow.' },
+          { name: 'Pigeon pose', meta: '60 sec / side' },
+          { name: 'Reclined spinal twist', meta: '45 sec / side', note: 'Light. The job is to feel loose, not fatigued.' }
         ]
       }
     ]
@@ -778,7 +804,7 @@ const plan = [
       type: 'game',
       icon: '⚽',
       title: 'Match day.',
-      body: "Eat well, hydrate, warm up properly. The week was built around making you fresh and explosive for ninety minutes. Trust the work."
+      body: "Eat well, hydrate, warm up properly. Two leg days plus the game is real lower-body load, so the back half of the week is built lighter on purpose. If your legs feel cooked, the game wins — pull back Thursday before you'd ever pull back here."
     }
   },
   {
