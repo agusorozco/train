@@ -1,919 +1,1076 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#08090d">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Train">
-<title>Train · Agus</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daily Operating System</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Geist:wght@300..700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #08090d;
-    --surface: #0f131a;
-    --surface-2: #131822;
-    --border: #1a2233;
-    --border-strong: #243047;
-    --text: #eef2f7;
-    --text-muted: #6b7689;
-    --text-dim: #4a5466;
-    --accent: #93c5fd;
-    --accent-bright: #3b82f6;
-    --accent-warm: #f59e0b;
-    --rest: #7dd3fc;
-    --game: #f87171;
+  :root{
+    --ink:#16181C;
+    --ink-soft:#454A52;
+    --ink-faint:#8A9099;
+    --base:#E6E7E2;
+    --surface:#FCFCFA;
+    --line:#D7D8D2;
+    --line-strong:#C4C6BE;
+    /* color encodes meaning */
+    --move:#D4502E;      /* strength / effort / gym */
+    --move-wash:#F7E4DD;
+    --recover:#3B6E6A;   /* recovery / mobility / knee+stability */
+    --recover-wash:#DCE8E6;
+    --fuel:#B07A2E;      /* meals / fuel */
+    --fuel-wash:#F1E7D4;
+    --focus:#3A3F47;     /* deep work */
+    --focus-wash:#E2E3E0;
+    --pause:#9AA0A6;     /* short breaks */
+    --sleep:#22343A;     /* sleep */
+    --radius:14px;
+    --shadow:0 1px 2px rgba(20,22,26,.05), 0 8px 24px rgba(20,22,26,.06);
+    --maxw:920px;
   }
-
-  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-  html, body {
-    margin: 0;
-    padding: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Geist', system-ui, sans-serif;
-    font-weight: 400;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:var(--base);
+    color:var(--ink);
+    font-family:"IBM Plex Sans",system-ui,sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:64px;
   }
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
 
-  body {
-    background:
-      radial-gradient(ellipse at top, rgba(147, 197, 253, 0.05) 0%, transparent 50%),
-      var(--bg);
-    min-height: 100vh;
-    padding-bottom: 80px;
+  /* ---------- header ---------- */
+  header.app{
+    max-width:var(--maxw);margin:0 auto;padding:26px 20px 0;
   }
-
-  /* HEADER */
-  .header {
-    padding: 28px 24px 16px;
-    border-bottom: 1px solid var(--border);
+  .brand{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .brand h1{
+    font-family:"Archivo";font-weight:800;letter-spacing:-.02em;
+    font-size:clamp(26px,5vw,38px);margin:0;line-height:1;
   }
-
-  .eyebrow {
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--text-dim);
-    margin: 0 0 6px;
-    font-weight: 500;
+  .brand .tag{
+    font-family:"IBM Plex Mono";font-size:12px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--ink-faint);
   }
-
-  .title {
-    font-family: 'Fraunces', serif;
-    font-weight: 400;
-    font-size: 34px;
-    line-height: 1;
-    margin: 0;
-    letter-spacing: -0.02em;
-    font-variation-settings: 'opsz' 144, 'SOFT' 50;
+  nav.tabs{
+    display:flex;gap:4px;margin-top:20px;border-bottom:1px solid var(--line-strong);
+    flex-wrap:wrap;
   }
-
-  .title em {
-    font-style: italic;
-    font-variation-settings: 'opsz' 144, 'SOFT' 100;
-    color: var(--accent);
+  nav.tabs button{
+    appearance:none;background:none;border:0;cursor:pointer;
+    font-family:"Archivo";font-weight:600;font-size:15px;color:var(--ink-soft);
+    padding:10px 14px 12px;position:relative;border-radius:8px 8px 0 0;
   }
-
-  .subtitle {
-    color: var(--text-muted);
-    font-size: 13px;
-    margin: 8px 0 0;
-    line-height: 1.5;
+  nav.tabs button:hover{color:var(--ink)}
+  nav.tabs button[aria-selected="true"]{color:var(--ink)}
+  nav.tabs button[aria-selected="true"]::after{
+    content:"";position:absolute;left:8px;right:8px;bottom:-1px;height:3px;
+    background:var(--ink);border-radius:3px 3px 0 0;
   }
+  nav.tabs button:focus-visible{outline:2px solid var(--move);outline-offset:2px}
 
-  /* DAY TABS */
-  .tabs-wrap {
-    position: sticky;
-    top: 0;
-    background: var(--bg);
-    z-index: 10;
-    padding: 14px 16px 12px;
-    border-bottom: 1px solid var(--border);
-    backdrop-filter: blur(8px);
+  main{max-width:var(--maxw);margin:0 auto;padding:22px 20px}
+  .panel{display:none;animation:fade .35s ease both}
+  .panel.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* ---------- NOW hero (signature) ---------- */
+  .now{
+    background:var(--ink);color:#F1F1ED;border-radius:var(--radius);
+    padding:20px 22px;box-shadow:var(--shadow);overflow:hidden;position:relative;
   }
-
-  .tabs {
-    display: flex;
-    gap: 6px;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+  .now .eyebrow{
+    font-family:"IBM Plex Mono";font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+    color:#9AA39E;display:flex;justify-content:space-between;align-items:center;gap:10px;
   }
-  .tabs::-webkit-scrollbar { display: none; }
-
-  .tab {
-    flex: 1;
-    min-width: 48px;
-    padding: 10px 4px 8px;
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--text-dim);
-    border-radius: 12px;
-    font-family: 'Geist', sans-serif;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 3px;
+  .now .clock{color:#F1F1ED;font-weight:600}
+  .now h2{
+    font-family:"Archivo";font-weight:700;letter-spacing:-.01em;
+    font-size:clamp(24px,5.5vw,34px);margin:8px 0 2px;line-height:1.05;
   }
+  .now .meta{font-size:13.5px;color:#B9BEB7}
+  .now .meta b{color:#F1F1ED;font-weight:600}
+  .now .bar{height:6px;background:rgba(255,255,255,.14);border-radius:6px;margin:16px 0 4px;overflow:hidden}
+  .now .bar span{display:block;height:100%;background:var(--move);border-radius:6px;transition:width .6s ease}
+  .now .next{margin-top:10px;font-size:13px;color:#B9BEB7;display:flex;align-items:center;gap:8px}
+  .now .next .mono{color:#F1F1ED}
+  .now .dot{width:7px;height:7px;border-radius:50%;background:var(--recover);flex:none}
 
-  .tab-day {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    color: var(--text-dim);
+  .section-head{
+    display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+    margin:30px 0 12px;flex-wrap:wrap;
   }
-
-  .tab.today {
-    border-color: var(--border-strong);
-    color: var(--text-muted);
+  .section-head h3{
+    font-family:"Archivo";font-weight:700;font-size:18px;margin:0;letter-spacing:-.01em;
   }
-  .tab.today .tab-day { color: var(--text-muted); }
+  .section-head .hint{font-size:12.5px;color:var(--ink-faint)}
 
-  .tab.active {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: var(--bg);
+  /* ---------- schedule list ---------- */
+  .day{display:flex;flex-direction:column;gap:8px}
+  .block{
+    background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--pause);
+    border-radius:12px;padding:12px 14px;display:flex;gap:14px;align-items:center;
+    box-shadow:var(--shadow);transition:transform .15s ease,border-color .15s ease;
+    cursor:pointer;
   }
-  .tab.active .tab-day { color: var(--bg); opacity: 0.7; }
-
-  /* Yoga tab — subtle accent so it reads as a library, not a day */
-  .tab-yoga { border-color: var(--border-strong); }
-  .tab-yoga .tab-day { color: var(--accent); }
-  .tab-yoga.active .tab-day { color: var(--bg); opacity: 0.7; }
-
-  .today-dot {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: var(--accent-bright);
-    border-radius: 50%;
-    margin-top: -8px;
+  .block:hover{transform:translateX(2px)}
+  .block:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+  .block .time{
+    font-family:"IBM Plex Mono";font-size:13px;color:var(--ink-soft);
+    min-width:96px;line-height:1.3;flex:none;
   }
-
-  /* PANELS */
-  .panel {
-    display: none;
-    padding: 24px 20px 0;
-    animation: fadeIn 0.35s ease;
+  .block .time .end{color:var(--ink-faint);font-size:11.5px}
+  .block .body{flex:1;min-width:0}
+  .block .title{font-weight:600;font-size:15px;line-height:1.25}
+  .block .kind{
+    font-family:"IBM Plex Mono";font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--ink-faint);margin-top:2px;
   }
-
-  .panel.active { display: block; }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: translateY(0); }
+  .block .dur{font-family:"IBM Plex Mono";font-size:11px;color:var(--ink-faint);flex:none}
+  .block.is-now{border-color:var(--ink);box-shadow:0 0 0 2px var(--ink) inset, var(--shadow)}
+  .block.is-now .nowtag{
+    font-family:"IBM Plex Mono";font-size:10px;letter-spacing:.1em;background:var(--ink);color:#fff;
+    padding:2px 6px;border-radius:5px;margin-left:8px;
   }
+  /* kind colors via left border + dot */
+  .block[data-kind="move"]{border-left-color:var(--move)}
+  .block[data-kind="recover"]{border-left-color:var(--recover)}
+  .block[data-kind="fuel"]{border-left-color:var(--fuel)}
+  .block[data-kind="focus"]{border-left-color:var(--focus)}
+  .block[data-kind="pause"]{border-left-color:var(--pause)}
+  .block[data-kind="sleep"]{border-left-color:var(--sleep)}
 
-  .panel-header {
-    margin-bottom: 24px;
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+  button.btn{
+    appearance:none;font-family:"Archivo";font-weight:600;font-size:13.5px;cursor:pointer;
+    border-radius:10px;padding:9px 14px;border:1px solid var(--line-strong);
+    background:var(--surface);color:var(--ink);transition:background .15s ease,transform .1s ease;
   }
+  button.btn:hover{background:#fff}
+  button.btn:active{transform:translateY(1px)}
+  button.btn.primary{background:var(--ink);color:#F1F1ED;border-color:var(--ink)}
+  button.btn.primary:hover{background:#23262c}
+  button.btn.ghost{background:transparent;border-style:dashed}
+  button.btn:focus-visible{outline:2px solid var(--move);outline-offset:2px}
 
-  .panel-day {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--accent);
-    letter-spacing: 0.1em;
-    margin: 0 0 8px;
+  .legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px;font-size:12px;color:var(--ink-soft)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+
+  /* ---------- editor dialog ---------- */
+  dialog.editor{
+    border:0;border-radius:16px;padding:0;max-width:380px;width:92vw;
+    box-shadow:0 20px 60px rgba(0,0,0,.3);color:var(--ink);background:var(--surface);
   }
-
-  .panel-title {
-    font-family: 'Fraunces', serif;
-    font-weight: 400;
-    font-size: 28px;
-    line-height: 1.1;
-    margin: 0;
-    letter-spacing: -0.015em;
+  dialog.editor::backdrop{background:rgba(20,22,26,.45)}
+  .editor .ehead{padding:18px 20px 0}
+  .editor h4{font-family:"Archivo";font-weight:700;margin:0;font-size:17px}
+  .editor form{padding:14px 20px 20px;display:flex;flex-direction:column;gap:12px}
+  .editor label{font-size:12px;color:var(--ink-soft);font-weight:600;display:block;margin-bottom:5px}
+  .editor input,.editor select{
+    width:100%;font-family:inherit;font-size:14px;padding:9px 10px;border:1px solid var(--line-strong);
+    border-radius:9px;background:#fff;color:var(--ink);
   }
+  .editor .row{display:flex;gap:10px}
+  .editor .row>div{flex:1}
+  .editor input.mono,.editor input[type=time]{font-family:"IBM Plex Mono"}
+  .editor .actions{display:flex;justify-content:space-between;gap:8px;margin-top:4px}
+  .editor input:focus,.editor select:focus{outline:2px solid var(--ink);outline-offset:1px}
 
-  .panel-title em {
-    font-style: italic;
-    color: var(--accent);
+  /* ---------- training ---------- */
+  .weekstrip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:18px}
+  .weekstrip button{
+    appearance:none;cursor:pointer;border:1px solid var(--line);background:var(--surface);
+    border-radius:10px;padding:10px 4px;text-align:center;transition:transform .12s ease;
+    border-top:3px solid var(--pause);
   }
+  .weekstrip button:hover{transform:translateY(-2px)}
+  .weekstrip button[data-focus="move"]{border-top-color:var(--move)}
+  .weekstrip button[data-focus="recover"]{border-top-color:var(--recover)}
+  .weekstrip button[data-focus="rest"]{border-top-color:var(--line-strong)}
+  .weekstrip button[aria-selected="true"]{background:var(--ink);border-color:var(--ink)}
+  .weekstrip button[aria-selected="true"] .wd,
+  .weekstrip button[aria-selected="true"] .wf{color:#F1F1ED}
+  .weekstrip button.today{box-shadow:0 0 0 2px var(--move)}
+  .weekstrip .wd{font-family:"IBM Plex Mono";font-size:11px;letter-spacing:.08em;color:var(--ink-faint);display:block}
+  .weekstrip .wf{font-family:"Archivo";font-weight:600;font-size:12px;margin-top:3px;line-height:1.1;color:var(--ink)}
+  .weekstrip button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 
-  .panel-note {
-    margin: 10px 0 0;
-    color: var(--text-muted);
-    font-size: 13px;
-    line-height: 1.55;
-    max-width: 340px;
+  .workout{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px 20px 8px;box-shadow:var(--shadow)}
+  .workout .whead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:14px}
+  .workout .whead h3{font-family:"Archivo";font-weight:800;font-size:22px;margin:0;letter-spacing:-.01em}
+  .workout .whead .focus{font-family:"IBM Plex Mono";font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--move)}
+  .workout .whead .focus.recover{color:var(--recover)}
+  .grp{margin:16px 0}
+  .grp .gtitle{font-family:"IBM Plex Mono";font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:8px}
+  .ex{display:flex;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line)}
+  .ex:last-child{border-bottom:0}
+  .ex .name{flex:1;font-weight:500;font-size:14.5px}
+  .ex .name small{display:block;font-weight:400;color:var(--ink-soft);font-size:12.5px;margin-top:2px}
+  .ex .sets{font-family:"IBM Plex Mono";font-size:13px;color:var(--ink);white-space:nowrap;flex:none}
+  .ex.knee{background:var(--recover-wash);margin:0 -10px;padding:9px 10px;border-radius:8px;border-bottom:0}
+  .ex.knee .name::before{content:"◖ stability ";font-family:"IBM Plex Mono";font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--recover);font-weight:600}
+  .restday{background:var(--recover-wash);border:1px solid var(--recover);border-radius:var(--radius);padding:22px;color:var(--ink)}
+  .restday h3{font-family:"Archivo";font-weight:700;margin:0 0 8px;font-size:20px;color:var(--recover)}
+  .gameday{background:var(--move-wash);border:1px solid var(--move);border-radius:var(--radius);padding:22px;color:var(--ink)}
+  .gameday h3{font-family:"Archivo";font-weight:800;margin:0 0 12px;font-size:22px;color:var(--move)}
+
+  .callout{
+    background:var(--recover-wash);border:1px solid var(--recover);border-radius:12px;
+    padding:14px 16px;margin:18px 0;font-size:13.5px;color:var(--ink);
   }
+  .callout b{color:var(--recover)}
+  .callout .k{font-family:"IBM Plex Mono";font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--recover);display:block;margin-bottom:6px}
 
-  /* SECTIONS */
-  .section {
-    margin-bottom: 28px;
+  /* ---------- yoga / prose ---------- */
+  .prose{max-width:660px}
+  .prose h3{font-family:"Archivo";font-weight:700;font-size:18px;margin:26px 0 8px;letter-spacing:-.01em}
+  .prose p{margin:0 0 12px;color:var(--ink-soft)}
+  .flow{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:6px 18px;box-shadow:var(--shadow);margin:14px 0}
+  .flow .fh{display:flex;justify-content:space-between;align-items:baseline;padding:14px 0 10px;border-bottom:1px solid var(--line)}
+  .flow .fh h4{font-family:"Archivo";font-weight:700;margin:0;font-size:16px}
+  .flow .fh .len{font-family:"IBM Plex Mono";font-size:12px;color:var(--recover)}
+  .pose{display:flex;gap:12px;padding:11px 0;border-bottom:1px dashed var(--line)}
+  .pose:last-child{border-bottom:0}
+  .pose .num{font-family:"IBM Plex Mono";font-size:12px;color:var(--ink-faint);min-width:22px;flex:none;padding-top:1px}
+  .pose .pn{flex:1}
+  .pose .pn b{font-weight:600;font-size:14.5px}
+  .pose .pn small{display:block;color:var(--ink-soft);font-size:12.5px;margin-top:2px}
+  .pose .hold{font-family:"IBM Plex Mono";font-size:12px;color:var(--ink-soft);flex:none}
+
+  .footer{max-width:var(--maxw);margin:30px auto 0;padding:0 20px;color:var(--ink-faint);font-size:12px}
+
+  /* ---------- nutrition ---------- */
+  .fuelcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow)}
+  .fuelcard .eyebrow{font-family:"IBM Plex Mono";font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:14px}
+  .macros{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .macro .ml{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px}
+  .macro .lab{font-family:"Archivo";font-weight:700;font-size:14px}
+  .macro .val{font-family:"IBM Plex Mono";font-size:12.5px;color:var(--ink-soft)}
+  .macro .val b{font-size:20px;color:var(--ink)}
+  .macro .track{height:8px;background:var(--base);border-radius:8px;overflow:hidden}
+  .macro .track span{display:block;height:100%;border-radius:8px;transition:width .5s ease}
+  .macro.kcal .track span{background:var(--fuel)}
+  .macro.prot .track span{background:var(--move)}
+  .macro .rem{font-family:"IBM Plex Mono";font-size:11.5px;color:var(--ink-faint);margin-top:6px}
+  @media(max-width:480px){.macros{grid-template-columns:1fr;gap:16px}}
+
+  .targetbox{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);margin:16px 0;overflow:hidden}
+  .targetbox>summary{cursor:pointer;list-style:none;padding:14px 18px;font-family:"Archivo";font-weight:600;font-size:15px;display:flex;justify-content:space-between;align-items:center}
+  .targetbox>summary::-webkit-details-marker{display:none}
+  .targetbox>summary::after{content:"+";font-family:"IBM Plex Mono";color:var(--ink-faint);font-size:18px}
+  .targetbox[open]>summary::after{content:"\2013"}
+  .tbody{padding:2px 18px 18px;border-top:1px solid var(--line)}
+  .field{margin-top:14px}
+  .field label{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:5px}
+  .field input,.field select{width:100%;font-family:inherit;font-size:14px;padding:9px 10px;border:1px solid var(--line-strong);border-radius:9px;background:#fff;color:var(--ink)}
+  .field input.mono{font-family:"IBM Plex Mono"}
+  .field input:focus,.field select:focus{outline:2px solid var(--ink);outline-offset:1px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  .subhead{font-family:"IBM Plex Mono";font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin:20px 0 0}
+  .estimate{background:var(--fuel-wash);border:1px solid var(--fuel);border-radius:10px;padding:12px 14px;margin-top:14px;font-size:13.5px;color:var(--ink);display:none}
+  .estimate.show{display:block}
+  .estimate b{color:#7A5418}
+
+  .mealcard{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--fuel);border-radius:12px;box-shadow:var(--shadow);margin-bottom:10px;overflow:hidden}
+  .mealcard .mh{display:flex;justify-content:space-between;align-items:baseline;padding:13px 16px;gap:10px}
+  .mealcard .mn{font-family:"Archivo";font-weight:700;font-size:15px}
+  .mealcard .mb{font-family:"IBM Plex Mono";font-size:12px;color:var(--ink-faint)}
+  .mealcard .mb b{color:var(--ink)}
+  .mentries{padding:0 16px}
+  .nentry{display:flex;gap:10px;align-items:center;padding:9px 0;border-top:1px dashed var(--line);cursor:pointer}
+  .nentry:hover{opacity:.7}
+  .nentry .nn{flex:1;font-size:14px}
+  .nentry .nk{font-family:"IBM Plex Mono";font-size:12px;color:var(--ink-soft);white-space:nowrap}
+  .nentry .nk .p{color:var(--move)}
+  .mealcard .empty{padding:9px 0 4px;font-size:13px;color:var(--ink-faint);border-top:1px dashed var(--line)}
+  .mealcard .madd{display:block;width:100%;text-align:left;background:none;border:0;border-top:1px dashed var(--line);padding:11px 16px;cursor:pointer;font-family:"Archivo";font-weight:600;font-size:13px;color:var(--ink-faint)}
+  .mealcard .madd:hover{color:var(--ink)}
+  .mealcard .madd:focus-visible{outline:2px solid var(--ink);outline-offset:-2px}
+
+  .recipes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
+  .recipe{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;box-shadow:var(--shadow);display:flex;flex-direction:column}
+  .recipe .rtag{font-family:"IBM Plex Mono";font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--recover);margin-bottom:6px}
+  .recipe h4{font-family:"Archivo";font-weight:700;font-size:15px;margin:0 0 4px;line-height:1.18}
+  .recipe p{margin:0 0 10px;font-size:12.5px;color:var(--ink-soft);flex:1}
+  .recipe .rmac{font-family:"IBM Plex Mono";font-size:12px;color:var(--ink-soft);margin-bottom:11px}
+  .recipe .rmac .p{color:var(--move)}
+  .recipe button{align-self:flex-start}
+  @media(max-width:480px){.recipes{grid-template-columns:1fr}}
+
+  @media (max-width:560px){
+    .block .time{min-width:78px}
+    .block .dur{display:none}
+    .weekstrip{grid-template-columns:repeat(7,1fr);gap:4px}
+    .weekstrip .wf{font-size:10px}
   }
-
-  .section-header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 14px;
-  }
-
-  .section-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--text-dim);
-    margin: 0;
-  }
-
-  .section-time {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    color: var(--text-dim);
-  }
-
-  /* EXERCISES */
-  .ex {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    padding: 14px 0;
-    border-bottom: 1px solid rgba(26, 34, 51, 0.5);
-    cursor: pointer;
-    transition: opacity 0.2s;
-  }
-
-  .ex:last-child { border-bottom: none; }
-
-  .ex-check {
-    width: 18px;
-    height: 18px;
-    border-radius: 5px;
-    border: 1.5px solid var(--border-strong);
-    flex-shrink: 0;
-    margin-top: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-  }
-
-  .ex.done .ex-check {
-    background: var(--accent);
-    border-color: var(--accent);
-  }
-
-  .ex.done .ex-check::after {
-    content: '';
-    width: 8px;
-    height: 5px;
-    border-left: 2px solid var(--bg);
-    border-bottom: 2px solid var(--bg);
-    transform: rotate(-45deg);
-    margin-top: -2px;
-  }
-
-  .ex-body {
-    flex: 1;
-    min-width: 0;
-  }
-
-  .ex-name {
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--text);
-    margin: 0 0 3px;
-    line-height: 1.3;
-    transition: color 0.2s;
-  }
-
-  .ex.done .ex-name {
-    color: var(--text-muted);
-    text-decoration: line-through;
-    text-decoration-color: var(--text-dim);
-  }
-
-  .ex-meta {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: var(--accent);
-    letter-spacing: 0.02em;
-  }
-
-  .ex.done .ex-meta { color: var(--text-dim); }
-
-  .ex-note {
-    font-size: 12px;
-    color: var(--text-muted);
-    margin: 4px 0 0;
-    line-height: 1.4;
-    font-style: italic;
-  }
-
-  .ex-or {
-    color: var(--text-dim);
-    font-style: italic;
-    font-weight: 400;
-  }
-
-  /* SUPERSET INDICATOR */
-  .superset {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 4px 14px;
-    margin: 10px 0;
-    position: relative;
-  }
-
-  .superset::before {
-    content: 'SUPERSET';
-    position: absolute;
-    top: -7px;
-    left: 14px;
-    background: var(--bg);
-    padding: 0 6px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 8px;
-    letter-spacing: 0.15em;
-    color: var(--accent);
-  }
-
-  .superset .ex:first-child { padding-top: 14px; }
-  .superset .ex:last-child { border-bottom: none; padding-bottom: 14px; }
-
-  /* SPECIAL CARDS — Game day, rest day */
-  .special {
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 28px 24px;
-    text-align: center;
-    background:
-      radial-gradient(ellipse at top, rgba(96, 165, 250, 0.06) 0%, transparent 60%),
-      var(--surface);
-    margin-top: 12px;
-  }
-
-  .special.game {
-    background:
-      radial-gradient(ellipse at top, rgba(248, 113, 113, 0.06) 0%, transparent 60%),
-      var(--surface);
-  }
-
-  .special-icon {
-    font-family: 'Fraunces', serif;
-    font-size: 48px;
-    font-style: italic;
-    color: var(--rest);
-    margin-bottom: 12px;
-    line-height: 1;
-  }
-
-  .special.game .special-icon { color: var(--game); }
-
-  .special-title {
-    font-family: 'Fraunces', serif;
-    font-size: 22px;
-    font-weight: 400;
-    margin: 0 0 8px;
-    letter-spacing: -0.01em;
-  }
-
-  .special-body {
-    color: var(--text-muted);
-    font-size: 13.5px;
-    line-height: 1.6;
-    margin: 0;
-  }
-
-  /* PHILOSOPHY FOOTER */
-  .principles {
-    margin: 36px 20px 0;
-    padding: 24px;
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    background: var(--surface);
-  }
-
-  .principles-title {
-    font-family: 'Fraunces', serif;
-    font-size: 17px;
-    font-weight: 400;
-    margin: 0 0 14px;
-    color: var(--text);
-  }
-
-  .principles-title em {
-    font-style: italic;
-    color: var(--accent);
-  }
-
-  .principles ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .principles li {
-    color: var(--text-muted);
-    font-size: 13px;
-    line-height: 1.6;
-    padding: 6px 0 6px 16px;
-    position: relative;
-  }
-
-  .principles li::before {
-    content: '—';
-    position: absolute;
-    left: 0;
-    color: var(--accent);
-  }
-
-  /* FOOTER */
-  .footer {
-    text-align: center;
-    padding: 32px 24px 16px;
-    color: var(--text-dim);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.1em;
-  }
-
-  /* RESET BUTTON */
-  .reset {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    background: var(--surface);
-    border: 1px solid var(--border-strong);
-    color: var(--text-muted);
-    padding: 10px 14px;
-    border-radius: 24px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    cursor: pointer;
-    transition: all 0.2s;
-    z-index: 5;
-  }
-
-  .reset:hover { color: var(--accent); border-color: var(--accent); }
-  .reset:active { transform: scale(0.96); }
-
-  /* MOBILE TWEAKS */
-  @media (max-width: 480px) {
-    .header { padding: 22px 18px 14px; }
-    .title { font-size: 30px; }
-    .panel { padding: 22px 16px 0; }
-    .panel-title { font-size: 24px; }
-    .principles { margin: 32px 16px 0; padding: 20px; }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
   }
 </style>
 </head>
 <body>
-
-<header class="header">
-  <p class="eyebrow">Mornings · Legs×2 · Push · Pull · Back+Arms</p>
-  <h1 class="title">Train like an <em>athlete</em>.</h1>
-  <p class="subtitle">Two leg days for the hips and the knee, one push, one pull, and a back-and-arms combo day — the volume tilts toward your priorities, legs and back, while the Saturday game stands in as your weekend lower-body stress test.</p>
+<header class="app">
+  <div class="brand">
+    <h1>Daily&nbsp;OS</h1>
+    <span class="tag">structure · strength · stability</span>
+  </div>
+  <nav class="tabs" role="tablist" aria-label="Sections">
+    <button role="tab" id="tab-today" aria-selected="true" aria-controls="panel-today">Today</button>
+    <button role="tab" id="tab-train" aria-selected="false" aria-controls="panel-train">Training</button>
+    <button role="tab" id="tab-yoga" aria-selected="false" aria-controls="panel-yoga">Yoga &amp; Recovery</button>
+    <button role="tab" id="tab-nutri" aria-selected="false" aria-controls="panel-nutri">Nutrition</button>
+  </nav>
 </header>
 
-<nav class="tabs-wrap">
-  <div class="tabs" id="tabs"></div>
-</nav>
+<main>
+  <!-- ===================== TODAY ===================== -->
+  <section class="panel active" id="panel-today" role="tabpanel" aria-labelledby="tab-today">
+    <div class="now" id="nowCard">
+      <div class="eyebrow"><span id="nowDate">—</span><span class="clock mono" id="nowClock">--:--</span></div>
+      <h2 id="nowTitle">Right now</h2>
+      <div class="meta" id="nowMeta">Loading your day…</div>
+      <div class="bar"><span id="nowBar" style="width:0%"></span></div>
+      <div class="next"><span class="dot"></span><span>Next&nbsp; <span class="mono" id="nextTime">—</span> &nbsp;<span id="nextTitle">—</span></span></div>
+    </div>
 
-<main id="panels"></main>
+    <div class="section-head">
+      <h3>The day, top to bottom</h3>
+      <span class="hint">Tap any block to edit its time, name, or type</span>
+    </div>
 
-<section class="principles">
-  <p class="principles-title">A few <em>principles</em>.</p>
-  <ul>
-    <li>Two leg days, staggered on purpose — Monday goes heavy and explosive while you're fresh; Thursday goes lighter and unilateral so it doesn't bleed into Saturday's game.</li>
-    <li>Back and hips lead the week — push the pull-ups, rows, and hip work hardest, and add a rep or a pound there before anywhere else.</li>
-    <li>Lead every single-leg and single-arm movement with the left, then match the right to it. That's how the gap closes instead of widening.</li>
-    <li>Friday's combo day is for back and arms — keep the pressing light there so Tuesday stays your real push day. It's also the session to drop first on a 4-day week.</li>
-    <li>Mornings = stiff body. The warm-up isn't optional, especially before pressing or pulling heavy.</li>
-    <li>Sleep and protein move the needle as much as the workout.</li>
-  </ul>
-</section>
+    <div class="day" id="dayList"></div>
 
-<div class="footer">v3 · legs×2 / push / pull / back+arms · Updated Jun 15 2026</div>
+    <div class="toolbar">
+      <button class="btn primary" id="addBlock">+ Add block</button>
+      <button class="btn ghost" id="resetDay">Reset to default day</button>
+    </div>
 
-<button class="reset" onclick="resetAll()">Reset checks</button>
+    <div class="legend">
+      <span><i style="background:var(--focus)"></i>Focus</span>
+      <span><i style="background:var(--pause)"></i>Pause</span>
+      <span><i style="background:var(--fuel)"></i>Fuel</span>
+      <span><i style="background:var(--move)"></i>Train</span>
+      <span><i style="background:var(--recover)"></i>Recover</span>
+      <span><i style="background:var(--sleep)"></i>Sleep</span>
+    </div>
+  </section>
+
+  <!-- ===================== TRAINING ===================== -->
+  <section class="panel" id="panel-train" role="tabpanel" aria-labelledby="tab-train" hidden>
+    <div class="weekstrip" id="weekStrip"></div>
+    <div id="workoutHost"></div>
+
+    <div class="callout">
+      <span class="k">How the week is built</span>
+      Four hard lifts run Monday, Tuesday, Thursday, Friday as an upper/lower split — <b>posterior chain &amp; hinge</b> Monday, <b>quad &amp; single-leg stability</b> Thursday — spaced so your left knee gets deliberate, low-stress loading twice a week from different angles. Thursday's lower work is kept <b>submaximal on purpose</b>: with the match two days later, you want fresh legs and an un-fatigued knee going into all that cutting and sprinting. Wednesday is light yoga at home, Saturday is your game, and Sunday is rest with optional gentle mobility.
+    </div>
+
+    <div class="callout">
+      <span class="k">Knee principles</span>
+      Let the <b>left side set the standard</b> on every single-leg movement and match the right to it — that's how rebalancing happens, and it won't if the strong side carries the load. Own the <b>eccentric</b> (the lowering) on a 2–3 second count; tendons and control respond to time under tension more safely than to speed. Progress depth and range gradually and never push through sharp pain — next-day swelling means it was too much, so scale back. Your <b>Saturday match</b> is the biggest test the knee faces all week, so treat the lifting as what makes it resilient, not as something to grind into the ground. Anything your <b>physical therapist</b> has told you overrides anything on this page.
+    </div>
+  </section>
+
+  <!-- ===================== YOGA ===================== -->
+  <section class="panel" id="panel-yoga" role="tabpanel" aria-labelledby="tab-yoga" hidden>
+    <div class="prose">
+      <p style="font-size:15px;color:var(--ink)">Yoga here does two jobs at once — it opens the hips and hamstrings that get tight from sitting and lifting, and it trains the balance and proprioception your knee needs to feel trustworthy again. The whole approach is built to protect a healing joint rather than test it.</p>
+
+      <div class="callout" style="margin-top:18px">
+        <span class="k">Knee-safe ground rules</span>
+        Pad the knee — a folded towel or blanket under it — in any kneeling pose; there's no toughness points for grinding bone into the mat. Avoid deep, loaded knee flexion early (full hero pose, deep lotus, an aggressive low lunge); use blocks and bolsters to shorten the range until depth feels genuinely easy. In every lunge and warrior, keep the front <b>knee tracking over the ankle</b> and never letting it drift inward. Favor the poses that build hip mobility, hamstring length, and single-leg balance — those are the ones that pay your knee back.
+      </div>
+
+      <h3>Daily reset · 10 minutes</h3>
+      <p>Do this on a work morning or after a long stretch of sitting — it's the flow that pairs with the "Morning mobility" and "Wind-down" blocks on your schedule.</p>
+    </div>
+
+    <div class="flow">
+      <div class="fh"><h4>Daily reset</h4><span class="len mono">~10 min</span></div>
+      <div id="flowDaily"></div>
+    </div>
+
+    <div class="prose"><h3>Stability flow · 20–30 minutes</h3>
+      <p>This is your Wednesday and Saturday option — balance-led, posterior-chain friendly, and a real contributor to knee stability rather than a throwaway "rest day."</p></div>
+    <div class="flow">
+      <div class="fh"><h4>Stability flow</h4><span class="len mono">~25 min</span></div>
+      <div id="flowStability"></div>
+    </div>
+
+    <div class="prose"><h3>Evening restorative · before bed</h3>
+      <p>Low effort, parasympathetic, and good for a knee that's swollen or achy after a hard session — slot it into the wind-down block.</p></div>
+    <div class="flow">
+      <div class="fh"><h4>Restorative</h4><span class="len mono">~15 min</span></div>
+      <div id="flowRestore"></div>
+    </div>
+
+    <div class="prose">
+      <h3>What to reach for, and why</h3>
+      <p><b>Tree pose &amp; single-leg balance</b> — the most direct proprioception work you can do; the wobble is the point, and it's how the knee relearns to stabilize itself.</p>
+      <p><b>Bridge &amp; locust</b> — posterior-chain activation that strengthens around the joint without loading it through deep flexion.</p>
+      <p><b>Figure-four &amp; supine pigeon</b> — hip opening done lying down, so you get the release without putting the knee in a vulnerable position.</p>
+      <p><b>Legs-up-the-wall</b> — genuinely useful for draining swelling and downshifting before sleep; hold it longer than feels necessary.</p>
+    </div>
+  </section>
+
+  <!-- ===================== NUTRITION ===================== -->
+  <section class="panel" id="panel-nutri" role="tabpanel" aria-labelledby="tab-nutri" hidden>
+    <div class="fuelcard">
+      <div class="eyebrow">Today's fuel · <span id="nutriDate">—</span></div>
+      <div class="macros">
+        <div class="macro kcal">
+          <div class="ml"><span class="lab">Calories</span><span class="val"><b id="kcalNow">0</b> / <span id="kcalTgt">0</span></span></div>
+          <div class="track"><span id="kcalBar" style="width:0%"></span></div>
+          <div class="rem" id="kcalRem">—</div>
+        </div>
+        <div class="macro prot">
+          <div class="ml"><span class="lab">Protein</span><span class="val"><b id="protNow">0</b> / <span id="protTgt">0</span> g</span></div>
+          <div class="track"><span id="protBar" style="width:0%"></span></div>
+          <div class="rem" id="protRem">—</div>
+        </div>
+      </div>
+    </div>
+
+    <details class="targetbox" id="targetBox">
+      <summary>Set targets &amp; estimate my needs</summary>
+      <div class="tbody">
+        <div class="grid2">
+          <div class="field"><label for="tgtKcal">Daily calories</label><input class="mono" type="number" id="tgtKcal" min="0" step="10"></div>
+          <div class="field"><label for="tgtProt">Daily protein (g)</label><input class="mono" type="number" id="tgtProt" min="0" step="5"></div>
+        </div>
+
+        <div class="subhead">How it splits across the day (%)</div>
+        <div class="grid4">
+          <div class="field" style="margin-top:6px"><label for="spB">Breakfast</label><input class="mono" type="number" id="spB" min="0" max="100"></div>
+          <div class="field" style="margin-top:6px"><label for="spL">Lunch</label><input class="mono" type="number" id="spL" min="0" max="100"></div>
+          <div class="field" style="margin-top:6px"><label for="spD">Dinner</label><input class="mono" type="number" id="spD" min="0" max="100"></div>
+          <div class="field" style="margin-top:6px"><label for="spS">Snacks</label><input class="mono" type="number" id="spS" min="0" max="100"></div>
+        </div>
+        <div style="margin-top:14px"><button class="btn primary" id="saveTargets">Save targets</button></div>
+
+        <div class="subhead">Estimate my needs</div>
+        <p style="font-size:12.5px;color:var(--ink-faint);margin:5px 0 0">A starting point from your stats. Adjust it over a few weeks based on energy, training, and how you feel — it's an estimate, not a rule.</p>
+        <div class="grid2">
+          <div class="field"><label for="eSex">Sex (for the formula)</label><select id="eSex"><option value="male">Male</option><option value="female">Female</option></select></div>
+          <div class="field"><label for="eAge">Age</label><input class="mono" type="number" id="eAge" min="13" max="100"></div>
+        </div>
+        <div class="grid2">
+          <div class="field"><label for="eWt">Weight (lb)</label><input class="mono" type="number" id="eWt" min="0"></div>
+          <div class="field"><label for="eFt">Height</label>
+            <div style="display:flex;gap:8px"><input class="mono" type="number" id="eFt" placeholder="ft" min="0" style="flex:1"><input class="mono" type="number" id="eIn" placeholder="in" min="0" max="11" style="flex:1"></div>
+          </div>
+        </div>
+        <div class="grid2">
+          <div class="field"><label for="eAct">Activity</label><select id="eAct">
+            <option value="1.375">Light (desk + some training)</option>
+            <option value="1.55" selected>Moderate (4 lifts + a match)</option>
+            <option value="1.725">High (active job + training)</option>
+          </select></div>
+          <div class="field"><label for="eGoal">Goal</label><select id="eGoal">
+            <option value="1.0" selected>Maintain &amp; perform</option>
+            <option value="0.85">Lean down gently</option>
+            <option value="1.1">Build muscle</option>
+          </select></div>
+        </div>
+        <div style="margin-top:14px"><button class="btn" id="calcEstimate">Calculate</button></div>
+        <div class="estimate" id="estimateOut"></div>
+      </div>
+    </details>
+
+    <div class="section-head"><h3>Meals &amp; snacks</h3><span class="hint">Tap an item to edit · resets each day</span></div>
+    <div id="mealHost"></div>
+
+    <div class="section-head"><h3>Vegetarian recipes</h3><span class="hint">Protein-forward · tap Add to log it</span></div>
+    <div class="recipes" id="recipeHost"></div>
+
+    <div class="callout" style="margin-top:18px">
+      <span class="k">Eating as a vegetarian lifter</span>
+      The one thing worth getting right is <b>protein spread across the day</b> rather than loaded into one meal — a solid source at each (Greek yogurt, eggs, tofu, tempeh, lentils, beans, paneer, edamame, or a shake), since plant proteins are a touch less complete and your training plus the Saturday match raise what you need. Everything here is a flexible estimate built to <b>fuel your training</b>, not to restrict — and I'm not a dietitian, so treat guidance from a doctor or registered dietitian as the final word.
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  Your edits to today's schedule are saved on this device. This plan is a starting framework, not medical advice — your physical therapist's guidance comes first.
+</footer>
+
+<!-- editor dialog -->
+<dialog class="editor" id="editor">
+  <div class="ehead"><h4 id="editorTitle">Edit block</h4></div>
+  <form method="dialog" id="editorForm">
+    <div class="row">
+      <div><label for="fStart">Start</label><input type="time" id="fStart" required></div>
+      <div><label for="fEnd">End</label><input type="time" id="fEnd" required></div>
+    </div>
+    <div><label for="fName">Name</label><input type="text" id="fName" maxlength="48" placeholder="e.g. Deep work" required></div>
+    <div><label for="fKind">Type</label>
+      <select id="fKind">
+        <option value="focus">Focus — work</option>
+        <option value="pause">Pause — short break</option>
+        <option value="fuel">Fuel — meal</option>
+        <option value="move">Train — gym</option>
+        <option value="recover">Recover — mobility / stretch</option>
+        <option value="sleep">Sleep</option>
+      </select>
+    </div>
+    <div class="actions">
+      <button type="button" class="btn" id="deleteBlock" style="color:var(--move)">Delete</button>
+      <div style="display:flex;gap:8px">
+        <button type="button" class="btn" id="cancelEdit">Cancel</button>
+        <button type="submit" class="btn primary">Save</button>
+      </div>
+    </div>
+  </form>
+</dialog>
+
+<!-- nutrition entry dialog -->
+<dialog class="editor" id="nentryDialog">
+  <div class="ehead"><h4 id="nentryTitle">Add food</h4></div>
+  <form method="dialog" id="nentryForm">
+    <div><label for="nMeal">Meal</label>
+      <select id="nMeal">
+        <option value="breakfast">Breakfast</option>
+        <option value="lunch">Lunch</option>
+        <option value="dinner">Dinner</option>
+        <option value="snacks">Snacks</option>
+      </select>
+    </div>
+    <div><label for="nName">Food</label><input type="text" id="nName" maxlength="60" placeholder="e.g. Greek yogurt bowl" required></div>
+    <div class="row">
+      <div><label for="nKcal">Calories</label><input class="mono" type="number" id="nKcal" min="0" step="10" required></div>
+      <div><label for="nProt">Protein (g)</label><input class="mono" type="number" id="nProt" min="0" step="1"></div>
+    </div>
+    <div class="actions">
+      <button type="button" class="btn" id="nDelete" style="color:var(--move)">Delete</button>
+      <div style="display:flex;gap:8px">
+        <button type="button" class="btn" id="nCancel">Cancel</button>
+        <button type="submit" class="btn primary">Save</button>
+      </div>
+    </div>
+  </form>
+</dialog>
 
 <script>
-const plan = [
-  {
-    id: 'yoga',
-    day: 'YOGA',
-    name: 'Yoga library',
-    title: 'A library of <em>flows</em>',
-    code: 'Anytime',
-    note: "Friday's pre-game flow and Sunday's restorative session are already slotted into your week. These five are extras — pick one any day you want to add mobility, undo a heavy session, or wake the body up. They aren't a replacement for the workouts; they sit alongside them.",
-    sections: [
-      {
-        label: 'Hip openers',
-        time: '~10 min',
-        items: [
-          { name: 'Low lunge (anjaneyasana)', meta: '60 sec / side', note: 'Hands frame the front foot, sink the back hip forward. Hip flexor on the rear leg should light up.' },
-          { name: 'Pigeon pose', meta: '90 sec / side', note: 'Front shin parallel-ish to the mat, square the hips. Forearms down if it\'s a lot, chest down if you can go deeper.' },
-          { name: 'Frog pose', meta: '1 min', note: 'Knees wide, ankles in line with knees, hips sink back. Brutal — breathe through it.' },
-          { name: '90/90 stretch', meta: '60 sec / side', note: 'Front shin parallel to body, back shin parallel to side. Sit tall, then lean over the front leg.' },
-          { name: 'Happy baby', meta: '1 min', note: 'Soles up, grip outer feet or shins, rock gently side to side.' },
-          { name: 'Reclined bound angle', meta: '2 min', note: 'Lie back, soles together, knees fall open. Hands on belly, slow breath.' }
-        ]
-      },
-      {
-        label: 'Posterior chain',
-        time: '~10 min',
-        items: [
-          { name: 'Downward dog', meta: '1 min', note: 'Pedal the feet, hips high. Don\'t obsess about heels touching the floor.' },
-          { name: 'Half splits', meta: '60 sec / side', note: 'From low lunge, straighten the front leg and flex the foot. Fold over it — heel stays anchored.' },
-          { name: 'Standing forward fold', meta: '1 min', note: 'Soft knees if hamstrings are tight. Let the head hang heavy.' },
-          { name: 'Seated forward fold', meta: '90 sec', note: 'Hinge from the hips, not the spine. Walk hands forward; don\'t round hard.' },
-          { name: 'Reclined hamstring stretch (strap or towel)', meta: '90 sec / side', note: 'Loop strap around foot, leg extends straight up. Other leg long on the floor.' },
-          { name: 'Calf stretch against wall', meta: '30 sec / side', note: 'Ball of foot on wall, heel grounded, lean in.' }
-        ]
-      },
-      {
-        label: 'Upper body & T-spine',
-        time: '~10 min',
-        items: [
-          { name: 'Cat-cow', meta: '10 cycles', note: 'Move with breath — inhale belly drops, exhale spine rounds.' },
-          { name: 'Thread the needle', meta: '60 sec / side', note: 'From tabletop, slide one arm under the other. Shoulder and ear rest on the floor.' },
-          { name: "Puppy pose (extended child's)", meta: '1 min', note: 'Hips stay over knees, arms reach forward, chest melts down. Killer T-spine opener.' },
-          { name: 'Sphinx pose', meta: '1 min', note: 'Forearms down, chest lifts. Gentle backbend that undoes hours of sitting.' },
-          { name: 'Eagle arms', meta: '45 sec / side', note: 'Cross arms, wrap forearms, lift elbows. Rear delts and rhomboids.' },
-          { name: 'Cow face arms', meta: '45 sec / side', note: 'One arm up and behind, other arm down and behind. Clasp hands; use a strap if you can\'t reach.' },
-          { name: 'Doorway chest stretch', meta: '30 sec / side', note: 'Forearm on doorframe at 90°, step through. Opens pecs after press days.' }
-        ]
-      },
-      {
-        label: 'Full recovery (long)',
-        time: '~25 min',
-        items: [
-          { name: "Child's pose", meta: '2 min' },
-          { name: 'Cat-cow', meta: '10 cycles' },
-          { name: 'Downward dog → low lunge → half splits', meta: '3 rounds / side' },
-          { name: 'Pigeon pose', meta: '90 sec / side' },
-          { name: 'Seated forward fold', meta: '1 min' },
-          { name: 'Reclined bound angle', meta: '3 min' },
-          { name: 'Supine pigeon (figure-4)', meta: '90 sec / side' },
-          { name: 'Legs up the wall', meta: '5 min', note: 'The single best recovery pose. Hands on belly, breath slow and long.' },
-          { name: 'Reclined twist', meta: '1 min / side' },
-          { name: 'Savasana', meta: '3–5 min' }
-        ]
-      },
-      {
-        label: 'Quick morning wake-up',
-        time: '~5 min',
-        items: [
-          { name: 'Cat-cow', meta: '10 cycles' },
-          { name: 'Downward dog → upward dog', meta: '3 rounds' },
-          { name: 'Standing forward fold', meta: '30 sec' },
-          { name: "World's greatest stretch", meta: '30 sec / side', note: 'Low lunge → drop opposite elbow inside front foot → rotate the top arm to the sky. Hips, T-spine, hamstrings in one move.' },
-          { name: 'Standing side bend', meta: '20 sec / side' },
-          { name: 'Roll up to standing', meta: '— slow', note: 'Vertebra by vertebra. Head last.' }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'mon',
-    day: 'MON',
-    name: 'Monday',
-    title: 'Legs <em>A</em> — strength + power',
-    code: 'Day 01',
-    note: "Leg day #1. Fresh from the weekend, this is the heavy, explosive one — load the main lift, jump hard, build the raw strength soccer can't. Thursday's leg day stays lighter so this one can go big. Lead every single-leg movement with the left.",
-    sections: [
-      {
-        label: 'Warm-up',
-        time: '~6 min',
-        items: [
-          { name: 'Jump rope', meta: '2 min easy' },
-          { name: 'Leg swings, walking lunges, glute bridges', meta: '1 round' },
-          { name: 'Banded lateral walks + monster walks', meta: '2 × 12 / direction', note: 'Wake the glute med up before you load. Left side should work as hard as the right.' },
-          { name: 'Light goblet squats', meta: '2×8 to grease the groove' }
-        ]
-      },
-      {
-        label: 'Strength & power',
-        time: '~35 min',
-        items: [
-          { name: 'Trap bar deadlift <span class="ex-or">or</span> back squat', meta: '4 × 5', note: 'Heavy. Leave one or two reps in the tank.' },
-          { name: 'Box jumps', meta: '4 × 4', note: 'Max height. Full rest. Power, not conditioning.' },
-          { name: 'Bulgarian split squat', meta: '3 × 8 / side', note: 'Left first, +1 set on the left. Knee tracks over the foot.' },
-          { name: 'Barbell <span class="ex-or">or</span> DB hip thrust', meta: '4 × 8–10', note: 'The headline hip lift. Full lockout, squeeze the glutes hard, two-second hold.' }
-        ]
-      },
-      {
-        label: 'Knee & core',
-        time: '~10 min',
-        items: [
-          { name: 'Spanish squat <span class="ex-or">or</span> wall sit', meta: '3 × 30–45 sec', note: 'VMO and patellar tendon — big for the post-surgical knee. Slow and braced.' },
-          { name: 'Standing calf + tibialis raise', meta: '3 × 12–15', note: 'Superset. Ankle resilience = knee insurance.' },
-          { name: 'Hanging leg raise', meta: '3 × 10' }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'tue',
-    day: 'TUE',
-    name: 'Tuesday',
-    title: 'Upper body — <em>push</em>',
-    code: 'Day 02',
-    note: "Your one pure push day, so it spans the full range — heavy pressing up top for strength, then volume for the shoulders and chest that make you look the part. Friday's combo day adds a lighter second touch, with the real emphasis there on back and arms.",
-    sections: [
-      {
-        label: 'Warm-up',
-        time: '~5 min',
-        items: [
-          { name: 'Band pull-aparts', meta: '2 × 15' },
-          { name: 'Scapular push-ups', meta: '2 × 10' },
-          { name: 'Arm circles + shoulder dislocates', meta: '~1 min' }
-        ]
-      },
-      {
-        label: 'Main',
-        time: '~40 min',
-        items: [
-          { name: 'Bench press <span class="ex-or">or</span> DB bench', meta: '4 × 6–8' },
-          { name: 'Standing overhead press', meta: '4 × 6–8', note: 'Strict — no leg drive. Core tight.' },
-          { name: 'Incline DB press', meta: '3 × 10' },
-          { name: 'Lateral raise', meta: '4 × 12–20', note: 'Shoulder width is your biggest aesthetic lever — push the volume. Side delts, not traps.' },
-          { name: 'Dips <span class="ex-or">or</span> weighted push-ups', meta: '3 × 8–12' }
-        ]
-      },
-      {
-        label: 'Finisher',
-        time: '~8 min',
-        items: [
-          { name: 'Overhead triceps extension + pushdown', meta: '3 × 12', note: 'Superset. Direct triceps to round out the pressing.' },
-          { name: 'Med ball chest pass against wall', meta: '3 × 8', note: 'Explosive — your upper-body power touch for the week.' }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'wed',
-    day: 'WED',
-    name: 'Wednesday',
-    title: 'Upper body — <em>pull</em>',
-    code: 'Day 03',
-    note: "Pull day, and back is the headline — heavy rows and pull-ups for thickness and width. Lead the single-arm work with the left to keep the sides even. Friday's combo day gives the back its second dose of the week.",
-    sections: [
-      {
-        label: 'Warm-up',
-        time: '~5 min',
-        items: [
-          { name: 'Band pulls + cat-cow', meta: '~2 min' },
-          { name: 'Scapular pull-ups', meta: '2 × 6', note: 'Hang from the bar, just shrug down — wakes up the lats.' }
-        ]
-      },
-      {
-        label: 'Back — width & thickness',
-        time: '~45 min',
-        items: [
-          { name: 'Pull-ups', meta: '4 × 6–8', note: 'The priority lift. Add weight once you clear 8+ clean bodyweight reps.' },
-          { name: 'Barbell <span class="ex-or">or</span> DB row', meta: '4 × 8', note: 'Heavy thickness builder. Flat back, drive the elbows past the ribs.' },
-          { name: 'Single-arm DB row', meta: '3 × 10 / side', note: 'Left first; match the right to it. Evens out any side-to-side gap.' },
-          { name: 'Lat pulldown (wide grip)', meta: '3 × 12', note: 'Width. Pull the elbows down and in; let the lats do it.' },
-          { name: 'Chest-supported row', meta: '3 × 10', note: 'Strict mid-back — no momentum.' },
-          { name: 'Face pulls', meta: '3 × 15', note: 'Rear delts and shoulder health. Don\'t skip.' }
-        ]
-      },
-      {
-        label: 'Arms',
-        time: '~8 min',
-        items: [
-          { name: 'Bicep curls (any variation)', meta: '3 × 10' },
-          { name: 'Hammer curls', meta: '3 × 10' }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'thu',
-    day: 'THU',
-    name: 'Thursday',
-    title: 'Legs <em>B</em> — hips + stability',
-    code: 'Day 04',
-    note: "Leg day #2 — lighter on the spine and the nervous system than Monday so it doesn't bleed into Saturday's game, but heavy on the single-leg, posterior-chain, and glute-med work that closes your left-right gap and steadies the knee. Lead everything with the left.",
-    sections: [
-      {
-        label: 'Warm-up',
-        time: '~6 min',
-        items: [
-          { name: 'Jump rope', meta: '2 min easy' },
-          { name: 'Leg swings, walking lunges, glute bridges', meta: '1 round' },
-          { name: 'Banded lateral walks + monster walks', meta: '2 × 12 / direction', note: 'Glute med primer. Left side works as hard as the right.' }
-        ]
-      },
-      {
-        label: 'Hips & posterior',
-        time: '~30 min',
-        items: [
-          { name: 'Romanian deadlift', meta: '3 × 8', note: 'Hamstrings and glutes. Slow eccentric, hinge from the hip.' },
-          { name: 'Single-leg RDL', meta: '3 × 8 / side', note: 'Left first. Balance and posterior chain in one.' },
-          { name: 'Reverse lunge <span class="ex-or">or</span> step-up', meta: '3 × 10 / side', note: 'Left first, +1 set left. Controlled, knee tracking over the foot.' },
-          { name: 'Single-leg glute bridge', meta: '3 × 12 / side', note: 'Left first. Drive the heel, keep hips level — don\'t let the weak side dip.' }
-        ]
-      },
-      {
-        label: 'Stability & knee',
-        time: '~12 min',
-        items: [
-          { name: 'Nordic curl progression <span class="ex-or">or</span> lying leg curl', meta: '3 × 6–10', note: 'Hamstring strength is ACL and knee insurance. Progress Nordics slowly.' },
-          { name: 'Copenhagen plank', meta: '3 × 20–40 sec / side', note: 'Adductor and hip stability — the side soccer beats up most.' },
-          { name: 'Banded clamshells + lateral walks', meta: '3 × 15 / side', note: 'Glute med — the hidden link in hip stability.' },
-          { name: 'Single-leg balance hold', meta: '30 sec / side', note: 'Eyes closed on the left. Cheap, and it works the stabilizers.' }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'fri',
-    day: 'FRI',
-    name: 'Friday',
-    title: 'Push / Pull — <em>back & arms</em>',
-    code: 'Day 05',
-    note: "The combo day, weighted toward your priorities: back and arms get the volume, with just enough pressing to keep the chest and shoulders ticking over. Keep a rep or two in the tank everywhere — the game's tomorrow — and finish with the hip-and-hamstring flow so you feel loose Saturday.",
-    sections: [
-      {
-        label: 'Warm-up',
-        time: '~5 min',
-        items: [
-          { name: 'Band pulls + cat-cow', meta: '~2 min' },
-          { name: 'Scapular pull-ups', meta: '2 × 6' }
-        ]
-      },
-      {
-        label: 'Back (emphasis)',
-        time: '~25 min',
-        items: [
-          { name: 'Lat pulldown <span class="ex-or">or</span> pull-ups', meta: '4 × 10–12', note: 'Width. A touch higher rep than Wednesday so the back gets a different stimulus.' },
-          { name: 'Seated cable <span class="ex-or">or</span> chest-supported row', meta: '3 × 10–12', note: 'Thickness. Squeeze and control.' },
-          { name: 'Straight-arm pulldown', meta: '3 × 12–15', note: 'Lat isolation — pure mind-muscle. Big stretch at the top.' },
-          { name: 'Rear delt fly', meta: '3 × 15–20' },
-          { name: 'Face pulls', meta: '3 × 15' }
-        ]
-      },
-      {
-        label: 'Push (light touch)',
-        time: '~8 min',
-        items: [
-          { name: 'Incline DB press', meta: '3 × 10', note: 'Maintenance for the chest and front delts — nothing maximal.' },
-          { name: 'Lateral raise', meta: '3 × 15' }
-        ]
-      },
-      {
-        label: 'Arms',
-        time: '~12 min',
-        items: [
-          { name: 'Incline DB curl', meta: '3 × 12' },
-          { name: 'Hammer curl', meta: '3 × 12' },
-          { name: 'Overhead triceps extension', meta: '3 × 12' },
-          { name: 'Cable pushdown', meta: '3 × 12–15' }
-        ]
-      },
-      {
-        label: 'Pre-game loosener',
-        time: '~8 min',
-        items: [
-          { name: 'Downward dog → low lunge → half splits', meta: '2 rounds / side', note: 'Hips and hamstrings — what soccer asks for tomorrow.' },
-          { name: 'Pigeon pose', meta: '60 sec / side' },
-          { name: 'Reclined spinal twist', meta: '45 sec / side', note: 'Light. The job is to feel loose, not fatigued.' }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'sat',
-    day: 'SAT',
-    name: 'Saturday',
-    title: 'Game <em>day</em>',
-    code: 'Day 06',
-    note: '',
-    special: {
-      type: 'game',
-      icon: '⚽',
-      title: 'Match day.',
-      body: "Eat well, hydrate, warm up properly. Two leg days plus the game is real lower-body load, so the back half of the week is built lighter on purpose. If your legs feel cooked, the game wins — pull back Thursday before you'd ever pull back here."
-    }
-  },
-  {
-    id: 'sun',
-    day: 'SUN',
-    name: 'Sunday',
-    title: 'Restorative <em>yoga</em>',
-    code: 'Day 07',
-    note: "The day after a game your body wants gentle movement more than it wants total stillness. Twenty to thirty minutes of soft yoga, parasympathetic and breath-led — or full rest if you genuinely need it. Listen to the body.",
-    sections: [
-      {
-        label: 'Restorative flow',
-        time: '~25 min',
-        items: [
-          { name: "Child's pose", meta: '2 min', note: 'Slow nasal breathing. No effort.' },
-          { name: 'Reclined bound angle', meta: '3 min', note: 'Soles of feet together, knees fall open. Hands on belly.' },
-          { name: 'Supine pigeon (figure-4)', meta: '90 sec / side' },
-          { name: 'Happy baby', meta: '1 min' },
-          { name: 'Legs up the wall', meta: '5 min', note: 'The single best thing you can do the day after a match.' },
-          { name: 'Reclined spinal twist', meta: '1 min / side' },
-          { name: 'Savasana', meta: '3–5 min' }
-        ]
-      },
-      {
-        label: 'Alternative',
-        time: '— full rest',
-        items: [
-          { name: 'Walk + stretch + nothing else', meta: '— as needed', note: 'If the body is genuinely beat up, take it. The plan serves you.' }
-        ]
-      }
-    ]
+"use strict";
+
+/* ---------- safe storage (works on GitHub Pages / local file; degrades to memory) ---------- */
+const store = (() => {
+  let mem = {};
+  try {
+    const k="__t"; localStorage.setItem(k,"1"); localStorage.removeItem(k);
+    return {
+      get:(k)=>localStorage.getItem(k),
+      set:(k,v)=>localStorage.setItem(k,v),
+      del:(k)=>localStorage.removeItem(k)
+    };
+  } catch(e){
+    return {get:(k)=>mem[k]??null, set:(k,v)=>{mem[k]=String(v)}, del:(k)=>{delete mem[k]}};
   }
-];
+})();
 
-// RENDER
-const tabsEl = document.getElementById('tabs');
-const panelsEl = document.getElementById('panels');
-const todayIdx = ((new Date()).getDay() + 6) % 7 + 1; // Mon = 1 now that Yoga occupies 0
-
-plan.forEach((d, i) => {
-  // Tab
-  const btn = document.createElement('button');
-  const isYoga = d.id === 'yoga';
-  btn.className = 'tab' + (isYoga ? ' tab-yoga' : '') + (i === todayIdx ? ' today' : '');
-  const sub = isYoga ? '—' : String(i).padStart(2, '0');
-  btn.innerHTML = `${d.day}<span class="tab-day">${sub}</span>`;
-  btn.onclick = () => activate(i);
-  tabsEl.appendChild(btn);
-
-  // Panel
-  const panel = document.createElement('section');
-  panel.className = 'panel';
-  panel.id = `panel-${d.id}`;
-
-  let html = `
-    <div class="panel-header">
-      <p class="panel-day">${d.code} · ${d.name.toUpperCase()}</p>
-      <h2 class="panel-title">${d.title}</h2>
-      ${d.note ? `<p class="panel-note">${d.note}</p>` : ''}
-    </div>
-  `;
-
-  if (d.special) {
-    html += `
-      <div class="special ${d.special.type}">
-        <div class="special-icon">${d.special.icon}</div>
-        <h3 class="special-title">${d.special.title}</h3>
-        <p class="special-body">${d.special.body}</p>
-      </div>
-    `;
-  } else {
-    d.sections.forEach(s => {
-      html += `
-        <div class="section">
-          <div class="section-header">
-            <p class="section-label">${s.label}</p>
-            <span class="section-time">${s.time}</span>
-          </div>
-          ${s.items.map((it, idx) => `
-            <div class="ex" onclick="this.classList.toggle('done')">
-              <div class="ex-check"></div>
-              <div class="ex-body">
-                <p class="ex-name">${it.name}</p>
-                <span class="ex-meta">${it.meta}</span>
-                ${it.note ? `<p class="ex-note">${it.note}</p>` : ''}
-              </div>
-            </div>
-          `).join('')}
-        </div>
-      `;
+/* ---------- tabs ---------- */
+const tabs = document.querySelectorAll('nav.tabs button');
+const panels = {today:'panel-today', train:'panel-train', yoga:'panel-yoga', nutri:'panel-nutri'};
+tabs.forEach(t=>{
+  t.addEventListener('click',()=>{
+    tabs.forEach(x=>x.setAttribute('aria-selected','false'));
+    t.setAttribute('aria-selected','true');
+    Object.values(panels).forEach(id=>{
+      const p=document.getElementById(id); p.classList.remove('active'); p.hidden=true;
     });
-  }
-
-  panel.innerHTML = html;
-  panelsEl.appendChild(panel);
+    const key=t.id.replace('tab-','');
+    const p=document.getElementById(panels[key]); p.classList.add('active'); p.hidden=false;
+  });
 });
 
-function activate(i) {
-  document.querySelectorAll('.tab').forEach((t, idx) => t.classList.toggle('active', idx === i));
-  document.querySelectorAll('.panel').forEach((p, idx) => p.classList.toggle('active', idx === i));
+/* ===================== SCHEDULE ===================== */
+const KIND_LABEL = {focus:"Focus",pause:"Pause",fuel:"Fuel",move:"Train",recover:"Recover",sleep:"Sleep"};
+const DEFAULT_DAY = [
+  {s:"06:00",e:"06:15",t:"Wake + hydrate",k:"recover"},
+  {s:"06:15",e:"07:45",t:"Train (gym)",k:"move"},
+  {s:"07:45",e:"09:00",t:"Shower + breakfast",k:"fuel"},
+  {s:"09:00",e:"11:00",t:"Deep work — block 1",k:"focus"},
+  {s:"11:00",e:"11:15",t:"Break + walk",k:"pause"},
+  {s:"11:15",e:"12:45",t:"Work — block 2",k:"focus"},
+  {s:"12:45",e:"13:15",t:"Lunch",k:"fuel"},
+  {s:"13:15",e:"15:00",t:"Work — block 3",k:"focus"},
+  {s:"15:00",e:"15:15",t:"Break + stretch",k:"pause"},
+  {s:"15:15",e:"17:00",t:"Work — block 4",k:"focus"},
+  {s:"17:00",e:"18:30",t:"Free / afternoon",k:"pause"},
+  {s:"18:30",e:"19:30",t:"Dinner",k:"fuel"},
+  {s:"19:30",e:"21:30",t:"Free time",k:"pause"},
+  {s:"21:30",e:"22:00",t:"Wind-down (no screens)",k:"recover"},
+  {s:"22:00",e:"06:00",t:"Sleep",k:"sleep"}
+];
+
+let day = loadDay();
+function loadDay(){
+  const raw = store.get('dailyos.day');
+  if(raw){ try{ const d=JSON.parse(raw); if(Array.isArray(d)&&d.length) return d; }catch(e){} }
+  return DEFAULT_DAY.map(b=>({...b}));
+}
+function saveDay(){ store.set('dailyos.day', JSON.stringify(day)); }
+
+function toMin(hhmm){ const [h,m]=hhmm.split(':').map(Number); return h*60+m; }
+function fmt(hhmm){
+  const [h,m]=hhmm.split(':').map(Number);
+  const am = h<12; let hr = h%12; if(hr===0) hr=12;
+  return hr+':'+String(m).padStart(2,'0')+(am?' am':' pm');
+}
+function durMin(s,e){ let d=toMin(e)-toMin(s); if(d<=0) d+=24*60; return d; }
+function durLabel(d){ const h=Math.floor(d/60),m=d%60; return (h?h+'h':'')+(m?(h?' ':'')+m+'m':(h?'':'0m')); }
+
+const dayList = document.getElementById('dayList');
+function renderDay(){
+  day.sort((a,b)=>toMin(a.s)-toMin(b.s));
+  dayList.innerHTML='';
+  const nowM = nowMinutes();
+  day.forEach((b,i)=>{
+    const el=document.createElement('div');
+    el.className='block'; el.dataset.kind=b.k; el.tabIndex=0;
+    el.setAttribute('role','button');
+    const isNow = inBlock(nowM,b);
+    if(isNow) el.classList.add('is-now');
+    el.innerHTML =
+      '<div class="time">'+fmt(b.s)+'<div class="end">→ '+fmt(b.e)+'</div></div>'+
+      '<div class="body"><div class="title">'+escapeHtml(b.t)+(isNow?'<span class="nowtag">NOW</span>':'')+'</div>'+
+      '<div class="kind">'+KIND_LABEL[b.k]+'</div></div>'+
+      '<div class="dur mono">'+durLabel(durMin(b.s,b.e))+'</div>';
+    el.addEventListener('click',()=>openEditor(i));
+    el.addEventListener('keydown',ev=>{ if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();openEditor(i);} });
+    dayList.appendChild(el);
+  });
+}
+function escapeHtml(s){ return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+/* ---- "now" logic (handles overnight sleep wrap) ---- */
+function nowMinutes(){ const d=new Date(); return d.getHours()*60+d.getMinutes(); }
+function inBlock(m,b){
+  const s=toMin(b.s),e=toMin(b.e);
+  if(e>s) return m>=s && m<e;
+  return m>=s || m<e; // wraps midnight
+}
+function blockProgress(m,b){
+  const s=toMin(b.s); let len=durMin(b.s,b.e);
+  let into = m-s; if(into<0) into+=24*60;
+  return Math.max(0,Math.min(1,into/len));
 }
 
-function resetAll() {
-  document.querySelectorAll('.ex.done').forEach(e => e.classList.remove('done'));
+const nowTitle=document.getElementById('nowTitle');
+const nowMeta=document.getElementById('nowMeta');
+const nowBar=document.getElementById('nowBar');
+const nowClock=document.getElementById('nowClock');
+const nowDate=document.getElementById('nowDate');
+const nextTime=document.getElementById('nextTime');
+const nextTitle=document.getElementById('nextTitle');
+const nowCard=document.getElementById('nowCard');
+
+function renderNow(){
+  const d=new Date();
+  const m=nowMinutes();
+  nowClock.textContent = String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+  nowDate.textContent = d.toLocaleDateString(undefined,{weekday:'long',month:'short',day:'numeric'});
+
+  const sorted=[...day].sort((a,b)=>toMin(a.s)-toMin(b.s));
+  const cur = sorted.find(b=>inBlock(m,b));
+  if(cur){
+    nowTitle.textContent = cur.t;
+    const remain = Math.round((1-blockProgress(m,cur))*durMin(cur.s,cur.e));
+    nowMeta.innerHTML = KIND_LABEL[cur.k]+' · ends <b>'+fmt(cur.e)+'</b> · '+durLabel(remain)+' left';
+    nowBar.style.width = Math.round(blockProgress(m,cur)*100)+'%';
+    nowBar.style.background = getComputedStyle(document.documentElement).getPropertyValue('--'+(cur.k==='sleep'?'recover':cur.k)).trim();
+  } else {
+    nowTitle.textContent='Open time';
+    nowMeta.innerHTML='Nothing scheduled right now';
+    nowBar.style.width='0%';
+  }
+  // next block by start time after now
+  let nxt = sorted.find(b=>toMin(b.s)>m);
+  if(!nxt) nxt = sorted[0];
+  if(nxt){ nextTime.textContent=fmt(nxt.s); nextTitle.textContent=nxt.t; }
 }
 
-// Activate today by default
-activate(todayIdx);
+/* ---- editor ---- */
+const editor=document.getElementById('editor');
+const fStart=document.getElementById('fStart'), fEnd=document.getElementById('fEnd');
+const fName=document.getElementById('fName'), fKind=document.getElementById('fKind');
+const editorTitle=document.getElementById('editorTitle');
+let editIndex=-1;
+
+function openEditor(i){
+  editIndex=i;
+  if(i>=0){
+    const b=day[i];
+    editorTitle.textContent='Edit block';
+    fStart.value=b.s; fEnd.value=b.e; fName.value=b.t; fKind.value=b.k;
+    document.getElementById('deleteBlock').style.display='';
+  } else {
+    editorTitle.textContent='Add block';
+    fStart.value='12:00'; fEnd.value='13:00'; fName.value=''; fKind.value='focus';
+    document.getElementById('deleteBlock').style.display='none';
+  }
+  if(typeof editor.showModal==='function') editor.showModal();
+}
+document.getElementById('editorForm').addEventListener('submit',e=>{
+  const obj={s:fStart.value,e:fEnd.value,t:fName.value.trim()||'Untitled',k:fKind.value};
+  if(editIndex>=0) day[editIndex]=obj; else day.push(obj);
+  saveDay(); renderDay(); renderNow();
+});
+document.getElementById('cancelEdit').addEventListener('click',()=>editor.close());
+document.getElementById('deleteBlock').addEventListener('click',()=>{
+  if(editIndex>=0){ day.splice(editIndex,1); saveDay(); renderDay(); renderNow(); }
+  editor.close();
+});
+document.getElementById('addBlock').addEventListener('click',()=>openEditor(-1));
+document.getElementById('resetDay').addEventListener('click',()=>{
+  if(confirm('Reset today back to the default schedule? Your edits will be cleared.')){
+    day=DEFAULT_DAY.map(b=>({...b})); saveDay(); renderDay(); renderNow();
+  }
+});
+
+/* ===================== TRAINING ===================== */
+const WEEK = [
+  {d:"Mon",focus:"move",name:"Lower A",sub:"Posterior chain & hinge"},
+  {d:"Tue",focus:"move",name:"Upper Push",sub:"Press strength"},
+  {d:"Wed",focus:"recover",name:"Recovery",sub:"Light yoga at home"},
+  {d:"Thu",focus:"move",name:"Lower B",sub:"Quad & single-leg stability"},
+  {d:"Fri",focus:"move",name:"Upper Pull",sub:"Back & posture"},
+  {d:"Sat",focus:"move",name:"Soccer",sub:"Match day"},
+  {d:"Sun",focus:"recover",name:"Rest",sub:"Rest & mobility"}
+];
+const WORKOUTS = {
+  0:{title:"Lower A",focus:"Posterior chain & hinge",groups:[
+    {g:"Warm-up",items:[
+      {n:"Bike, easy",s:"5 min",d:"raise temperature, no fatigue"},
+      {n:"Banded terminal knee extension",s:"2 × 15",knee:true,d:"wake up the quad / VMO at end range"},
+      {n:"Glute bridge + hip airplanes",s:"2 × 10",d:"glutes online, hip control"}
+    ]},
+    {g:"Main",items:[
+      {n:"Trap-bar deadlift",s:"4 × 5",d:"hinge-dominant, knee-friendly loading"},
+      {n:"Romanian deadlift",s:"3 × 8",d:"3s eccentric, feel the hamstrings"},
+      {n:"Barbell hip thrust",s:"3 × 10",d:"full lockout, pause at top"}
+    ]},
+    {g:"Single-leg & accessories",items:[
+      {n:"Bulgarian split squat",s:"3 × 8 / leg",knee:true,d:"left leg leads and sets the reps; controlled, moderate depth"},
+      {n:"Lying hamstring curl",s:"3 × 12",d:""},
+      {n:"Standing calf raise",s:"3 × 15",d:"full stretch at bottom"}
+    ]},
+    {g:"Core",items:[
+      {n:"Hanging knee raise",s:"3 × 12",d:"no swinging"}
+    ]}
+  ]},
+  1:{title:"Upper Push",focus:"Press strength",groups:[
+    {g:"Warm-up",items:[
+      {n:"Band pull-aparts",s:"2 × 20",d:""},
+      {n:"Shoulder dislocates + scap push-ups",s:"2 × 10",d:"open the shoulders, prime the scaps"}
+    ]},
+    {g:"Main",items:[
+      {n:"Barbell bench press",s:"4 × 5",d:"controlled, full lockout"},
+      {n:"Standing overhead press",s:"3 × 6",d:"ribs down, glutes tight"},
+      {n:"Incline dumbbell press",s:"3 × 10",d:""}
+    ]},
+    {g:"Accessories",items:[
+      {n:"Weighted dip or close-grip bench",s:"3 × 8",d:""},
+      {n:"Lateral raise",s:"3 × 15",d:"slow, no momentum"},
+      {n:"Triceps pushdown",s:"3 × 12",d:""}
+    ]},
+    {g:"Core",items:[
+      {n:"Ab wheel or cable crunch",s:"3 × 12",d:""}
+    ]}
+  ]},
+  3:{title:"Lower B",focus:"Quad & single-leg stability",groups:[
+    {g:"Warm-up",items:[
+      {n:"Bike, easy",s:"5 min",d:""},
+      {n:"Banded terminal knee extension",s:"2 × 15",knee:true,d:"VMO activation before loading"},
+      {n:"Single-leg balance hold",s:"3 × 30s / leg",knee:true,d:"eyes open → eyes closed to progress proprioception"}
+    ]},
+    {g:"Main",items:[
+      {n:"Front squat or safety-bar squat",s:"4 × 6",knee:true,d:"controlled 3s down; depth to comfort; keep 2 reps in reserve — the match is Saturday"},
+      {n:"Leg press",s:"3 × 10",d:"controlled tempo; don't crash into deep flexion"}
+    ]},
+    {g:"Single-leg & rehab",items:[
+      {n:"Reverse lunge",s:"3 × 8 / leg",knee:true,d:"easier on the knee than forward lunges; left leg leads"},
+      {n:"Box step-up (below knee height)",s:"3 × 8 / leg",knee:true,d:"drive through the heel, control the way down"},
+      {n:"Leg extension — top range / TKE",s:"3 × 15",knee:true,d:"partial top-range reps for the VMO; no pain"}
+    ]},
+    {g:"Hip stability & calves",items:[
+      {n:"Copenhagen plank",s:"3 × 20s / side",d:"adductor & hip control"},
+      {n:"Seated calf raise",s:"3 × 15",d:""}
+    ]}
+  ]},
+  4:{title:"Upper Pull",focus:"Back & posture",groups:[
+    {g:"Warm-up",items:[
+      {n:"Band pull-aparts",s:"2 × 20",d:""},
+      {n:"Scap pull-ups",s:"2 × 10",d:"set the shoulder blades before pulling"}
+    ]},
+    {g:"Main",items:[
+      {n:"Weighted pull-up or lat pulldown",s:"4 × 6",d:""},
+      {n:"Barbell or chest-supported row",s:"4 × 8",d:"squeeze, no jerking"}
+    ]},
+    {g:"Accessories",items:[
+      {n:"Single-arm dumbbell row",s:"3 × 10",d:""},
+      {n:"Face pull",s:"3 × 15",d:"posture & rear delts — do these religiously"},
+      {n:"Rear-delt fly",s:"3 × 15",d:""},
+      {n:"Barbell or dumbbell curl",s:"3 × 10",d:""}
+    ]},
+    {g:"Core",items:[
+      {n:"Side plank",s:"3 × 30s / side",d:""}
+    ]}
+  ]}
+};
+const RECOVERY_DAYS = {
+  2:{title:"Recovery",lines:[
+    "Light yoga at home — run the <b>Daily reset</b> or, if you've got the energy, the <b>Stability flow</b> on the Yoga tab.",
+    "Optional easy 20–30 min walk. Nothing that leaves you tired.",
+    "This is a real day for your joints and tissue, not a write-off — and it sits mid-week so you're fresh for Thursday."
+  ]},
+  6:{title:"Rest & mobility",lines:[
+    "Recover from yesterday's match. Rest comes first; mobility is optional and gentle.",
+    "If the knee feels good: <b>Evening restorative</b> or <b>Daily reset</b> flow plus an easy walk.",
+    "If the knee is swollen or sore from cutting and sprinting: keep it fully easy — legs up, ice, sleep. Protect the 22:00 bedtime."
+  ]}
+};
+const SOCCER_DAY = {title:"Match day",focus:"Soccer",lines:[
+  "<b>Before you play:</b> don't walk into cuts cold. Ten minutes of dynamic warm-up plus your banded terminal knee extensions and a minute of single-leg balance to switch the knee on.",
+  "<b>The match is your conditioning</b> for the week — all the sprinting and change of direction means you don't need separate cardio.",
+  "<b>After:</b> easy walk to flush the legs, then the Evening restorative flow tonight. If the knee's puffy, elevate and ice.",
+  "This is your highest knee-demand day — decelerating and cutting are exactly what a rebuilt knee finds hardest, so listen to it and never play through sharp pain. How it feels Sunday morning tells you how hard you can push next week."
+]};
+
+const weekStrip=document.getElementById('weekStrip');
+const workoutHost=document.getElementById('workoutHost');
+let selectedDay = (new Date().getDay()+6)%7; // Mon=0 … Sun=6
+
+function renderWeekStrip(){
+  weekStrip.innerHTML='';
+  const todayIdx=(new Date().getDay()+6)%7;
+  WEEK.forEach((w,i)=>{
+    const b=document.createElement('button');
+    b.dataset.focus=w.focus;
+    b.setAttribute('aria-selected', i===selectedDay ? 'true':'false');
+    if(i===todayIdx) b.classList.add('today');
+    b.innerHTML='<span class="wd">'+w.d+'</span><span class="wf">'+w.name+'</span>';
+    b.addEventListener('click',()=>{ selectedDay=i; renderWeekStrip(); renderWorkout(); });
+    weekStrip.appendChild(b);
+  });
+}
+function renderWorkout(){
+  const w=WORKOUTS[selectedDay];
+  if(w){
+    let html='<div class="workout"><div class="whead"><h3>'+WEEK[selectedDay].name+'</h3><span class="focus">'+w.focus+'</span></div>';
+    w.groups.forEach(grp=>{
+      html+='<div class="grp"><div class="gtitle">'+grp.g+'</div>';
+      grp.items.forEach(it=>{
+        html+='<div class="ex'+(it.knee?' knee':'')+'"><div class="name">'+it.n+(it.d?'<small>'+it.d+'</small>':'')+'</div><div class="sets">'+it.s+'</div></div>';
+      });
+      html+='</div>';
+    });
+    html+='</div>';
+    workoutHost.innerHTML=html;
+  } else if(selectedDay===5){
+    let html='<div class="gameday"><h3>'+SOCCER_DAY.title+'</h3>';
+    SOCCER_DAY.lines.forEach(l=>html+='<p style="margin:0 0 10px;color:var(--ink-soft)">'+l+'</p>');
+    html+='</div>';
+    workoutHost.innerHTML=html;
+  } else {
+    const r=RECOVERY_DAYS[selectedDay];
+    let html='<div class="restday"><h3>'+r.title+'</h3>';
+    r.lines.forEach(l=>html+='<p style="margin:0 0 8px;color:var(--ink-soft)">'+l+'</p>');
+    html+='</div>';
+    workoutHost.innerHTML=html;
+  }
+}
+
+/* ===================== YOGA FLOWS ===================== */
+const FLOW_DAILY=[
+  {n:"Cat–cow",h:"8 rounds",d:"warm the spine, sync with breath"},
+  {n:"Downward dog",h:"5 breaths",d:"pedal the heels to wake up calves & hamstrings"},
+  {n:"Low lunge (knee padded)",h:"5 / side",d:"pad the back knee; shorten the stance if it pinches"},
+  {n:"Half split",h:"5 / side",d:"hamstring length, gentle"},
+  {n:"Figure-four (supine)",h:"6 / side",d:"hip opening with zero knee load"},
+  {n:"Supine spinal twist",h:"6 / side",d:"decompress the lower back"},
+  {n:"Legs-up-the-wall",h:"2 min",d:"reset and breathe"}
+];
+const FLOW_STABILITY=[
+  {n:"Sun salutation A",h:"3 rounds",d:"build heat"},
+  {n:"Chair pose",h:"5 breaths",d:"watch knees track over toes; don't cave inward"},
+  {n:"Warrior II",h:"5 / side",d:"front knee over ankle, strong base"},
+  {n:"High lunge",h:"5 / side",d:"shorten if the front knee complains"},
+  {n:"Tree pose",h:"5 / side",d:"the balance work your knee needs most"},
+  {n:"Bridge",h:"8 reps + 30s hold",d:"posterior chain without deep knee flexion"},
+  {n:"Locust",h:"3 × 5 breaths",d:"back & glute activation"},
+  {n:"Supine pigeon / figure-four",h:"6 / side",d:"open the hips back up"},
+  {n:"Savasana",h:"3 min",d:"let it settle"}
+];
+const FLOW_RESTORE=[
+  {n:"Legs-up-the-wall",h:"4 min",d:"great for a swollen or tired knee"},
+  {n:"Reclined bound angle (knees supported)",h:"3 min",d:"block or pillow under each knee"},
+  {n:"Supine twist",h:"2 / side",d:"slow, passive"},
+  {n:"Child's pose (knees wide, padded)",h:"2 min",d:"sit back only as far as comfortable"},
+  {n:"Box breathing",h:"2 min",d:"4 in · 4 hold · 4 out · 4 hold"}
+];
+function renderFlow(hostId,arr){
+  const host=document.getElementById(hostId);
+  host.innerHTML='';
+  arr.forEach((p,i)=>{
+    const el=document.createElement('div');
+    el.className='pose';
+    el.innerHTML='<div class="num mono">'+String(i+1).padStart(2,'0')+'</div>'+
+      '<div class="pn"><b>'+p.n+'</b>'+(p.d?'<small>'+p.d+'</small>':'')+'</div>'+
+      '<div class="hold mono">'+p.h+'</div>';
+    host.appendChild(el);
+  });
+}
+
+/* ===================== NUTRITION ===================== */
+const $=id=>document.getElementById(id);
+const MEAL_KEYS=['breakfast','lunch','dinner','snacks'];
+const MEAL_LABELS={breakfast:'Breakfast',lunch:'Lunch',dinner:'Dinner',snacks:'Snacks'};
+const DEFAULT_TARGETS={kcal:2200,protein:160,split:{breakfast:25,lunch:30,dinner:30,snacks:15}};
+const RECIPES=[
+  {tag:'Post-gym',name:'Berry protein yogurt bowl',desc:'Greek yogurt, mixed berries, granola, chia and a drizzle of honey. Five minutes, no cooking — ideal straight off a morning session.',kcal:380,protein:30,meal:'breakfast'},
+  {tag:'Breakfast',name:'Cottage cheese & egg scramble',desc:'Soft eggs folded with cottage cheese on wholegrain toast with chili flakes. Big protein hit to open the day.',kcal:400,protein:30,meal:'breakfast'},
+  {tag:'Lunch',name:'Tofu & black bean burrito bowl',desc:'Baked tofu, black beans, rice, corn, salsa and avocado. Batch the tofu and beans on Sunday and it builds in minutes.',kcal:520,protein:28,meal:'lunch'},
+  {tag:'Lunch',name:'Chickpea & halloumi salad',desc:'Pan-seared halloumi over chickpeas, cucumber and tomato with a lemon-tahini dressing.',kcal:450,protein:24,meal:'lunch'},
+  {tag:'Dinner',name:'Red lentil & paneer dal',desc:'Red lentils simmered with spinach and tomato, paneer stirred through, over rice. Swap paneer for tofu to go vegan.',kcal:480,protein:26,meal:'dinner'},
+  {tag:'Dinner',name:'Tempeh & edamame stir-fry',desc:'Tempeh, edamame and greens in a ginger-soy glaze over noodles or rice — the highest-protein plate here.',kcal:510,protein:32,meal:'dinner'}
+];
+
+function todayStr(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function loadTargets(){const r=store.get('nutri.targets');if(r){try{const t=JSON.parse(r);if(t&&t.split)return t;}catch(e){}}return JSON.parse(JSON.stringify(DEFAULT_TARGETS));}
+function saveTargets(){store.set('nutri.targets',JSON.stringify(targets));}
+function loadLog(){const r=store.get('nutri.log');if(r){try{const l=JSON.parse(r);if(l&&l.date===todayStr()&&Array.isArray(l.items))return l;}catch(e){}}return {date:todayStr(),items:[]};}
+function saveLog(){store.set('nutri.log',JSON.stringify(log));}
+function ensureToday(){if(log.date!==todayStr()){log={date:todayStr(),items:[]};saveLog();}}
+let targets=loadTargets(), log=loadLog();
+
+function sumLog(){let k=0,p=0;log.items.forEach(i=>{k+=Number(i.kcal)||0;p+=Number(i.protein)||0;});return{k,p};}
+function mealSum(m){let k=0,p=0;log.items.forEach(i=>{if(i.meal===m){k+=Number(i.kcal)||0;p+=Number(i.protein)||0;}});return{k,p};}
+
+function renderFuel(){
+  ensureToday();
+  $('nutriDate').textContent=new Date().toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});
+  const {k,p}=sumLog();
+  $('kcalNow').textContent=Math.round(k); $('kcalTgt').textContent=targets.kcal;
+  $('protNow').textContent=Math.round(p); $('protTgt').textContent=targets.protein;
+  $('kcalBar').style.width=Math.min(100,targets.kcal?k/targets.kcal*100:0)+'%';
+  $('protBar').style.width=Math.min(100,targets.protein?p/targets.protein*100:0)+'%';
+  const kr=targets.kcal-k, pr=targets.protein-p;
+  $('kcalRem').textContent=kr>=0?Math.round(kr)+' kcal left':Math.round(-kr)+' kcal over';
+  $('protRem').textContent=pr>=0?Math.round(pr)+' g to go':Math.round(-pr)+' g over';
+}
+
+function renderMeals(){
+  ensureToday();
+  const host=$('mealHost'); host.innerHTML='';
+  MEAL_KEYS.forEach(m=>{
+    const pct=targets.split[m]||0;
+    const bk=Math.round(targets.kcal*pct/100), bp=Math.round(targets.protein*pct/100);
+    const s=mealSum(m);
+    const card=document.createElement('div'); card.className='mealcard';
+    let inner='<div class="mh"><span class="mn">'+MEAL_LABELS[m]+'</span><span class="mb"><b>'+Math.round(s.k)+'</b>/'+bk+' kcal · <b>'+Math.round(s.p)+'</b>/'+bp+'g</span></div>';
+    const items=log.items.map((it,idx)=>({it,idx})).filter(o=>o.it.meal===m);
+    if(items.length){
+      inner+='<div class="mentries">';
+      items.forEach(o=>{ inner+='<div class="nentry" data-idx="'+o.idx+'"><span class="nn">'+escapeHtml(o.it.name)+'</span><span class="nk">'+Math.round(o.it.kcal||0)+' kcal · <span class="p">'+Math.round(o.it.protein||0)+'g</span></span></div>'; });
+      inner+='</div>';
+    } else {
+      inner+='<div class="mentries"><div class="empty">Nothing logged yet</div></div>';
+    }
+    inner+='<button class="madd" data-meal="'+m+'">+ Add food</button>';
+    card.innerHTML=inner; host.appendChild(card);
+  });
+  host.querySelectorAll('.nentry').forEach(el=>el.addEventListener('click',()=>openNutri(Number(el.dataset.idx))));
+  host.querySelectorAll('.madd').forEach(el=>el.addEventListener('click',()=>openNutri(-1,{meal:el.dataset.meal})));
+}
+
+function renderRecipes(){
+  const host=$('recipeHost'); host.innerHTML='';
+  RECIPES.forEach(r=>{
+    const c=document.createElement('div'); c.className='recipe';
+    c.innerHTML='<div class="rtag">'+r.tag+'</div><h4>'+r.name+'</h4><p>'+r.desc+'</p>'+
+      '<div class="rmac">'+r.kcal+' kcal · <span class="p">'+r.protein+'g protein</span></div>'+
+      '<button class="btn">Add to log</button>';
+    c.querySelector('button').addEventListener('click',()=>openNutri(-1,{meal:r.meal,name:r.name,kcal:r.kcal,protein:r.protein}));
+    host.appendChild(c);
+  });
+}
+
+function renderTargetsForm(){
+  $('tgtKcal').value=targets.kcal; $('tgtProt').value=targets.protein;
+  $('spB').value=targets.split.breakfast; $('spL').value=targets.split.lunch;
+  $('spD').value=targets.split.dinner; $('spS').value=targets.split.snacks;
+}
+
+$('saveTargets').addEventListener('click',()=>{
+  targets.kcal=Math.max(0,Number($('tgtKcal').value)||0);
+  targets.protein=Math.max(0,Number($('tgtProt').value)||0);
+  targets.split={breakfast:Number($('spB').value)||0,lunch:Number($('spL').value)||0,dinner:Number($('spD').value)||0,snacks:Number($('spS').value)||0};
+  saveTargets(); renderFuel(); renderMeals();
+  const tot=targets.split.breakfast+targets.split.lunch+targets.split.dinner+targets.split.snacks;
+  $('saveTargets').textContent= tot===100 ? 'Saved \u2713' : 'Saved · splits = '+tot+'%';
+  setTimeout(()=>{$('saveTargets').textContent='Save targets';},2200);
+});
+
+$('calcEstimate').addEventListener('click',()=>{
+  const sex=$('eSex').value, age=Number($('eAge').value)||0, lb=Number($('eWt').value)||0;
+  const ft=Number($('eFt').value)||0, inch=Number($('eIn').value)||0;
+  const act=Number($('eAct').value), goal=Number($('eGoal').value);
+  const out=$('estimateOut'); out.className='estimate show';
+  if(!age||!lb||!(ft||inch)){ out.innerHTML='Add your age, weight and height to get an estimate.'; return; }
+  const kg=lb/2.2046, cm=(ft*12+inch)*2.54;
+  const bmr=10*kg+6.25*cm-5*age+(sex==='male'?5:-161);
+  const tdee=bmr*act;
+  const kcal=Math.round(tdee*goal/10)*10;
+  const prot=Math.round(kg*1.8/5)*5;
+  const goalWord = goal<1 ? 'leaning down gently' : goal>1 ? 'building muscle' : 'maintaining and performing';
+  out.innerHTML='Maintenance is roughly <b>'+(Math.round(tdee/10)*10)+' kcal</b>. For '+goalWord+', aim for about <b>'+kcal+' kcal</b> and <b>'+prot+' g protein</b> a day.'+
+    '<div style="margin-top:11px"><button class="btn primary" id="useEstimate">Use these targets</button></div>';
+  $('useEstimate').addEventListener('click',()=>{
+    targets.kcal=kcal; targets.protein=prot; saveTargets(); renderTargetsForm(); renderFuel(); renderMeals();
+    out.innerHTML+='<div style="margin-top:9px;font-size:12px;color:var(--ink-faint)">Applied to your targets — tweak anytime above.</div>';
+  });
+});
+
+const nDlg=$('nentryDialog'); let nEdit=-1;
+function openNutri(idx,prefill){
+  nEdit=idx;
+  if(idx>=0){
+    const it=log.items[idx];
+    $('nentryTitle').textContent='Edit food';
+    $('nMeal').value=it.meal; $('nName').value=it.name; $('nKcal').value=it.kcal; $('nProt').value=it.protein;
+    $('nDelete').style.display='';
+  } else {
+    const pf=prefill||{};
+    $('nentryTitle').textContent='Add food';
+    $('nMeal').value=pf.meal||'snacks'; $('nName').value=pf.name||'';
+    $('nKcal').value=(pf.kcal!=null?pf.kcal:''); $('nProt').value=(pf.protein!=null?pf.protein:'');
+    $('nDelete').style.display='none';
+  }
+  if(typeof nDlg.showModal==='function') nDlg.showModal();
+}
+$('nentryForm').addEventListener('submit',()=>{
+  const obj={meal:$('nMeal').value,name:$('nName').value.trim()||'Food',kcal:Math.max(0,Number($('nKcal').value)||0),protein:Math.max(0,Number($('nProt').value)||0)};
+  if(nEdit>=0) log.items[nEdit]=obj; else log.items.push(obj);
+  saveLog(); renderFuel(); renderMeals();
+});
+$('nCancel').addEventListener('click',()=>nDlg.close());
+$('nDelete').addEventListener('click',()=>{ if(nEdit>=0){ log.items.splice(nEdit,1); saveLog(); renderFuel(); renderMeals(); } nDlg.close(); });
+
+/* ---------- init ---------- */
+renderDay(); renderNow();
+renderWeekStrip(); renderWorkout();
+renderFlow('flowDaily',FLOW_DAILY);
+renderFlow('flowStability',FLOW_STABILITY);
+renderFlow('flowRestore',FLOW_RESTORE);
+renderTargetsForm(); renderFuel(); renderMeals(); renderRecipes();
+setInterval(()=>{ renderNow(); renderDay(); }, 30000);
 </script>
-
 </body>
 </html>
