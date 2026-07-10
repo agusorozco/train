@@ -1,0 +1,107 @@
+// Daily OS — Now widget
+// Shows the current schedule block and what's next, pulled from schedule.json.
+//
+// SETUP: change the line below to your actual GitHub Pages URL.
+const SCHEDULE_URL = "https://YOURUSERNAME.github.io/YOURREPO/schedule.json";
+
+const KIND_LABEL = {focus:"Focus",pause:"Pause",fuel:"Fuel",move:"Train",recover:"Recover",sleep:"Sleep",steps:"Walk/Run"};
+const KIND_COLOR  = {focus:"3A3F47",pause:"9AA0A6",fuel:"B07A2E",move:"D4502E",recover:"3B6E6A",sleep:"22343A",steps:"3E6B96"};
+
+function toMin(hhmm){ const [h,m]=hhmm.split(":").map(Number); return h*60+m; }
+function durMin(s,e){ let d=toMin(e)-toMin(s); if(d<=0) d+=24*60; return d; }
+function inBlock(m,b){
+  const s=toMin(b.s), e=toMin(b.e);
+  if(e>s) return m>=s && m<e;
+  return m>=s || m<e; // wraps midnight
+}
+function fmt(hhmm){
+  const [h,m]=hhmm.split(":").map(Number);
+  const am=h<12; let hr=h%12; if(hr===0) hr=12;
+  return hr+":"+String(m).padStart(2,"0")+(am?"a":"p");
+}
+
+async function loadSchedule(){
+  const req = new Request(SCHEDULE_URL);
+  req.timeoutInterval = 10;
+  return await req.loadJSON();
+}
+
+async function build(){
+  let cur = null, nxt = null, errorMsg = null;
+  try{
+    const week = await loadSchedule();
+    const now = new Date();
+    const dayIdx = (now.getDay()+6)%7; // Mon=0 ... Sun=6
+    const nowMin = now.getHours()*60+now.getMinutes();
+    const blocks = [...(week[String(dayIdx)]||[])].sort((a,b)=>toMin(a.s)-toMin(b.s));
+    cur = blocks.find(b=>inBlock(nowMin,b)) || null;
+    nxt = blocks.find(b=>toMin(b.s)>nowMin) || blocks[0] || null;
+  } catch(e){
+    errorMsg = "Couldn't load schedule";
+  }
+
+  const w = new ListWidget();
+  w.backgroundColor = new Color("#16181C");
+  w.setPadding(14,14,14,14);
+
+  if(errorMsg){
+    const t = w.addText(errorMsg);
+    t.font = Font.mediumSystemFont(13);
+    t.textColor = new Color("#8A9099");
+    return w;
+  }
+
+  const eyebrow = w.addText("NOW");
+  eyebrow.font = Font.mediumSystemFont(10);
+  eyebrow.textColor = new Color("#9AA39E");
+  w.addSpacer(4);
+
+  if(cur){
+    const accent = w.addText("●");
+    accent.font = Font.systemFont(10);
+    accent.textColor = new Color("#"+(KIND_COLOR[cur.k]||"9AA0A6"));
+
+    const title = w.addText(cur.t);
+    title.font = Font.boldSystemFont(16);
+    title.textColor = Color.white();
+    title.minimumScaleFactor = 0.7;
+
+    w.addSpacer(3);
+    const remain = Math.round((1 - (nowMinutesInto(cur)/durMin(cur.s,cur.e))) * durMin(cur.s,cur.e));
+    const meta = w.addText(KIND_LABEL[cur.k]+" · ends "+fmt(cur.e));
+    meta.font = Font.regularSystemFont(11);
+    meta.textColor = new Color("#B9BEB7");
+  } else {
+    const title = w.addText("Open time");
+    title.font = Font.boldSystemFont(16);
+    title.textColor = Color.white();
+  }
+
+  w.addSpacer(10);
+
+  if(nxt){
+    const nl = w.addText("NEXT  "+fmt(nxt.s)+"  ·  "+nxt.t);
+    nl.font = Font.regularSystemFont(11);
+    nl.textColor = new Color("#8A9099");
+    nl.minimumScaleFactor = 0.7;
+  }
+
+  w.refreshAfterDate = new Date(Date.now() + 15*60*1000);
+  return w;
+}
+
+function nowMinutesInto(b){
+  const now = new Date();
+  const nowMin = now.getHours()*60+now.getMinutes();
+  let into = nowMin - toMin(b.s);
+  if(into < 0) into += 24*60;
+  return into;
+}
+
+const widget = await build();
+if(config.runsInWidget){
+  Script.setWidget(widget);
+} else {
+  await widget.presentSmall();
+}
+Script.complete();
