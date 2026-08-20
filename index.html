@@ -6,358 +6,379 @@
 <title>Daily Operating System</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#16181C;
-    --ink-soft:#454A52;
-    --ink-faint:#8A9099;
-    --base:#E6E7E2;
-    --surface:#FCFCFA;
-    --line:#D7D8D2;
-    --line-strong:#C4C6BE;
-    /* color encodes meaning */
-    --move:#D4502E;      /* strength / effort / gym */
-    --move-wash:#F7E4DD;
-    --recover:#3B6E6A;   /* recovery / mobility / knee+stability */
-    --recover-wash:#DCE8E6;
-    --fuel:#B07A2E;      /* meals / fuel */
-    --fuel-wash:#F1E7D4;
-    --focus:#3A3F47;     /* deep work */
-    --focus-wash:#E2E3E0;
-    --pause:#9AA0A6;     /* short breaks */
-    --sleep:#22343A;     /* sleep */
-    --steps:#3E6B96;     /* walking / running / cardio */
-    --steps-wash:#DCE7EF;
-    --radius:14px;
-    --shadow:0 1px 2px rgba(20,22,26,.05), 0 8px 24px rgba(20,22,26,.06);
+    --ink:#F5F5F7;
+    --ink-soft:#A1A1A6;
+    --ink-faint:#6E6E73;
+    --base:#000000;
+    --surface:#1D1D1F;
+    --surface-soft:#2C2C2E;
+    --line:rgba(255,255,255,.13);
+    --line-strong:rgba(255,255,255,.22);
+    --accent:#2997FF;      /* Apple's signature dark-mode blue — primary actions, links */
+    /* semantic palette, drawn from Apple's own system colors so each "kind" reads as native */
+    --move:#FF375F;        /* strength / effort / gym — Move-ring red */
+    --move-wash:rgba(255,55,95,.15);
+    --recover:#32D74B;     /* recovery / mobility / knee+stability — system green */
+    --recover-wash:rgba(50,215,75,.15);
+    --fuel:#FF9F0A;        /* meals / fuel — system orange */
+    --fuel-wash:rgba(255,159,10,.15);
+    --focus:#BF5AF2;       /* deep work — system purple */
+    --focus-wash:rgba(191,90,242,.15);
+    --pause:#8E8E93;       /* short breaks — system gray */
+    --sleep:#5E5CE6;       /* sleep — system indigo */
+    --steps:#64D2FF;       /* walking / running / cardio — system teal */
+    --steps-wash:rgba(100,210,255,.15);
+    --radius:22px;
+    --radius-sm:16px;
+    --shadow:0 1px 0 rgba(255,255,255,.05) inset, 0 18px 40px rgba(0,0,0,.45);
+    --shadow-lg:0 1px 0 rgba(255,255,255,.06) inset, 0 30px 70px rgba(0,0,0,.6);
     --maxw:920px;
+    --sans:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Inter",system-ui,sans-serif;
+    --mono:ui-monospace,"SF Mono","IBM Plex Mono",monospace;
   }
   *{box-sizing:border-box}
   html,body{margin:0}
   body{
     background:var(--base);
     color:var(--ink);
-    font-family:"IBM Plex Sans",system-ui,sans-serif;
+    font-family:var(--sans);
     line-height:1.5;
     -webkit-font-smoothing:antialiased;
-    padding-bottom:64px;
+    padding-bottom:70px;
   }
-  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+  .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
 
   /* ---------- header ---------- */
   header.app{
-    max-width:var(--maxw);margin:0 auto;padding:26px 20px 0;
+    max-width:var(--maxw);margin:0 auto;padding:56px 20px 0;
   }
-  .brand{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .brand{display:flex;flex-direction:column;gap:8px}
   .brand h1{
-    font-family:"Archivo";font-weight:800;letter-spacing:-.02em;
-    font-size:clamp(26px,5vw,38px);margin:0;line-height:1;
+    font-family:var(--sans);font-weight:700;letter-spacing:-.03em;
+    font-size:clamp(34px,7vw,52px);margin:0;line-height:1.02;color:var(--ink);
   }
   .brand .tag{
-    font-family:"IBM Plex Mono";font-size:12px;letter-spacing:.12em;
-    text-transform:uppercase;color:var(--ink-faint);
+    font-family:var(--sans);font-weight:400;font-size:17px;
+    color:var(--ink-soft);letter-spacing:-.01em;
   }
-  .navWrap{position:relative;margin-top:20px;display:inline-block}
+  .navWrap{position:relative;margin-top:26px;display:inline-block}
   .hamburger{
-    display:flex;align-items:center;gap:11px;appearance:none;cursor:pointer;
-    background:var(--surface);border:1px solid var(--line-strong);border-radius:11px;
-    padding:10px 16px;box-shadow:var(--shadow);
+    display:flex;align-items:center;gap:10px;appearance:none;cursor:pointer;
+    background:var(--surface);border:1px solid var(--line);border-radius:999px;
+    padding:11px 20px 11px 16px;box-shadow:var(--shadow);
+    transition:background .18s ease,transform .12s ease;
   }
-  .hamburger:hover{background:#fff}
-  .hamburger:focus-visible{outline:2px solid var(--move);outline-offset:2px}
-  .hamburger[aria-expanded="true"]{border-color:var(--ink)}
-  .hbBars{display:flex;flex-direction:column;gap:4px;width:18px;flex:none}
+  .hamburger:hover{background:var(--surface-soft);transform:translateY(-1px)}
+  .hamburger:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .hamburger[aria-expanded="true"]{border-color:var(--line-strong)}
+  .hbBars{display:flex;flex-direction:column;gap:3.5px;width:16px;flex:none}
   .hbBars span{display:block;height:2px;background:var(--ink);border-radius:2px}
-  .hbLabel{font-family:"Archivo";font-weight:600;font-size:14.5px;color:var(--ink)}
-  .hbCaret{font-family:"IBM Plex Mono";font-size:11px;color:var(--ink-faint);margin-left:2px}
+  .hbLabel{font-family:var(--sans);font-weight:600;font-size:14px;color:var(--ink)}
+  .hbCaret{font-family:var(--sans);font-size:11px;color:var(--ink-faint);margin-left:1px}
 
   nav.tabs{
-    position:absolute;top:calc(100% + 8px);left:0;z-index:30;
-    display:flex;flex-direction:column;gap:2px;min-width:230px;
-    background:var(--surface);border:1px solid var(--line-strong);border-radius:12px;
-    box-shadow:0 16px 40px rgba(20,22,26,.18);padding:6px;
+    position:absolute;top:calc(100% + 10px);left:0;z-index:30;
+    display:flex;flex-direction:column;gap:2px;min-width:236px;
+    background:rgba(29,29,31,.82);backdrop-filter:blur(24px) saturate(1.6);
+    -webkit-backdrop-filter:blur(24px) saturate(1.6);
+    border:1px solid var(--line);border-radius:18px;
+    box-shadow:var(--shadow-lg);padding:7px;
   }
   nav.tabs[hidden]{display:none}
   nav.tabs button{
     appearance:none;background:none;border:0;cursor:pointer;text-align:left;
-    font-family:"Archivo";font-weight:600;font-size:14.5px;color:var(--ink-soft);
-    padding:11px 13px;border-radius:8px;
+    font-family:var(--sans);font-weight:500;font-size:14.5px;color:var(--ink-soft);
+    padding:11px 14px;border-radius:12px;transition:background .12s ease,color .12s ease;
   }
-  nav.tabs button:hover{background:var(--base);color:var(--ink)}
-  nav.tabs button[aria-selected="true"]{background:var(--ink);color:#F1F1ED}
-  nav.tabs button:focus-visible{outline:2px solid var(--move);outline-offset:-2px}
+  nav.tabs button:hover{background:rgba(255,255,255,.06);color:var(--ink)}
+  nav.tabs button[aria-selected="true"]{background:var(--accent);color:#fff}
+  nav.tabs button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
 
-  main{max-width:var(--maxw);margin:0 auto;padding:22px 20px}
-  .panel{display:none;animation:fade .35s ease both}
+  main{max-width:var(--maxw);margin:0 auto;padding:26px 20px}
+  .panel{display:none;animation:fade .4s ease both}
   .panel.active{display:block}
-  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
   /* ---------- NOW hero (signature) ---------- */
   .now{
-    background:var(--ink);color:#F1F1ED;border-radius:var(--radius);
-    padding:20px 22px;box-shadow:var(--shadow);overflow:hidden;position:relative;
+    background:linear-gradient(165deg,#1D1D1F 0%,#0E0E10 100%);
+    color:var(--ink);border-radius:28px;
+    padding:30px 28px 28px;box-shadow:var(--shadow-lg);overflow:hidden;position:relative;
+    border:1px solid var(--line);
+  }
+  .now::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(130% 150% at 100% -20%, rgba(255,55,95,.16), transparent 55%);
   }
   .now .eyebrow{
-    font-family:"IBM Plex Mono";font-size:11px;letter-spacing:.16em;text-transform:uppercase;
-    color:#9AA39E;display:flex;justify-content:space-between;align-items:center;gap:10px;
+    font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-faint);display:flex;justify-content:space-between;align-items:center;gap:10px;position:relative;
   }
-  .now .clock{color:#F1F1ED;font-weight:600}
+  .now .clock{color:var(--ink);font-weight:600}
   .now h2{
-    font-family:"Archivo";font-weight:700;letter-spacing:-.01em;
-    font-size:clamp(24px,5.5vw,34px);margin:8px 0 2px;line-height:1.05;
+    font-family:var(--sans);font-weight:700;letter-spacing:-.03em;
+    font-size:clamp(28px,6vw,42px);margin:12px 0 4px;line-height:1.04;position:relative;
   }
-  .now .meta{font-size:13.5px;color:#B9BEB7}
-  .now .meta b{color:#F1F1ED;font-weight:600}
-  .now .bar{height:6px;background:rgba(255,255,255,.14);border-radius:6px;margin:16px 0 4px;overflow:hidden}
+  .now .meta{font-size:15px;color:var(--ink-soft);position:relative}
+  .now .meta b{color:var(--ink);font-weight:600}
+  .now .bar{height:4px;background:rgba(255,255,255,.1);border-radius:6px;margin:20px 0 4px;overflow:hidden;position:relative}
   .now .bar span{display:block;height:100%;background:var(--move);border-radius:6px;transition:width .6s ease}
-  .now .next{margin-top:10px;font-size:13px;color:#B9BEB7;display:flex;align-items:center;gap:8px}
-  .now .next .mono{color:#F1F1ED}
-  .now .dot{width:7px;height:7px;border-radius:50%;background:var(--recover);flex:none}
+  .now .next{margin-top:14px;font-size:13.5px;color:var(--ink-soft);display:flex;align-items:center;gap:8px;position:relative}
+  .now .next .mono{color:var(--ink)}
+  .now .dot{width:6px;height:6px;border-radius:50%;background:var(--recover);flex:none}
 
   .section-head{
     display:flex;align-items:baseline;justify-content:space-between;gap:12px;
-    margin:30px 0 12px;flex-wrap:wrap;
+    margin:44px 0 16px;flex-wrap:wrap;
   }
   .section-head h3{
-    font-family:"Archivo";font-weight:700;font-size:18px;margin:0;letter-spacing:-.01em;
+    font-family:var(--sans);font-weight:700;font-size:20px;margin:0;letter-spacing:-.02em;color:var(--ink);
   }
   .section-head .hint{font-size:12.5px;color:var(--ink-faint)}
 
   /* ---------- schedule list ---------- */
-  .day{display:flex;flex-direction:column;gap:8px}
+  .day{display:flex;flex-direction:column;gap:9px}
   .block{
-    background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--pause);
-    border-radius:12px;padding:12px 14px;display:flex;gap:14px;align-items:center;
-    box-shadow:var(--shadow);transition:transform .15s ease,border-color .15s ease;
-    cursor:pointer;
+    background:var(--surface);border:1px solid var(--line);border-radius:18px;
+    padding:14px 18px;display:flex;gap:14px;align-items:center;
+    box-shadow:var(--shadow);transition:transform .15s ease,background .15s ease;
+    cursor:pointer;position:relative;
   }
-  .block:hover{transform:translateX(2px)}
-  .block:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+  .block::before{
+    content:"";position:absolute;left:0;top:16px;bottom:16px;width:3px;border-radius:3px;
+    background:var(--pause);
+  }
+  .block{padding-left:22px}
+  .block:hover{transform:translateX(2px);background:var(--surface-soft)}
+  .block:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   .block .time{
-    font-family:"IBM Plex Mono";font-size:13px;color:var(--ink-soft);
-    min-width:96px;line-height:1.3;flex:none;
+    font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);
+    min-width:92px;line-height:1.3;flex:none;
   }
-  .block .time .end{color:var(--ink-faint);font-size:11.5px}
+  .block .time .end{color:var(--ink-faint);font-size:11px}
   .block .body{flex:1;min-width:0}
-  .block .title{font-weight:600;font-size:15px;line-height:1.25}
+  .block .title{font-weight:500;font-size:14.5px;line-height:1.35;color:var(--ink)}
   .block .kind{
-    font-family:"IBM Plex Mono";font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
-    color:var(--ink-faint);margin-top:2px;
+    font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--ink-faint);margin-top:3px;
   }
-  .block .dur{font-family:"IBM Plex Mono";font-size:11px;color:var(--ink-faint);flex:none}
-  .block.is-now{border-color:var(--ink);box-shadow:0 0 0 2px var(--ink) inset, var(--shadow)}
+  .block .dur{font-family:var(--mono);font-size:11px;color:var(--ink-faint);flex:none}
+  .block.is-now{background:var(--surface-soft);box-shadow:0 0 0 1.5px var(--accent), var(--shadow)}
   .block.is-now .nowtag{
-    font-family:"IBM Plex Mono";font-size:10px;letter-spacing:.1em;background:var(--ink);color:#fff;
-    padding:2px 6px;border-radius:5px;margin-left:8px;
+    font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;background:var(--accent);color:#fff;
+    padding:2px 7px;border-radius:99px;margin-left:8px;
   }
-  /* kind colors via left border + dot */
-  .block[data-kind="move"]{border-left-color:var(--move)}
-  .block[data-kind="recover"]{border-left-color:var(--recover)}
-  .block[data-kind="fuel"]{border-left-color:var(--fuel)}
-  .block[data-kind="focus"]{border-left-color:var(--focus)}
-  .block[data-kind="pause"]{border-left-color:var(--pause)}
-  .block[data-kind="sleep"]{border-left-color:var(--sleep)}
-  .block[data-kind="steps"]{border-left-color:var(--steps)}
+  /* kind colors via accent bar */
+  .block[data-kind="move"]::before{background:var(--move)}
+  .block[data-kind="recover"]::before{background:var(--recover)}
+  .block[data-kind="fuel"]::before{background:var(--fuel)}
+  .block[data-kind="focus"]::before{background:var(--focus)}
+  .block[data-kind="pause"]::before{background:var(--pause)}
+  .block[data-kind="sleep"]::before{background:var(--sleep)}
+  .block[data-kind="steps"]::before{background:var(--steps)}
 
-  .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
   button.btn{
-    appearance:none;font-family:"Archivo";font-weight:600;font-size:13.5px;cursor:pointer;
-    border-radius:10px;padding:9px 14px;border:1px solid var(--line-strong);
+    appearance:none;font-family:var(--sans);font-weight:600;font-size:14px;cursor:pointer;
+    border-radius:999px;padding:11px 20px;border:1px solid var(--line-strong);
     background:var(--surface);color:var(--ink);transition:background .15s ease,transform .1s ease;
   }
-  button.btn:hover{background:#fff}
+  button.btn:hover{background:var(--surface-soft)}
   button.btn:active{transform:translateY(1px)}
-  button.btn.primary{background:var(--ink);color:#F1F1ED;border-color:var(--ink)}
-  button.btn.primary:hover{background:#23262c}
-  button.btn.ghost{background:transparent;border-style:dashed}
-  button.btn:focus-visible{outline:2px solid var(--move);outline-offset:2px}
+  button.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+  button.btn.primary:hover{background:#4facff}
+  button.btn.ghost{background:transparent;border-style:dashed;color:var(--ink-soft)}
+  button.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
-  .legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px;font-size:12px;color:var(--ink-soft)}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:18px;font-size:11.5px;color:var(--ink-soft)}
   .legend span{display:inline-flex;align-items:center;gap:6px}
-  .legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+  .legend i{width:8px;height:8px;border-radius:50%;display:inline-block}
 
   /* ---------- editor dialog ---------- */
   dialog.editor{
-    border:0;border-radius:16px;padding:0;max-width:380px;width:92vw;
-    box-shadow:0 20px 60px rgba(0,0,0,.3);color:var(--ink);background:var(--surface);
+    border:0;border-radius:24px;padding:0;max-width:380px;width:92vw;
+    box-shadow:0 30px 80px rgba(0,0,0,.6);color:var(--ink);background:var(--surface);
+    border:1px solid var(--line);
   }
-  dialog.editor::backdrop{background:rgba(20,22,26,.45)}
-  .editor .ehead{padding:18px 20px 0}
-  .editor h4{font-family:"Archivo";font-weight:700;margin:0;font-size:17px}
-  .editor form{padding:14px 20px 20px;display:flex;flex-direction:column;gap:12px}
-  .editor label{font-size:12px;color:var(--ink-soft);font-weight:600;display:block;margin-bottom:5px}
+  dialog.editor::backdrop{background:rgba(0,0,0,.6);backdrop-filter:blur(4px)}
+  .editor .ehead{padding:20px 22px 0}
+  .editor h4{font-family:var(--sans);font-weight:700;margin:0;font-size:18px;color:var(--ink)}
+  .editor form{padding:16px 22px 22px;display:flex;flex-direction:column;gap:13px}
+  .editor label{font-size:11.5px;color:var(--ink-soft);font-weight:600;display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.05em}
   .editor input,.editor select{
-    width:100%;font-family:inherit;font-size:14px;padding:9px 10px;border:1px solid var(--line-strong);
-    border-radius:9px;background:#fff;color:var(--ink);
+    width:100%;font-family:var(--sans);font-size:14px;padding:10px 12px;border:1px solid var(--line-strong);
+    border-radius:12px;background:var(--surface-soft);color:var(--ink);
   }
   .editor .row{display:flex;gap:10px}
   .editor .row>div{flex:1}
-  .editor input.mono,.editor input[type=time]{font-family:"IBM Plex Mono"}
-  .editor .actions{display:flex;justify-content:space-between;gap:8px;margin-top:4px}
-  .editor input:focus,.editor select:focus{outline:2px solid var(--ink);outline-offset:1px}
+  .editor input.mono,.editor input[type=time]{font-family:var(--mono)}
+  .editor .actions{display:flex;justify-content:space-between;gap:8px;margin-top:6px}
+  .editor input:focus,.editor select:focus{outline:2px solid var(--accent);outline-offset:1px}
 
   /* ---------- training / weekstrip (reused by schedule + meal plan) ---------- */
-  .weekstrip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:18px}
+  .weekstrip{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;margin-bottom:20px}
   .weekstrip button{
     appearance:none;cursor:pointer;border:1px solid var(--line);background:var(--surface);
-    border-radius:10px;padding:10px 4px;text-align:center;transition:transform .12s ease;
-    border-top:3px solid var(--pause);
+    border-radius:14px;padding:11px 4px 10px;text-align:center;transition:transform .12s ease,background .12s ease;
+    box-shadow:var(--shadow);
   }
-  .weekstrip button:hover{transform:translateY(-2px)}
-  .weekstrip button[data-focus="move"]{border-top-color:var(--move)}
-  .weekstrip button[data-focus="recover"]{border-top-color:var(--recover)}
-  .weekstrip button[data-focus="rest"]{border-top-color:var(--line-strong)}
-  .weekstrip button[aria-selected="true"]{background:var(--ink);border-color:var(--ink)}
+  .weekstrip button:hover{transform:translateY(-2px);background:var(--surface-soft)}
+  .weekstrip button[data-focus="move"] .wd{color:var(--move)}
+  .weekstrip button[data-focus="recover"] .wd{color:var(--recover)}
+  .weekstrip button[data-focus="rest"] .wd{color:var(--ink-faint)}
+  .weekstrip button[aria-selected="true"]{background:var(--accent);border-color:var(--accent)}
   .weekstrip button[aria-selected="true"] .wd,
-  .weekstrip button[aria-selected="true"] .wf{color:#F1F1ED}
-  .weekstrip button.today{box-shadow:0 0 0 2px var(--move)}
-  .weekstrip .wd{font-family:"IBM Plex Mono";font-size:11px;letter-spacing:.08em;color:var(--ink-faint);display:block}
-  .weekstrip .wf{font-family:"Archivo";font-weight:600;font-size:12px;margin-top:3px;line-height:1.1;color:var(--ink)}
-  .weekstrip button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+  .weekstrip button[aria-selected="true"] .wf{color:#fff}
+  .weekstrip button.today{box-shadow:0 0 0 2px var(--move), var(--shadow)}
+  .weekstrip .wd{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;color:var(--ink-faint);display:block}
+  .weekstrip .wf{font-family:var(--sans);font-weight:600;font-size:11.5px;margin-top:4px;line-height:1.15;color:var(--ink)}
+  .weekstrip button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
-  .workout{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px 20px 8px;box-shadow:var(--shadow)}
-  .workout .whead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:14px}
-  .workout .whead h3{font-family:"Archivo";font-weight:800;font-size:22px;margin:0;letter-spacing:-.01em}
-  .workout .whead .focus{font-family:"IBM Plex Mono";font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--move)}
-  .workout .whead .focus.recover{color:var(--recover)}
-  .grp{margin:16px 0}
-  .grp .gtitle{font-family:"IBM Plex Mono";font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:8px}
-  .ex{display:flex;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line)}
+  .workout{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:24px 24px 10px;box-shadow:var(--shadow)}
+  .workout .whead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:16px}
+  .workout .whead h3{font-family:var(--sans);font-weight:700;font-size:23px;margin:0;letter-spacing:-.02em;color:var(--ink)}
+  .workout .whead .focus{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--move);background:var(--move-wash);padding:4px 10px;border-radius:999px}
+  .workout .whead .focus.recover{color:var(--recover);background:var(--recover-wash)}
+  .grp{margin:18px 0}
+  .grp .gtitle{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:9px}
+  .ex{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
   .ex:last-child{border-bottom:0}
-  .ex .name{flex:1;font-weight:500;font-size:14.5px}
+  .ex .name{flex:1;font-weight:500;font-size:14.5px;color:var(--ink)}
   .ex .name small{display:block;font-weight:400;color:var(--ink-soft);font-size:12.5px;margin-top:2px}
-  .ex .sets{font-family:"IBM Plex Mono";font-size:13px;color:var(--ink);white-space:nowrap;flex:none}
-  .ex.knee{background:var(--recover-wash);margin:0 -10px;padding:9px 10px;border-radius:8px;border-bottom:0}
-  .ex.knee .name::before{content:"◖ stability ";font-family:"IBM Plex Mono";font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--recover);font-weight:600}
-  .restday{background:var(--recover-wash);border:1px solid var(--recover);border-radius:var(--radius);padding:22px;color:var(--ink)}
-  .restday h3{font-family:"Archivo";font-weight:700;margin:0 0 8px;font-size:20px;color:var(--recover)}
-  .gameday{background:var(--move-wash);border:1px solid var(--move);border-radius:var(--radius);padding:22px;color:var(--ink)}
-  .gameday h3{font-family:"Archivo";font-weight:800;margin:0 0 12px;font-size:22px;color:var(--move)}
+  .ex .sets{font-family:var(--mono);font-size:13px;color:var(--ink);white-space:nowrap;flex:none}
+  .ex.knee{background:var(--recover-wash);margin:0 -12px;padding:11px 12px;border-radius:12px;border-bottom:0}
+  .ex.knee .name::before{content:"◖ stability ";font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--recover);font-weight:600}
+  .restday{background:var(--surface);border:1px solid var(--recover-wash);border-radius:var(--radius);padding:26px;color:var(--ink)}
+  .restday h3{font-family:var(--sans);font-weight:700;margin:0 0 8px;font-size:20px;color:var(--recover)}
+  .gameday{background:var(--surface);border:1px solid var(--move-wash);border-radius:var(--radius);padding:26px;color:var(--ink)}
+  .gameday h3{font-family:var(--sans);font-weight:700;margin:0 0 12px;font-size:22px;color:var(--move)}
 
   .callout{
-    background:var(--recover-wash);border:1px solid var(--recover);border-radius:12px;
-    padding:14px 16px;margin:18px 0;font-size:13.5px;color:var(--ink);
+    background:var(--recover-wash);border:0;border-radius:14px;
+    padding:15px 17px;margin:18px 0;font-size:13.5px;color:var(--ink);
   }
   .callout b{color:var(--recover)}
-  .callout .k{font-family:"IBM Plex Mono";font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--recover);display:block;margin-bottom:6px}
+  .callout .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--recover);display:block;margin-bottom:6px}
 
   /* ---------- yoga / prose ---------- */
   .prose{max-width:660px}
-  .prose h3{font-family:"Archivo";font-weight:700;font-size:18px;margin:26px 0 8px;letter-spacing:-.01em}
+  .prose h3{font-family:var(--sans);font-weight:700;font-size:19px;margin:30px 0 8px;letter-spacing:-.02em;color:var(--ink)}
   .prose p{margin:0 0 12px;color:var(--ink-soft)}
-  .flow{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:6px 18px;box-shadow:var(--shadow);margin:14px 0}
-  .flow .fh{display:flex;justify-content:space-between;align-items:baseline;padding:14px 0 10px;border-bottom:1px solid var(--line)}
-  .flow .fh h4{font-family:"Archivo";font-weight:700;margin:0;font-size:16px}
-  .flow .fh .len{font-family:"IBM Plex Mono";font-size:12px;color:var(--recover)}
-  .pose{display:flex;gap:12px;padding:11px 0;border-bottom:1px dashed var(--line)}
+  .flow{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:6px 20px;box-shadow:var(--shadow);margin:14px 0}
+  .flow .fh{display:flex;justify-content:space-between;align-items:baseline;padding:15px 0 11px;border-bottom:1px solid var(--line)}
+  .flow .fh h4{font-family:var(--sans);font-weight:700;margin:0;font-size:16px;color:var(--ink)}
+  .flow .fh .len{font-family:var(--mono);font-size:11.5px;color:var(--recover)}
+  .pose{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
   .pose:last-child{border-bottom:0}
-  .pose .num{font-family:"IBM Plex Mono";font-size:12px;color:var(--ink-faint);min-width:22px;flex:none;padding-top:1px}
+  .pose .num{font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);min-width:20px;flex:none;padding-top:1px}
   .pose .pn{flex:1}
-  .pose .pn b{font-weight:600;font-size:14.5px}
+  .pose .pn b{font-weight:600;font-size:14.5px;color:var(--ink)}
   .pose .pn small{display:block;color:var(--ink-soft);font-size:12.5px;margin-top:2px}
-  .pose .hold{font-family:"IBM Plex Mono";font-size:12px;color:var(--ink-soft);flex:none}
+  .pose .hold{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);flex:none}
 
   /* ---------- yoga flashcard ---------- */
   .flowcard{
     background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
-    padding:6px 18px 18px;box-shadow:var(--shadow);touch-action:pan-y;user-select:none;
+    padding:6px 20px 20px;box-shadow:var(--shadow);touch-action:pan-y;user-select:none;
   }
-  .flowcard:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
-  .fcHead{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 0 10px;border-bottom:1px solid var(--line)}
+  .flowcard:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .fcHead{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:15px 0 11px;border-bottom:1px solid var(--line)}
   .fcTitle{text-align:center;flex:1}
-  .fcTitle h4{font-family:"Archivo";font-weight:700;margin:0;font-size:17px}
-  .fcLen{font-size:12px;color:var(--recover)}
+  .fcTitle h4{font-family:var(--sans);font-weight:700;margin:0;font-size:17px;color:var(--ink)}
+  .fcLen{font-size:11.5px;color:var(--recover)}
   .fcNav{
-    appearance:none;cursor:pointer;background:var(--base);border:1px solid var(--line-strong);
-    border-radius:50%;width:34px;height:34px;flex:none;font-size:18px;line-height:1;color:var(--ink);
-    display:flex;align-items:center;justify-content:center;
+    appearance:none;cursor:pointer;background:var(--surface-soft);border:1px solid var(--line);
+    border-radius:50%;width:34px;height:34px;flex:none;font-size:17px;line-height:1;color:var(--ink);
+    display:flex;align-items:center;justify-content:center;transition:background .12s ease;
   }
-  .fcNav:hover{background:#fff}
-  .fcNav:focus-visible{outline:2px solid var(--move);outline-offset:2px}
-  .fcDesc{margin:12px 0 2px;font-size:13.5px;color:var(--ink-soft)}
-  .fcDots{display:flex;justify-content:center;gap:7px;padding-top:12px}
-  .fcDot{appearance:none;cursor:pointer;background:var(--line-strong);border:0;width:8px;height:8px;border-radius:50%;padding:0}
+  .fcNav:hover{background:var(--line-strong)}
+  .fcNav:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .fcDesc{margin:13px 0 2px;font-size:13.5px;color:var(--ink-soft)}
+  .fcDots{display:flex;justify-content:center;gap:7px;padding-top:13px}
+  .fcDot{appearance:none;cursor:pointer;background:var(--line-strong);border:0;width:7px;height:7px;border-radius:50%;padding:0}
   .fcDot.active{background:var(--recover);width:20px;border-radius:5px;transition:width .2s ease}
 
-  .footer{max-width:var(--maxw);margin:30px auto 0;padding:0 20px;color:var(--ink-faint);font-size:12px}
+  .footer{max-width:var(--maxw);margin:36px auto 0;padding:0 20px;color:var(--ink-faint);font-size:11.5px}
 
   /* ---------- nutrition ---------- */
-  .fuelcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow)}
-  .fuelcard .eyebrow{font-family:"IBM Plex Mono";font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:14px}
-  .macros{display:grid;grid-template-columns:1fr 1fr;gap:22px}
-  .macro .ml{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px}
-  .macro .lab{font-family:"Archivo";font-weight:700;font-size:14px}
-  .macro .val{font-family:"IBM Plex Mono";font-size:12.5px;color:var(--ink-soft)}
-  .macro .val b{font-size:20px;color:var(--ink)}
-  .macro .track{height:8px;background:var(--base);border-radius:8px;overflow:hidden}
+  .fuelcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;box-shadow:var(--shadow)}
+  .fuelcard .eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:16px}
+  .macros{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .macro .ml{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+  .macro .lab{font-family:var(--sans);font-weight:700;font-size:13.5px;color:var(--ink)}
+  .macro .val{font-family:var(--mono);font-size:12px;color:var(--ink-soft)}
+  .macro .val b{font-size:19px;color:var(--ink)}
+  .macro .track{height:7px;background:var(--surface-soft);border-radius:8px;overflow:hidden}
   .macro .track span{display:block;height:100%;border-radius:8px;transition:width .5s ease}
   .macro.kcal .track span{background:var(--fuel)}
   .macro.prot .track span{background:var(--move)}
-  .macro .rem{font-family:"IBM Plex Mono";font-size:11.5px;color:var(--ink-faint);margin-top:6px}
-  @media(max-width:480px){.macros{grid-template-columns:1fr;gap:16px}}
+  .macro .rem{font-family:var(--mono);font-size:11px;color:var(--ink-faint);margin-top:7px}
+  @media(max-width:480px){.macros{grid-template-columns:1fr;gap:18px}}
 
   .targetbox{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);margin:16px 0;overflow:hidden}
-  .targetbox>summary{cursor:pointer;list-style:none;padding:14px 18px;font-family:"Archivo";font-weight:600;font-size:15px;display:flex;justify-content:space-between;align-items:center}
+  .targetbox>summary{cursor:pointer;list-style:none;padding:16px 22px;font-family:var(--sans);font-weight:600;font-size:14.5px;display:flex;justify-content:space-between;align-items:center;color:var(--ink)}
   .targetbox>summary::-webkit-details-marker{display:none}
-  .targetbox>summary::after{content:"+";font-family:"IBM Plex Mono";color:var(--ink-faint);font-size:18px}
+  .targetbox>summary::after{content:"+";font-family:var(--sans);color:var(--ink-faint);font-size:18px}
   .targetbox[open]>summary::after{content:"\2013"}
-  .tbody{padding:2px 18px 18px;border-top:1px solid var(--line)}
+  .tbody{padding:2px 22px 22px;border-top:1px solid var(--line)}
   .field{margin-top:14px}
-  .field label{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:5px}
-  .field input,.field select{width:100%;font-family:inherit;font-size:14px;padding:9px 10px;border:1px solid var(--line-strong);border-radius:9px;background:#fff;color:var(--ink)}
-  .field input.mono{font-family:"IBM Plex Mono"}
-  .field input:focus,.field select:focus{outline:2px solid var(--ink);outline-offset:1px}
+  .field label{display:block;font-size:11.5px;font-weight:600;color:var(--ink-soft);margin-bottom:5px}
+  .field input,.field select{width:100%;font-family:var(--sans);font-size:14px;padding:10px 12px;border:1px solid var(--line-strong);border-radius:12px;background:var(--surface-soft);color:var(--ink)}
+  .field input.mono{font-family:var(--mono)}
+  .field input:focus,.field select:focus{outline:2px solid var(--accent);outline-offset:1px}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-  .subhead{font-family:"IBM Plex Mono";font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin:20px 0 0}
-  .estimate{background:var(--fuel-wash);border:1px solid var(--fuel);border-radius:10px;padding:12px 14px;margin-top:14px;font-size:13.5px;color:var(--ink);display:none}
+  .subhead{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin:22px 0 0}
+  .estimate{background:var(--fuel-wash);border:0;border-radius:12px;padding:13px 15px;margin-top:14px;font-size:13.5px;color:var(--ink);display:none}
   .estimate.show{display:block}
-  .estimate b{color:#7A5418}
+  .estimate b{color:#FFB84D}
 
-  .mealcard{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--fuel);border-radius:12px;box-shadow:var(--shadow);margin-bottom:10px;overflow:hidden}
-  .mealcard .mh{display:flex;justify-content:space-between;align-items:baseline;padding:13px 16px;gap:10px}
-  .mealcard .mn{font-family:"Archivo";font-weight:700;font-size:15px}
-  .mealcard .mb{font-family:"IBM Plex Mono";font-size:12px;color:var(--ink-faint)}
+  .mealcard{background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);margin-bottom:10px;overflow:hidden}
+  .mealcard .mh{display:flex;justify-content:space-between;align-items:baseline;padding:15px 18px;gap:10px}
+  .mealcard .mn{font-family:var(--sans);font-weight:700;font-size:14.5px;color:var(--ink)}
+  .mealcard .mb{font-family:var(--mono);font-size:11.5px;color:var(--ink-faint)}
   .mealcard .mb b{color:var(--ink)}
-  .mentries{padding:0 16px}
-  .nentry{display:flex;gap:10px;align-items:center;padding:9px 0;border-top:1px dashed var(--line);cursor:pointer}
+  .mentries{padding:0 18px}
+  .nentry{display:flex;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line);cursor:pointer}
   .nentry:hover{opacity:.7}
-  .nentry .nn{flex:1;font-size:14px}
-  .nentry .nk{font-family:"IBM Plex Mono";font-size:12px;color:var(--ink-soft);white-space:nowrap}
+  .nentry .nn{flex:1;font-size:14px;color:var(--ink)}
+  .nentry .nk{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);white-space:nowrap}
   .nentry .nk .p{color:var(--move)}
-  .mealcard .empty{padding:9px 0 4px;font-size:13px;color:var(--ink-faint);border-top:1px dashed var(--line)}
-  .mealcard .madd{display:block;width:100%;text-align:left;background:none;border:0;border-top:1px dashed var(--line);padding:11px 16px;cursor:pointer;font-family:"Archivo";font-weight:600;font-size:13px;color:var(--ink-faint)}
+  .mealcard .empty{padding:10px 0 5px;font-size:13px;color:var(--ink-faint);border-top:1px solid var(--line)}
+  .mealcard .madd{display:block;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:12px 18px;cursor:pointer;font-family:var(--sans);font-weight:600;font-size:13px;color:var(--ink-faint)}
   .mealcard .madd:hover{color:var(--ink)}
-  .mealcard .madd:focus-visible{outline:2px solid var(--ink);outline-offset:-2px}
+  .mealcard .madd:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
 
   .recipes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
-  .recipe{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;box-shadow:var(--shadow);display:flex;flex-direction:column}
-  .recipe .rtag{font-family:"IBM Plex Mono";font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--recover);margin-bottom:6px}
-  .recipe h4{font-family:"Archivo";font-weight:700;font-size:15px;margin:0 0 4px;line-height:1.18}
-  .recipe p{margin:0 0 10px;font-size:12.5px;color:var(--ink-soft);flex:1}
-  .recipe .rmac{font-family:"IBM Plex Mono";font-size:12px;color:var(--ink-soft);margin-bottom:11px}
+  .recipe{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow);display:flex;flex-direction:column}
+  .recipe .rtag{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--recover);margin-bottom:7px}
+  .recipe h4{font-family:var(--sans);font-weight:700;font-size:14.5px;margin:0 0 4px;line-height:1.2;color:var(--ink)}
+  .recipe p{margin:0 0 11px;font-size:12.5px;color:var(--ink-soft);flex:1}
+  .recipe .rmac{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);margin-bottom:12px}
   .recipe .rmac .p{color:var(--move)}
   .recipe button{align-self:flex-start}
   @media(max-width:480px){.recipes{grid-template-columns:1fr}}
 
   /* ---------- grocery list ---------- */
   .addrow{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
-  .addrow input{flex:1;min-width:160px;font-family:inherit;font-size:14px;padding:9px 12px;border:1px solid var(--line-strong);border-radius:10px;background:var(--surface);color:var(--ink)}
-  .addrow input:focus{outline:2px solid var(--ink);outline-offset:1px}
-  .gitem{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px dashed var(--line)}
+  .addrow input{flex:1;min-width:160px;font-family:var(--sans);font-size:14px;padding:10px 14px;border:1px solid var(--line-strong);border-radius:12px;background:var(--surface);color:var(--ink)}
+  .addrow input:focus{outline:2px solid var(--accent);outline-offset:1px}
+  .gitem{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
   .gitem input[type=checkbox]{width:17px;height:17px;flex:none;accent-color:var(--move);cursor:pointer}
-  .gitem .gn{flex:1;font-size:14.5px}
+  .gitem .gn{flex:1;font-size:14.5px;color:var(--ink)}
   .gitem.checked .gn{color:var(--ink-faint);text-decoration:line-through}
   .gitem .gdel{background:none;border:0;color:var(--ink-faint);cursor:pointer;font-size:18px;line-height:1;padding:2px 8px;flex:none}
   .gitem .gdel:hover{color:var(--move)}
-  .gitem .gdel:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+  .gitem .gdel:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 
   @media (max-width:560px){
-    .block .time{min-width:78px}
+    .block .time{min-width:74px}
     .block .dur{display:none}
     .weekstrip{grid-template-columns:repeat(7,1fr);gap:4px}
-    .weekstrip .wf{font-size:10px}
+    .weekstrip .wf{font-size:9.5px}
   }
   @media (prefers-reduced-motion:reduce){
     *{animation:none!important;transition:none!important}
@@ -367,8 +388,8 @@
 <body>
 <header class="app">
   <div class="brand">
-    <h1>Daily&nbsp;OS</h1>
-    <span class="tag">structure · strength · stability</span>
+    <h1>Daily OS</h1>
+    <span class="tag">Structure, strength, and recovery — built around training and match day.</span>
   </div>
   <div class="navWrap" id="navWrap">
     <button class="hamburger" id="menuToggle" aria-haspopup="true" aria-expanded="false" aria-controls="navMenu">
@@ -380,9 +401,7 @@
       <button role="tab" id="tab-today" aria-selected="true" aria-controls="panel-today">Today</button>
       <button role="tab" id="tab-train" aria-selected="false" aria-controls="panel-train">Training</button>
       <button role="tab" id="tab-yoga" aria-selected="false" aria-controls="panel-yoga">Yoga &amp; Recovery</button>
-      <button role="tab" id="tab-mealplan" aria-selected="false" aria-controls="panel-mealplan">Meal Plan</button>
-      <button role="tab" id="tab-nutri" aria-selected="false" aria-controls="panel-nutri">Nutrition</button>
-      <button role="tab" id="tab-grocery" aria-selected="false" aria-controls="panel-grocery">Grocery List</button>
+      <button role="tab" id="tab-recipes" aria-selected="false" aria-controls="panel-recipes">Recipes</button>
     </nav>
   </div>
 </header>
@@ -433,24 +452,24 @@
     <div id="workoutHost"></div>
 
     <div class="callout">
-      <span class="k">How the week is built</span>
-      Four hard lifts run Monday, Tuesday, Thursday, Friday as an upper/lower split — <b>posterior chain &amp; hinge</b> Monday, <b>quad &amp; single-leg stability</b> Thursday — spaced so your left knee gets deliberate, low-stress loading twice a week from different angles. Thursday's lower work is kept <b>submaximal on purpose</b>: with the match two days later, you want fresh legs and an un-fatigued knee going into all that cutting and sprinting. Tuesday adds a short, easy evening run — ground you're already covering in games, so it's additive rather than new stress. Wednesday is treadmill and sauna, Saturday is your game, and Sunday is rest with optional gentle mobility.
+      <span class="k">The week</span>
+      Mon/Wed/Fri: heavy lift. Tue/Thu: conditioning, then coaching. Sat: match. Sun: rest.
     </div>
 
     <div class="callout">
-      <span class="k">Knee principles</span>
-      Let the <b>left side set the standard</b> on every single-leg movement and match the right to it — that's how rebalancing happens, and it won't if the strong side carries the load. Own the <b>eccentric</b> (the lowering) on a 2–3 second count; tendons and control respond to time under tension more safely than to speed. Progress depth and range gradually and never push through sharp pain — next-day swelling means it was too much, so scale back. Your <b>Saturday match</b> is the biggest test the knee faces all week, so treat the lifting as what makes it resilient, not as something to grind into the ground. Anything your <b>physical therapist</b> has told you overrides anything on this page.
+      <span class="k">Knee rule</span>
+      Left leg sets the pace on single-leg work. Control the eccentric. No sharp pain — swelling next day means back off.
     </div>
   </section>
 
   <!-- ===================== YOGA ===================== -->
   <section class="panel" id="panel-yoga" role="tabpanel" aria-labelledby="tab-yoga" hidden>
     <div class="prose">
-      <p style="font-size:15px;color:var(--ink)">Yoga here does two jobs at once — it opens the hips and hamstrings that get tight from sitting and lifting, and it trains the balance and proprioception your knee needs to feel trustworthy again. The whole approach is built to protect a healing joint rather than test it.</p>
+      <p style="font-size:15px;color:var(--ink)">Opens hips and hamstrings, trains balance for the knee.</p>
 
       <div class="callout" style="margin-top:18px">
-        <span class="k">Knee-safe ground rules</span>
-        Pad the knee — a folded towel or blanket under it — in any kneeling pose; there's no toughness points for grinding bone into the mat. Avoid deep, loaded knee flexion early (full hero pose, deep lotus, an aggressive low lunge); use blocks and bolsters to shorten the range until depth feels genuinely easy. In every lunge and warrior, keep the front <b>knee tracking over the ankle</b> and never letting it drift inward. Favor the poses that build hip mobility, hamstring length, and single-leg balance — those are the ones that pay your knee back.
+        <span class="k">Knee-safe rules</span>
+        Pad the knee when kneeling. Skip deep flexion (full hero, deep lotus). Front knee tracks over ankle, never drifts in.
       </div>
 
     </div>
@@ -474,127 +493,17 @@
     </div>
 
     <div class="prose" style="margin-top:26px">
-      <h3>What to reach for, and why</h3>
-      <p><b>Tree pose &amp; single-leg balance</b> — the most direct proprioception work you can do; the wobble is the point, and it's how the knee relearns to stabilize itself.</p>
-      <p><b>Bridge &amp; locust</b> — posterior-chain activation that strengthens around the joint without loading it through deep flexion.</p>
-      <p><b>Figure-four &amp; supine pigeon</b> — hip opening done lying down, so you get the release without putting the knee in a vulnerable position.</p>
-      <p><b>Legs-up-the-wall</b> — genuinely useful for draining swelling and downshifting before sleep; hold it longer than feels necessary.</p>
+      <h3>Reach for</h3>
+      <p><b>Tree pose / single-leg balance</b> — proprioception</p>
+      <p><b>Bridge / locust</b> — posterior chain, no deep flexion</p>
+      <p><b>Figure-four / supine pigeon</b> — hip opening, knee-safe</p>
+      <p><b>Legs-up-the-wall</b> — drains swelling, downshifts before sleep</p>
     </div>
   </section>
 
-  <!-- ===================== MEAL PLAN ===================== -->
-  <section class="panel" id="panel-mealplan" role="tabpanel" aria-labelledby="tab-mealplan" hidden>
-    <div class="weekstrip" id="planWeekStrip"></div>
-
-    <div class="section-head" style="margin-top:0">
-      <h3 id="planDayHeading">Monday's meals</h3>
-      <span class="hint">Tap + to plan a meal · tap an entry to remove it</span>
-    </div>
-    <div id="planHost"></div>
-
-    <div class="callout" style="margin-top:18px">
-      <span class="k">How this feeds the grocery list</span>
-      Every ingredient attached to a planned meal — whether it's one of the recipes below or something you typed in yourself — rolls up automatically into the Grocery List tab for the whole week, deduplicated so you're not buying five separate entries for "rice."
-    </div>
-  </section>
-
-  <!-- ===================== NUTRITION ===================== -->
-  <section class="panel" id="panel-nutri" role="tabpanel" aria-labelledby="tab-nutri" hidden>
-    <div class="fuelcard">
-      <div class="eyebrow">Today's fuel · <span id="nutriDate">—</span></div>
-      <div class="macros">
-        <div class="macro kcal">
-          <div class="ml"><span class="lab">Calories</span><span class="val"><b id="kcalNow">0</b> / <span id="kcalTgt">0</span></span></div>
-          <div class="track"><span id="kcalBar" style="width:0%"></span></div>
-          <div class="rem" id="kcalRem">—</div>
-        </div>
-        <div class="macro prot">
-          <div class="ml"><span class="lab">Protein</span><span class="val"><b id="protNow">0</b> / <span id="protTgt">0</span> g</span></div>
-          <div class="track"><span id="protBar" style="width:0%"></span></div>
-          <div class="rem" id="protRem">—</div>
-        </div>
-      </div>
-    </div>
-
-    <details class="targetbox" id="targetBox">
-      <summary>Set targets &amp; estimate my needs</summary>
-      <div class="tbody">
-        <div class="grid2">
-          <div class="field"><label for="tgtKcal">Daily calories</label><input class="mono" type="number" id="tgtKcal" min="0" step="10"></div>
-          <div class="field"><label for="tgtProt">Daily protein (g)</label><input class="mono" type="number" id="tgtProt" min="0" step="5"></div>
-        </div>
-
-        <div class="subhead">How it splits across the day (%)</div>
-        <div class="grid4">
-          <div class="field" style="margin-top:6px"><label for="spB">Breakfast</label><input class="mono" type="number" id="spB" min="0" max="100"></div>
-          <div class="field" style="margin-top:6px"><label for="spL">Lunch</label><input class="mono" type="number" id="spL" min="0" max="100"></div>
-          <div class="field" style="margin-top:6px"><label for="spD">Dinner</label><input class="mono" type="number" id="spD" min="0" max="100"></div>
-          <div class="field" style="margin-top:6px"><label for="spS">Snacks</label><input class="mono" type="number" id="spS" min="0" max="100"></div>
-        </div>
-        <div style="margin-top:14px"><button class="btn primary" id="saveTargets">Save targets</button></div>
-
-        <div class="subhead">Estimate my needs</div>
-        <p style="font-size:12.5px;color:var(--ink-faint);margin:5px 0 0">A starting point from your stats. Adjust it over a few weeks based on energy, training, and how you feel — it's an estimate, not a rule.</p>
-        <div class="grid2">
-          <div class="field"><label for="eSex">Sex (for the formula)</label><select id="eSex"><option value="male">Male</option><option value="female">Female</option></select></div>
-          <div class="field"><label for="eAge">Age</label><input class="mono" type="number" id="eAge" min="13" max="100"></div>
-        </div>
-        <div class="grid2">
-          <div class="field"><label for="eWt">Weight (lb)</label><input class="mono" type="number" id="eWt" min="0"></div>
-          <div class="field"><label for="eFt">Height</label>
-            <div style="display:flex;gap:8px"><input class="mono" type="number" id="eFt" placeholder="ft" min="0" style="flex:1"><input class="mono" type="number" id="eIn" placeholder="in" min="0" max="11" style="flex:1"></div>
-          </div>
-        </div>
-        <div class="grid2">
-          <div class="field"><label for="eAct">Activity</label><select id="eAct">
-            <option value="1.375">Light (desk + some training)</option>
-            <option value="1.55" selected>Moderate (4 lifts + a match)</option>
-            <option value="1.725">High (active job + training)</option>
-          </select></div>
-          <div class="field"><label for="eGoal">Goal</label><select id="eGoal">
-            <option value="1.0" selected>Maintain &amp; perform</option>
-            <option value="0.85">Lean down gently</option>
-            <option value="1.1">Build muscle</option>
-          </select></div>
-        </div>
-        <div style="margin-top:14px"><button class="btn" id="calcEstimate">Calculate</button></div>
-        <div class="estimate" id="estimateOut"></div>
-      </div>
-    </details>
-
-    <div class="section-head"><h3>Today's log</h3><span class="hint">What you actually ate · resets each day — plan ahead in the Meal Plan tab</span></div>
-    <div id="mealHost"></div>
-
-    <div class="section-head"><h3>Vegetarian recipes</h3><span class="hint">Protein-forward · tap Add to log it</span></div>
-    <div class="recipes" id="recipeHost"></div>
-
-    <div class="callout" style="margin-top:18px">
-      <span class="k">Eating as a vegetarian lifter</span>
-      The one thing worth getting right is <b>protein spread across the day</b> rather than loaded into one meal — a solid source at each (Greek yogurt, eggs, tofu, tempeh, lentils, beans, paneer, edamame, or a shake), since plant proteins are a touch less complete and your training plus the Saturday match raise what you need. Everything here is a flexible estimate built to <b>fuel your training</b>, not to restrict — and I'm not a dietitian, so treat guidance from a doctor or registered dietitian as the final word.
-    </div>
-  </section>
-
-  <!-- ===================== GROCERY LIST ===================== -->
-  <section class="panel" id="panel-grocery" role="tabpanel" aria-labelledby="tab-grocery" hidden>
-    <div class="section-head" style="margin-top:0">
-      <h3>From your meal plan</h3>
-      <span class="hint">Auto-built from every ingredient across the week</span>
-    </div>
-    <div id="groceryAutoHost"></div>
-
-    <div class="section-head">
-      <h3>Other items</h3>
-      <span class="hint">Anything else you need to grab</span>
-    </div>
-    <div class="addrow">
-      <input type="text" id="groceryAddInput" placeholder="e.g. paper towels">
-      <button class="btn primary" id="groceryAddBtn">+ Add item</button>
-    </div>
-    <div id="groceryManualHost" style="margin-top:12px"></div>
-
-    <div class="toolbar">
-      <button class="btn ghost" id="groceryClearChecked">Clear checked items</button>
-    </div>
+  <!-- ===================== RECIPES ===================== -->
+  <section class="panel" id="panel-recipes" role="tabpanel" aria-labelledby="tab-recipes" hidden>
+    <div id="recipeHost"></div>
   </section>
 </main>
 
@@ -632,58 +541,6 @@
   </form>
 </dialog>
 
-<!-- nutrition entry dialog -->
-<dialog class="editor" id="nentryDialog">
-  <div class="ehead"><h4 id="nentryTitle">Add food</h4></div>
-  <form method="dialog" id="nentryForm">
-    <div><label for="nMeal">Meal</label>
-      <select id="nMeal">
-        <option value="breakfast">Breakfast</option>
-        <option value="lunch">Lunch</option>
-        <option value="dinner">Dinner</option>
-        <option value="snacks">Snacks</option>
-      </select>
-    </div>
-    <div><label for="nName">Food</label><input type="text" id="nName" maxlength="60" placeholder="e.g. Greek yogurt bowl" required></div>
-    <div class="row">
-      <div><label for="nKcal">Calories</label><input class="mono" type="number" id="nKcal" min="0" step="10" required></div>
-      <div><label for="nProt">Protein (g)</label><input class="mono" type="number" id="nProt" min="0" step="1"></div>
-    </div>
-    <div class="actions">
-      <button type="button" class="btn" id="nDelete" style="color:var(--move)">Delete</button>
-      <div style="display:flex;gap:8px">
-        <button type="button" class="btn" id="nCancel">Cancel</button>
-        <button type="submit" class="btn primary">Save</button>
-      </div>
-    </div>
-  </form>
-</dialog>
-
-<!-- meal plan dialog -->
-<dialog class="editor" id="planDialog">
-  <div class="ehead"><h4 id="planDialogTitle">Plan a meal</h4></div>
-  <form method="dialog" id="planForm">
-    <div><label for="planRecipe">Choose</label>
-      <select id="planRecipe"></select>
-    </div>
-    <div id="planCustomFields">
-      <div><label for="planName">Meal name</label><input type="text" id="planName" maxlength="60" placeholder="e.g. Chicken &amp; rice bowl"></div>
-      <div class="row">
-        <div><label for="planKcal">Calories</label><input class="mono" type="number" id="planKcal" min="0" step="10"></div>
-        <div><label for="planProt">Protein (g)</label><input class="mono" type="number" id="planProt" min="0" step="1"></div>
-      </div>
-      <div><label for="planIngred">Ingredients (comma separated)</label><input type="text" id="planIngred" placeholder="e.g. chicken breast, rice, broccoli"></div>
-    </div>
-    <div class="actions">
-      <div></div>
-      <div style="display:flex;gap:8px">
-        <button type="button" class="btn" id="planCancel">Cancel</button>
-        <button type="submit" class="btn primary">Add to plan</button>
-      </div>
-    </div>
-  </form>
-</dialog>
-
 <script>
 "use strict";
 
@@ -715,7 +572,7 @@ document.addEventListener('keydown',(e)=>{ if(e.key==='Escape') closeMenu(); });
 
 /* ---------- tabs ---------- */
 const tabs = document.querySelectorAll('nav.tabs button');
-const panels = {today:'panel-today', train:'panel-train', yoga:'panel-yoga', mealplan:'panel-mealplan', nutri:'panel-nutri', grocery:'panel-grocery'};
+const panels = {today:'panel-today', train:'panel-train', yoga:'panel-yoga', recipes:'panel-recipes'};
 tabs.forEach(t=>{
   t.addEventListener('click',()=>{
     tabs.forEach(x=>x.setAttribute('aria-selected','false'));
@@ -734,11 +591,11 @@ tabs.forEach(t=>{
 const KIND_LABEL = {focus:"Focus",pause:"Pause",fuel:"Fuel",move:"Train",recover:"Recover",sleep:"Sleep",steps:"Walk/Run"};
 const FULL_DAY_NAMES=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
 
-const TRAIN_DAY_BLOCKS = [
+const MON_BLOCKS = [
   {s:"06:00",e:"06:15",t:"Wake + hydrate, knee prep",k:"recover"},
-  {s:"06:15",e:"07:15",t:"Train (gym — 3 min drive)",k:"move"},
-  {s:"07:15",e:"08:00",t:"Shower + breakfast",k:"fuel"},
-  {s:"08:00",e:"09:00",t:"Free / flex morning",k:"pause"},
+  {s:"06:15",e:"07:30",t:"Training",k:"move"},
+  {s:"07:30",e:"08:15",t:"Shower + breakfast",k:"fuel"},
+  {s:"08:15",e:"09:00",t:"Free / flex morning",k:"pause"},
   {s:"09:00",e:"11:00",t:"Work — block 1",k:"focus"},
   {s:"11:00",e:"11:15",t:"Break",k:"pause"},
   {s:"11:15",e:"12:30",t:"Work — block 2",k:"focus"},
@@ -756,7 +613,7 @@ const TRAIN_DAY_BLOCKS = [
 ];
 const TUE_BLOCKS = [
   {s:"06:00",e:"06:15",t:"Wake + hydrate, knee prep",k:"recover"},
-  {s:"06:15",e:"07:15",t:"Train (gym — 3 min drive)",k:"move"},
+  {s:"06:15",e:"07:15",t:"Training",k:"move"},
   {s:"07:15",e:"08:00",t:"Shower + breakfast",k:"fuel"},
   {s:"08:00",e:"09:00",t:"Free / flex morning",k:"pause"},
   {s:"09:00",e:"11:00",t:"Work — block 1",k:"focus"},
@@ -764,13 +621,11 @@ const TUE_BLOCKS = [
   {s:"11:15",e:"12:30",t:"Work — block 2",k:"focus"},
   {s:"12:30",e:"13:00",t:"Lunch + short walk",k:"fuel"},
   {s:"13:00",e:"15:00",t:"Work — block 3",k:"focus"},
-  {s:"15:00",e:"15:15",t:"Break",k:"pause"},
-  {s:"15:15",e:"17:00",t:"Work — block 4",k:"focus"},
-  {s:"17:00",e:"18:15",t:"Free / hydrate before run",k:"pause"},
-  {s:"18:30",e:"19:00",t:"Run (1.5–2 mi)",k:"steps"},
-  {s:"19:00",e:"19:15",t:"Cool down + knee stretch",k:"recover"},
-  {s:"19:15",e:"20:00",t:"Shower + dinner",k:"fuel"},
-  {s:"20:00",e:"20:30",t:"Free block",k:"pause"},
+  {s:"15:00",e:"15:15",t:"Leave for coaching / drive to CFS",k:"pause"},
+  {s:"15:30",e:"17:30",t:"Coaching (Carolina Friends) — practice ~5pm, games run later",k:"move"},
+  {s:"17:30",e:"18:00",t:"Drive home + shower",k:"recover"},
+  {s:"18:15",e:"19:00",t:"Dinner (flexible — later on game nights)",k:"fuel"},
+  {s:"19:00",e:"20:30",t:"Free time",k:"pause"},
   {s:"20:30",e:"21:00",t:"Wind-down prep",k:"recover"},
   {s:"21:00",e:"21:45",t:"Reading (screens off)",k:"recover"},
   {s:"21:45",e:"22:00",t:"Lights out prep",k:"pause"},
@@ -778,10 +633,11 @@ const TUE_BLOCKS = [
 ];
 const WED_BLOCKS = [
   {s:"06:00",e:"06:15",t:"Wake + hydrate",k:"recover"},
-  {s:"06:15",e:"06:45",t:"Treadmill walk + knee mobility (3 min drive)",k:"steps"},
-  {s:"06:45",e:"07:05",t:"Sauna",k:"recover"},
-  {s:"07:05",e:"07:50",t:"Shower + breakfast",k:"fuel"},
-  {s:"07:50",e:"09:00",t:"Free / flex morning",k:"pause"},
+  {s:"06:15",e:"06:30",t:"Warm-up",k:"steps"},
+  {s:"06:30",e:"07:20",t:"Training",k:"move"},
+  {s:"07:20",e:"07:35",t:"Sauna",k:"recover"},
+  {s:"07:35",e:"08:15",t:"Shower + breakfast",k:"fuel"},
+  {s:"08:15",e:"09:00",t:"Free / flex morning",k:"pause"},
   {s:"09:00",e:"11:00",t:"Work — block 1",k:"focus"},
   {s:"11:00",e:"11:15",t:"Break",k:"pause"},
   {s:"11:15",e:"12:30",t:"Work — block 2",k:"focus"},
@@ -792,6 +648,46 @@ const WED_BLOCKS = [
   {s:"17:15",e:"18:00",t:"Evening walk",k:"steps"},
   {s:"18:15",e:"19:00",t:"Dinner",k:"fuel"},
   {s:"19:15",e:"20:30",t:"Free time",k:"pause"},
+  {s:"20:30",e:"21:00",t:"Wind-down prep",k:"recover"},
+  {s:"21:00",e:"21:45",t:"Reading (screens off)",k:"recover"},
+  {s:"21:45",e:"22:00",t:"Lights out prep",k:"pause"},
+  {s:"22:00",e:"05:45",t:"Sleep",k:"sleep"}
+];
+const THU_BLOCKS = [
+  {s:"06:00",e:"06:15",t:"Wake + hydrate, knee prep",k:"recover"},
+  {s:"06:15",e:"07:15",t:"Training",k:"move"},
+  {s:"07:15",e:"08:00",t:"Shower + breakfast",k:"fuel"},
+  {s:"08:00",e:"09:00",t:"Free / flex morning",k:"pause"},
+  {s:"09:00",e:"11:00",t:"Work — block 1",k:"focus"},
+  {s:"11:00",e:"11:15",t:"Break",k:"pause"},
+  {s:"11:15",e:"12:30",t:"Work — block 2",k:"focus"},
+  {s:"12:30",e:"13:00",t:"Lunch + short walk",k:"fuel"},
+  {s:"13:00",e:"15:00",t:"Work — block 3",k:"focus"},
+  {s:"15:00",e:"15:15",t:"Leave for coaching / drive to CFS",k:"pause"},
+  {s:"15:30",e:"17:30",t:"Coaching (Carolina Friends) — practice ~5pm, games run later",k:"move"},
+  {s:"17:30",e:"18:00",t:"Drive home + shower",k:"recover"},
+  {s:"18:15",e:"19:00",t:"Dinner (flexible — later on game nights)",k:"fuel"},
+  {s:"19:00",e:"20:30",t:"Free time",k:"pause"},
+  {s:"20:30",e:"21:00",t:"Wind-down prep",k:"recover"},
+  {s:"21:00",e:"21:45",t:"Reading (screens off)",k:"recover"},
+  {s:"21:45",e:"22:00",t:"Lights out prep",k:"pause"},
+  {s:"22:00",e:"05:45",t:"Sleep",k:"sleep"}
+];
+const FRI_BLOCKS = [
+  {s:"06:00",e:"06:15",t:"Wake + hydrate, knee prep",k:"recover"},
+  {s:"06:15",e:"07:15",t:"Training",k:"move"},
+  {s:"07:15",e:"08:00",t:"Shower + breakfast",k:"fuel"},
+  {s:"08:00",e:"09:00",t:"Free / flex morning",k:"pause"},
+  {s:"09:00",e:"11:00",t:"Work — block 1",k:"focus"},
+  {s:"11:00",e:"11:15",t:"Break",k:"pause"},
+  {s:"11:15",e:"12:30",t:"Work — block 2",k:"focus"},
+  {s:"12:30",e:"13:00",t:"Lunch + short walk",k:"fuel"},
+  {s:"13:00",e:"15:00",t:"Work — block 3",k:"focus"},
+  {s:"15:00",e:"15:15",t:"Leave for coaching / drive to CFS",k:"pause"},
+  {s:"15:30",e:"17:30",t:"Coaching (Carolina Friends) — practice ~5pm, games run later",k:"move"},
+  {s:"17:30",e:"18:00",t:"Drive home + shower",k:"recover"},
+  {s:"18:15",e:"19:00",t:"Dinner (flexible — later on game nights)",k:"fuel"},
+  {s:"19:00",e:"20:30",t:"Free time",k:"pause"},
   {s:"20:30",e:"21:00",t:"Wind-down prep",k:"recover"},
   {s:"21:00",e:"21:45",t:"Reading (screens off)",k:"recover"},
   {s:"21:45",e:"22:00",t:"Lights out prep",k:"pause"},
@@ -831,15 +727,15 @@ const SUN_BLOCKS = [
   {s:"22:00",e:"08:00",t:"Sleep",k:"sleep"}
 ];
 const DEFAULT_WEEK = {
-  0: TRAIN_DAY_BLOCKS, 1: TUE_BLOCKS, 2: WED_BLOCKS,
-  3: TRAIN_DAY_BLOCKS, 4: TRAIN_DAY_BLOCKS, 5: SAT_BLOCKS, 6: SUN_BLOCKS
+  0: MON_BLOCKS, 1: TUE_BLOCKS, 2: WED_BLOCKS,
+  3: THU_BLOCKS, 4: FRI_BLOCKS, 5: SAT_BLOCKS, 6: SUN_BLOCKS
 };
 const SCHED_DAYS = [
-  {d:'Mon',label:'Training',focus:'move'},
-  {d:'Tue',label:'Train + Run',focus:'move'},
-  {d:'Wed',label:'Recovery',focus:'recover'},
-  {d:'Thu',label:'Training',focus:'move'},
-  {d:'Fri',label:'Training',focus:'move'},
+  {d:'Mon',label:'Heavy Lift',focus:'move'},
+  {d:'Tue',label:'Conditioning + Coach',focus:'move'},
+  {d:'Wed',label:'Heavy Lift + Sauna',focus:'move'},
+  {d:'Thu',label:'Conditioning + Coach',focus:'move'},
+  {d:'Fri',label:'Power + Coach',focus:'move'},
   {d:'Sat',label:'Match Day',focus:'move'},
   {d:'Sun',label:'Rest',focus:'recover'}
 ];
@@ -1002,108 +898,86 @@ document.getElementById('resetDay').addEventListener('click',()=>{
 
 /* ===================== TRAINING ===================== */
 const WEEK = [
-  {d:"Mon",focus:"move",name:"Lower A",sub:"Posterior chain & hinge"},
-  {d:"Tue",focus:"move",name:"Upper Push",sub:"Press strength"},
-  {d:"Wed",focus:"recover",name:"Recovery",sub:"Treadmill + sauna"},
-  {d:"Thu",focus:"move",name:"Lower B",sub:"Quad & single-leg stability"},
-  {d:"Fri",focus:"move",name:"Upper Pull",sub:"Back & posture"},
+  {d:"Mon",focus:"move",name:"Squat + Pull",sub:"Heavy lower + upper pull"},
+  {d:"Tue",focus:"move",name:"Conditioning",sub:"Intervals, then coaching"},
+  {d:"Wed",focus:"move",name:"Hinge + Push",sub:"Heavy lower + upper push"},
+  {d:"Thu",focus:"move",name:"Conditioning",sub:"Zone-2, then coaching"},
+  {d:"Fri",focus:"move",name:"Power",sub:"Explosive full-body, then coaching"},
   {d:"Sat",focus:"move",name:"Soccer",sub:"Match day"},
   {d:"Sun",focus:"recover",name:"Rest",sub:"Rest & mobility"}
 ];
 const WORKOUTS = {
-  0:{title:"Lower A",focus:"Posterior chain & hinge",groups:[
+  0:{title:"Squat + Pull",focus:"Heavy lower + upper pull",groups:[
     {g:"Warm-up",items:[
       {n:"Bike, easy",s:"5 min",d:"raise temperature, no fatigue"},
       {n:"Banded terminal knee extension",s:"2 × 15",knee:true,d:"wake up the quad / VMO at end range"},
       {n:"Glute bridge + hip airplanes",s:"2 × 10",d:"glutes online, hip control"}
     ]},
     {g:"Main",items:[
-      {n:"Trap-bar deadlift",s:"4 × 5",d:"hinge-dominant, knee-friendly loading"},
-      {n:"Romanian deadlift",s:"3 × 8",d:"3s eccentric, feel the hamstrings"},
-      {n:"Barbell hip thrust",s:"3 × 10",d:"full lockout, pause at top"}
+      {n:"Back squat or trap-bar deadlift",s:"4 × 5",knee:true,d:"real weight — this is your top strength driver; add load week over week"},
+      {n:"Weighted pull-up or heavy row",s:"4 × 6-8",d:""}
     ]},
     {g:"Single-leg & accessories",items:[
       {n:"Bulgarian split squat",s:"3 × 8 / leg",knee:true,d:"left leg leads and sets the reps; controlled, moderate depth"},
-      {n:"Lying hamstring curl",s:"3 × 12",d:""},
-      {n:"Standing calf raise",s:"3 × 15",d:"full stretch at bottom"}
+      {n:"Copenhagen plank",s:"3 × 20-30s / side",d:"adductor & hip control"}
     ]},
     {g:"Core",items:[
       {n:"Hanging knee raise",s:"3 × 12",d:"no swinging"}
     ]}
   ]},
-  1:{title:"Upper Push",focus:"Press strength",note:"Evening add-on: 1.5–2 mi easy run at 6:30pm — see the Today tab for the full flow.",groups:[
+  2:{title:"Hinge + Push",focus:"Heavy lower + upper push",groups:[
     {g:"Warm-up",items:[
-      {n:"Band pull-aparts",s:"2 × 20",d:""},
-      {n:"Shoulder dislocates + scap push-ups",s:"2 × 10",d:"open the shoulders, prime the scaps"}
+      {n:"Treadmill walk + knee mobility",s:"15 min",knee:true,d:"this is the AM block before lifting — see Today tab"}
     ]},
     {g:"Main",items:[
-      {n:"Barbell bench press",s:"4 × 5",d:"controlled, full lockout"},
-      {n:"Standing overhead press",s:"3 × 6",d:"ribs down, glutes tight"},
-      {n:"Incline dumbbell press",s:"3 × 10",d:""}
+      {n:"Romanian deadlift or single-leg RDL",s:"4 × 5-6",knee:true,d:"heavy top set; 3s eccentric, feel the hamstrings"},
+      {n:"Nordic hamstring curl",s:"3 × 6-8",d:"non-negotiable — strongly evidence-backed for cutting hamstring-strain risk"},
+      {n:"Landmine press or bench press",s:"4 × 6-8",d:""}
     ]},
     {g:"Accessories",items:[
-      {n:"Weighted dip or close-grip bench",s:"3 × 8",d:""},
-      {n:"Lateral raise",s:"3 × 15",d:"slow, no momentum"},
-      {n:"Triceps pushdown",s:"3 × 12",d:""}
+      {n:"Heavy farmer's carry",s:"3 trips",d:"as heavy as you can hold with good posture"}
     ]},
-    {g:"Core",items:[
-      {n:"Ab wheel or cable crunch",s:"3 × 12",d:""}
+    {g:"Recovery",items:[
+      {n:"Sauna",s:"10-15 min",d:"after the lift, not before — this is when it does the most for recovery"}
     ]}
   ]},
-  3:{title:"Lower B",focus:"Quad & single-leg stability",groups:[
+  4:{title:"Power",focus:"Explosive full-body",note:"Afternoon: Coaching at Carolina Friends, ~3:30–5:30pm (later on game nights) — see the Today tab.",groups:[
     {g:"Warm-up",items:[
       {n:"Bike, easy",s:"5 min",d:""},
-      {n:"Banded terminal knee extension",s:"2 × 15",knee:true,d:"VMO activation before loading"},
-      {n:"Single-leg balance hold",s:"3 × 30s / leg",knee:true,d:"eyes open → eyes closed to progress proprioception"}
+      {n:"Banded terminal knee extension",s:"2 × 15",knee:true,d:""}
     ]},
     {g:"Main",items:[
-      {n:"Front squat or safety-bar squat",s:"4 × 6",knee:true,d:"controlled 3s down; depth to comfort; keep 2 reps in reserve — the match is Saturday"},
-      {n:"Leg press",s:"3 × 10",d:"controlled tempo; don't crash into deep flexion"}
+      {n:"Trap-bar jump squat",s:"5 × 3",knee:true,d:"light load, moved fast — intent over weight"},
+      {n:"Box step-up with knee drive",s:"4 × 5 / leg",knee:true,d:"drive through the heel, control the way down"}
     ]},
-    {g:"Single-leg & rehab",items:[
-      {n:"Reverse lunge",s:"3 × 8 / leg",knee:true,d:"easier on the knee than forward lunges; left leg leads"},
-      {n:"Box step-up (below knee height)",s:"3 × 8 / leg",knee:true,d:"drive through the heel, control the way down"},
-      {n:"Leg extension — top range / TKE",s:"3 × 15",knee:true,d:"partial top-range reps for the VMO; no pain"}
-    ]},
-    {g:"Hip stability & calves",items:[
-      {n:"Copenhagen plank",s:"3 × 20s / side",d:"adductor & hip control"},
-      {n:"Seated calf raise",s:"3 × 15",d:""}
-    ]}
-  ]},
-  4:{title:"Upper Pull",focus:"Back & posture",groups:[
-    {g:"Warm-up",items:[
-      {n:"Band pull-aparts",s:"2 × 20",d:""},
-      {n:"Scap pull-ups",s:"2 × 10",d:"set the shoulder blades before pulling"}
-    ]},
-    {g:"Main",items:[
-      {n:"Weighted pull-up or lat pulldown",s:"4 × 6",d:""},
-      {n:"Barbell or chest-supported row",s:"4 × 8",d:"squeeze, no jerking"}
-    ]},
-    {g:"Accessories",items:[
-      {n:"Single-arm dumbbell row",s:"3 × 10",d:""},
-      {n:"Face pull",s:"3 × 15",d:"posture & rear delts — do these religiously"},
-      {n:"Rear-delt fly",s:"3 × 15",d:""},
-      {n:"Barbell or dumbbell curl",s:"3 × 10",d:""}
-    ]},
-    {g:"Core",items:[
-      {n:"Side plank",s:"3 × 30s / side",d:""}
+    {g:"Core & calves",items:[
+      {n:"Pallof press or rotational med-ball throw",s:"3 × 8 / side",d:""},
+      {n:"Calf raise",s:"3 × 12-15",d:"full stretch at bottom"}
     ]}
   ]}
 };
 const RECOVERY_DAYS = {
-  2:{title:"Recovery",lines:[
-    "Treadmill walk, 20–25 minutes at an easy pace, plus a few minutes of knee-focused mobility work beforehand.",
-    "Sauna afterward — genuinely useful for recovery, not just relaxation.",
-    "This is a real day for your joints and tissue, not a write-off — and it sits mid-week so you're fresh for Thursday. The <b>Stability flow</b> on the Yoga tab is still there if you want to layer it in."
+  1:{title:"Conditioning",lines:[
+    "Intervals: 6–8 × 30s hard / 90s easy, bike or incline. Sauna after.",
+    "<b>Afternoon:</b> leave by 15:00 for coaching at Carolina Friends."
+  ]},
+  3:{title:"Conditioning",lines:[
+    "20–30 min easy zone-2 — bike, incline walk, or a jog. Sauna after.",
+    "<b>Afternoon:</b> leave by 15:00 for coaching at Carolina Friends."
   ]},
   6:{title:"Rest & mobility",lines:[
-    "Recover from yesterday's match. Rest comes first; mobility is optional and gentle.",
-    "If the knee feels good: <b>Evening restorative</b> or <b>Daily reset</b> flow plus an easy walk.",
-    "If the knee is swollen or sore from cutting and sprinting: keep it fully easy — legs up, ice, sleep. Protect the 22:00 bedtime."
+    "Recover from the match. Rest first, mobility optional.",
+    "Knee good: <b>Evening restorative</b> flow + easy walk. Knee sore: legs up, ice, sleep."
   ]}
 };
-const SOCCER_DAY = {title:"Match day",focus:"Soccer",lines:[
-  "<b>Before you play:</b> don't walk into cuts cold. Ten minutes of dynamic warm-up plus your banded terminal knee extensions and a minute of single-leg balance to switch the knee on.",
+const SOCCER_DAY = {title:"Match day",focus:"Soccer",
+  warmup:[
+    {n:"Dynamic movement prep",s:"5 min",d:"leg swings, walking lunges, high knees — raise temperature before anything else"},
+    {n:"Banded terminal knee extension",s:"2 × 15",knee:true,d:"wake the quad / VMO before cutting"},
+    {n:"Single-leg balance hold",s:"1 min / leg",knee:true,d:"switches the knee on, eyes open"}
+  ],
+  lines:[
+  "<b>Before you play:</b> don't walk into cuts cold — run the warm-up above in full before you touch a ball.",
   "<b>The match is your conditioning</b> for the week — all the sprinting and change of direction means you don't need separate cardio.",
   "<b>After:</b> easy walk to flush the legs, then the Evening restorative flow tonight. If the knee's puffy, elevate and ice.",
   "This is your highest knee-demand day — decelerating and cutting are exactly what a rebuilt knee finds hardest, so listen to it and never play through sharp pain. How it feels Sunday morning tells you how hard you can push next week."
@@ -1142,6 +1016,13 @@ function renderWorkout(){
     workoutHost.innerHTML=html;
   } else if(selectedDay===5){
     let html='<div class="gameday"><h3>'+SOCCER_DAY.title+'</h3>';
+    if(SOCCER_DAY.warmup){
+      html+='<div class="grp"><div class="gtitle">Warm-up</div>';
+      SOCCER_DAY.warmup.forEach(it=>{
+        html+='<div class="ex'+(it.knee?' knee':'')+'"><div class="name">'+it.n+(it.d?'<small>'+it.d+'</small>':'')+'</div><div class="sets">'+it.s+'</div></div>';
+      });
+      html+='</div>';
+    }
     SOCCER_DAY.lines.forEach(l=>html+='<p style="margin:0 0 10px;color:var(--ink-soft)">'+l+'</p>');
     html+='</div>';
     workoutHost.innerHTML=html;
@@ -1229,317 +1110,49 @@ fcEl.addEventListener('keydown',e=>{
   else if(e.key==='ArrowLeft'){ e.preventDefault(); prevFlow(); }
 });
 
-/* ===================== NUTRITION (today's actual log + targets) ===================== */
-const MEAL_KEYS=['breakfast','lunch','dinner','snacks'];
-const MEAL_LABELS={breakfast:'Breakfast',lunch:'Lunch',dinner:'Dinner',snacks:'Snacks'};
-const DEFAULT_TARGETS={kcal:2200,protein:160,split:{breakfast:25,lunch:30,dinner:30,snacks:15}};
+/* ===================== RECIPES (vegetarian, by meal — TJ's / Harris Teeter) ===================== */
+const MEAL_LABELS={breakfast:'Breakfast',lunch:'Lunch',dinner:'Dinner'};
 const RECIPES=[
-  {tag:'Post-gym',name:'Berry protein yogurt bowl',desc:'Greek yogurt, mixed berries, granola, chia and a drizzle of honey. Five minutes, no cooking — ideal straight off a morning session.',kcal:380,protein:30,meal:'breakfast',ingredients:['Greek yogurt','Mixed berries','Granola','Chia seeds','Honey']},
-  {tag:'Breakfast',name:'Cottage cheese & egg scramble',desc:'Soft eggs folded with cottage cheese on wholegrain toast with chili flakes. Big protein hit to open the day.',kcal:400,protein:30,meal:'breakfast',ingredients:['Eggs','Cottage cheese','Wholegrain bread','Chili flakes']},
-  {tag:'Lunch',name:'Tofu & black bean burrito bowl',desc:'Baked tofu, black beans, rice, corn, salsa and avocado. Batch the tofu and beans on Sunday and it builds in minutes.',kcal:520,protein:28,meal:'lunch',ingredients:['Firm tofu','Black beans','Rice','Corn','Salsa','Avocado']},
-  {tag:'Lunch',name:'Chickpea & halloumi salad',desc:'Pan-seared halloumi over chickpeas, cucumber and tomato with a lemon-tahini dressing.',kcal:450,protein:24,meal:'lunch',ingredients:['Halloumi','Chickpeas','Cucumber','Tomato','Lemon','Tahini']},
-  {tag:'Dinner',name:'Red lentil & paneer dal',desc:'Red lentils simmered with spinach and tomato, paneer stirred through, over rice. Swap paneer for tofu to go vegan.',kcal:480,protein:26,meal:'dinner',ingredients:['Red lentils','Spinach','Tomato','Paneer','Rice']},
-  {tag:'Dinner',name:'Tempeh & edamame stir-fry',desc:'Tempeh, edamame and greens in a ginger-soy glaze over noodles or rice — the highest-protein plate here.',kcal:510,protein:32,meal:'dinner',ingredients:['Tempeh','Edamame','Mixed greens','Ginger','Soy sauce','Noodles or rice']}
+  {name:'Mango-spinach protein smoothie',note:"TJ's frozen mango, spinach, Greek yogurt, protein powder, almond milk",meal:'breakfast',kcal:360,protein:32,carbs:44,fat:6},
+  {name:'Peanut butter banana oats',note:'Rolled oats, banana, PB, almond milk, chia',meal:'breakfast',kcal:420,protein:20,carbs:52,fat:15},
+  {name:'Black bean breakfast burrito',note:"Eggs, TJ's black beans, cheese, salsa, tortilla",meal:'breakfast',kcal:440,protein:26,carbs:40,fat:19},
+  {name:'Spiced chickpea & paneer scramble',note:'Chickpeas, paneer, turmeric, cumin, tomato',meal:'breakfast',kcal:410,protein:24,carbs:30,fat:20},
+  {name:'Avocado toast, fried eggs & chili flakes',note:"Sourdough, avocado, 2 eggs, TJ's chili onion crunch",meal:'breakfast',kcal:430,protein:20,carbs:34,fat:24},
+  {name:'Berry protein yogurt bowl',note:'Greek yogurt, mixed berries, granola, honey',meal:'breakfast',kcal:380,protein:30,carbs:42,fat:11},
+  {name:'Caprese pasta salad',note:"TJ's bocconcini, cherry tomatoes, basil, pasta",meal:'lunch',kcal:520,protein:22,carbs:64,fat:20},
+  {name:'Black bean & corn quesadillas',note:'Black beans, corn, cheddar, flour tortillas',meal:'lunch',kcal:490,protein:24,carbs:56,fat:18},
+  {name:'Thai peanut noodle bowl with tofu',note:"TJ's peanut sauce, rice noodles, tofu, edamame",meal:'lunch',kcal:540,protein:26,carbs:62,fat:20},
+  {name:'Loaded baked potato bar',note:'Baked potato, black beans, cheese, sour cream, scallions',meal:'lunch',kcal:500,protein:20,carbs:74,fat:16},
+  {name:'Chickpea tikka masala wrap',note:"TJ's chana tikka masala, naan or tortilla wrap",meal:'lunch',kcal:480,protein:20,carbs:58,fat:18},
+  {name:'Margherita flatbread pizza',note:"TJ's flatbread or naan, mozzarella, tomato, basil",meal:'lunch',kcal:510,protein:22,carbs:56,fat:21},
+  {name:'Bean & cheese enchiladas',note:'Corn tortillas, black beans, enchilada sauce, cheese',meal:'dinner',kcal:530,protein:24,carbs:60,fat:20},
+  {name:'Thai green curry with tofu',note:"TJ's green curry sauce, tofu, veggies, jasmine rice",meal:'dinner',kcal:540,protein:24,carbs:58,fat:22},
+  {name:'Palak paneer with rice',note:'Spinach, paneer, garlic-ginger, basmati rice',meal:'dinner',kcal:500,protein:26,carbs:48,fat:22},
+  {name:'Twice-baked loaded potatoes',note:'Potato skins, cheddar, black beans, sour cream',meal:'dinner',kcal:490,protein:20,carbs:64,fat:18},
+  {name:'Veggie burger & sweet potato fries',note:"TJ's veggie burger patty, bun, sweet potato fries",meal:'dinner',kcal:560,protein:24,carbs:66,fat:22},
+  {name:'Three-cheese baked ziti',note:'Ziti, marinara, ricotta, mozzarella, parmesan',meal:'dinner',kcal:550,protein:26,carbs:64,fat:20}
 ];
-
-function todayStr(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
-function loadTargets(){const r=store.get('nutri.targets');if(r){try{const t=JSON.parse(r);if(t&&t.split)return t;}catch(e){}}return JSON.parse(JSON.stringify(DEFAULT_TARGETS));}
-function saveTargets(){store.set('nutri.targets',JSON.stringify(targets));}
-function loadLog(){const r=store.get('nutri.log');if(r){try{const l=JSON.parse(r);if(l&&l.date===todayStr()&&Array.isArray(l.items))return l;}catch(e){}}return {date:todayStr(),items:[]};}
-function saveLog(){store.set('nutri.log',JSON.stringify(log));}
-function ensureToday(){if(log.date!==todayStr()){log={date:todayStr(),items:[]};saveLog();}}
-let targets=loadTargets(), log=loadLog();
-
-function sumLog(){let k=0,p=0;log.items.forEach(i=>{k+=Number(i.kcal)||0;p+=Number(i.protein)||0;});return{k,p};}
-function mealSum(m){let k=0,p=0;log.items.forEach(i=>{if(i.meal===m){k+=Number(i.kcal)||0;p+=Number(i.protein)||0;}});return{k,p};}
-
-function renderFuel(){
-  ensureToday();
-  $('nutriDate').textContent=new Date().toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});
-  const {k,p}=sumLog();
-  $('kcalNow').textContent=Math.round(k); $('kcalTgt').textContent=targets.kcal;
-  $('protNow').textContent=Math.round(p); $('protTgt').textContent=targets.protein;
-  $('kcalBar').style.width=Math.min(100,targets.kcal?k/targets.kcal*100:0)+'%';
-  $('protBar').style.width=Math.min(100,targets.protein?p/targets.protein*100:0)+'%';
-  const kr=targets.kcal-k, pr=targets.protein-p;
-  $('kcalRem').textContent=kr>=0?Math.round(kr)+' kcal left':Math.round(-kr)+' kcal over';
-  $('protRem').textContent=pr>=0?Math.round(pr)+' g to go':Math.round(-pr)+' g over';
-}
-
-function renderMeals(){
-  ensureToday();
-  const host=$('mealHost'); host.innerHTML='';
-  MEAL_KEYS.forEach(m=>{
-    const pct=targets.split[m]||0;
-    const bk=Math.round(targets.kcal*pct/100), bp=Math.round(targets.protein*pct/100);
-    const s=mealSum(m);
-    const card=document.createElement('div'); card.className='mealcard';
-    let inner='<div class="mh"><span class="mn">'+MEAL_LABELS[m]+'</span><span class="mb"><b>'+Math.round(s.k)+'</b>/'+bk+' kcal · <b>'+Math.round(s.p)+'</b>/'+bp+'g</span></div>';
-    const items=log.items.map((it,idx)=>({it,idx})).filter(o=>o.it.meal===m);
-    if(items.length){
-      inner+='<div class="mentries">';
-      items.forEach(o=>{ inner+='<div class="nentry" data-idx="'+o.idx+'"><span class="nn">'+escapeHtml(o.it.name)+'</span><span class="nk">'+Math.round(o.it.kcal||0)+' kcal · <span class="p">'+Math.round(o.it.protein||0)+'g</span></span></div>'; });
-      inner+='</div>';
-    } else {
-      inner+='<div class="mentries"><div class="empty">Nothing logged yet</div></div>';
-    }
-    inner+='<button class="madd" data-meal="'+m+'">+ Add food</button>';
-    card.innerHTML=inner; host.appendChild(card);
-  });
-  host.querySelectorAll('.nentry').forEach(el=>el.addEventListener('click',()=>openNutri(Number(el.dataset.idx))));
-  host.querySelectorAll('.madd').forEach(el=>el.addEventListener('click',()=>openNutri(-1,{meal:el.dataset.meal})));
-}
-
 function renderRecipes(){
   const host=$('recipeHost'); host.innerHTML='';
-  RECIPES.forEach(r=>{
-    const c=document.createElement('div'); c.className='recipe';
-    c.innerHTML='<div class="rtag">'+r.tag+'</div><h4>'+r.name+'</h4><p>'+r.desc+'</p>'+
-      '<div class="rmac">'+r.kcal+' kcal · <span class="p">'+r.protein+'g protein</span></div>'+
-      '<button class="btn">Add to log</button>';
-    c.querySelector('button').addEventListener('click',()=>openNutri(-1,{meal:r.meal,name:r.name,kcal:r.kcal,protein:r.protein}));
-    host.appendChild(c);
+  ['breakfast','lunch','dinner'].forEach(meal=>{
+    host.insertAdjacentHTML('beforeend','<div class="section-head" style="margin-top:'+(meal==='breakfast'?'0':'34px')+'"><h3>'+MEAL_LABELS[meal]+'</h3></div>');
+    const grid=document.createElement('div'); grid.className='recipes';
+    RECIPES.filter(r=>r.meal===meal).forEach(r=>{
+      const c=document.createElement('div'); c.className='recipe';
+      c.innerHTML='<h4>'+r.name+'</h4>'+
+        '<p>'+r.note+'</p>'+
+        '<div class="rmac">'+r.kcal+' kcal &middot; <span class="p">'+r.protein+'g P</span> &middot; '+r.carbs+'g C &middot; '+r.fat+'g F</div>';
+      grid.appendChild(c);
+    });
+    host.appendChild(grid);
   });
 }
-
-function renderTargetsForm(){
-  $('tgtKcal').value=targets.kcal; $('tgtProt').value=targets.protein;
-  $('spB').value=targets.split.breakfast; $('spL').value=targets.split.lunch;
-  $('spD').value=targets.split.dinner; $('spS').value=targets.split.snacks;
-}
-
-$('saveTargets').addEventListener('click',()=>{
-  targets.kcal=Math.max(0,Number($('tgtKcal').value)||0);
-  targets.protein=Math.max(0,Number($('tgtProt').value)||0);
-  targets.split={breakfast:Number($('spB').value)||0,lunch:Number($('spL').value)||0,dinner:Number($('spD').value)||0,snacks:Number($('spS').value)||0};
-  saveTargets(); renderFuel(); renderMeals();
-  const tot=targets.split.breakfast+targets.split.lunch+targets.split.dinner+targets.split.snacks;
-  $('saveTargets').textContent= tot===100 ? 'Saved \u2713' : 'Saved · splits = '+tot+'%';
-  setTimeout(()=>{$('saveTargets').textContent='Save targets';},2200);
-});
-
-$('calcEstimate').addEventListener('click',()=>{
-  const sex=$('eSex').value, age=Number($('eAge').value)||0, lb=Number($('eWt').value)||0;
-  const ft=Number($('eFt').value)||0, inch=Number($('eIn').value)||0;
-  const act=Number($('eAct').value), goal=Number($('eGoal').value);
-  const out=$('estimateOut'); out.className='estimate show';
-  if(!age||!lb||!(ft||inch)){ out.innerHTML='Add your age, weight and height to get an estimate.'; return; }
-  const kg=lb/2.2046, cm=(ft*12+inch)*2.54;
-  const bmr=10*kg+6.25*cm-5*age+(sex==='male'?5:-161);
-  const tdee=bmr*act;
-  const kcal=Math.round(tdee*goal/10)*10;
-  const prot=Math.round(kg*1.8/5)*5;
-  const goalWord = goal<1 ? 'leaning down gently' : goal>1 ? 'building muscle' : 'maintaining and performing';
-  out.innerHTML='Maintenance is roughly <b>'+(Math.round(tdee/10)*10)+' kcal</b>. For '+goalWord+', aim for about <b>'+kcal+' kcal</b> and <b>'+prot+' g protein</b> a day.'+
-    '<div style="margin-top:11px"><button class="btn primary" id="useEstimate">Use these targets</button></div>';
-  $('useEstimate').addEventListener('click',()=>{
-    targets.kcal=kcal; targets.protein=prot; saveTargets(); renderTargetsForm(); renderFuel(); renderMeals();
-    out.innerHTML+='<div style="margin-top:9px;font-size:12px;color:var(--ink-faint)">Applied to your targets — tweak anytime above.</div>';
-  });
-});
-
-const nDlg=$('nentryDialog'); let nEdit=-1;
-function openNutri(idx,prefill){
-  nEdit=idx;
-  if(idx>=0){
-    const it=log.items[idx];
-    $('nentryTitle').textContent='Edit food';
-    $('nMeal').value=it.meal; $('nName').value=it.name; $('nKcal').value=it.kcal; $('nProt').value=it.protein;
-    $('nDelete').style.display='';
-  } else {
-    const pf=prefill||{};
-    $('nentryTitle').textContent='Add food';
-    $('nMeal').value=pf.meal||'snacks'; $('nName').value=pf.name||'';
-    $('nKcal').value=(pf.kcal!=null?pf.kcal:''); $('nProt').value=(pf.protein!=null?pf.protein:'');
-    $('nDelete').style.display='none';
-  }
-  if(typeof nDlg.showModal==='function') nDlg.showModal();
-}
-$('nentryForm').addEventListener('submit',()=>{
-  const obj={meal:$('nMeal').value,name:$('nName').value.trim()||'Food',kcal:Math.max(0,Number($('nKcal').value)||0),protein:Math.max(0,Number($('nProt').value)||0)};
-  if(nEdit>=0) log.items[nEdit]=obj; else log.items.push(obj);
-  saveLog(); renderFuel(); renderMeals();
-});
-$('nCancel').addEventListener('click',()=>nDlg.close());
-$('nDelete').addEventListener('click',()=>{ if(nEdit>=0){ log.items.splice(nEdit,1); saveLog(); renderFuel(); renderMeals(); } nDlg.close(); });
-
-/* ===================== MEAL PLAN (weekly, feeds grocery list) ===================== */
-const PLAN_DAY_SHORT=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-let selectedPlanDay = todayIndex();
-
-function loadPlan(){
-  const raw=store.get('dailyos.mealplan');
-  if(raw){ try{ const p=JSON.parse(raw); if(p&&typeof p==='object') return p; }catch(e){} }
-  const empty={}; for(let i=0;i<7;i++) empty[i]={breakfast:[],lunch:[],dinner:[],snacks:[]}; return empty;
-}
-function savePlan(){ store.set('dailyos.mealplan', JSON.stringify(weekPlan)); }
-let weekPlan = loadPlan();
-
-function renderPlanStrip(){
-  const strip=$('planWeekStrip'); strip.innerHTML='';
-  const todayI=todayIndex();
-  PLAN_DAY_SHORT.forEach((nm,i)=>{
-    const dp=weekPlan[i]||{breakfast:[],lunch:[],dinner:[],snacks:[]};
-    const count = MEAL_KEYS.reduce((n,mk)=>n+((dp[mk])?dp[mk].length:0),0);
-    const b=document.createElement('button');
-    b.setAttribute('aria-selected', i===selectedPlanDay?'true':'false');
-    if(i===todayI) b.classList.add('today');
-    b.innerHTML='<span class="wd">'+nm+'</span><span class="wf">'+(count?count+' planned':'—')+'</span>';
-    b.addEventListener('click',()=>{selectedPlanDay=i; renderPlanStrip(); renderPlanHost();});
-    strip.appendChild(b);
-  });
-}
-function renderPlanHost(){
-  $('planDayHeading').textContent = FULL_DAY_NAMES[selectedPlanDay]+"'s meals";
-  const host=$('planHost'); host.innerHTML='';
-  const dayPlan = weekPlan[selectedPlanDay] || (weekPlan[selectedPlanDay]={breakfast:[],lunch:[],dinner:[],snacks:[]});
-  MEAL_KEYS.forEach(mk=>{
-    const items=dayPlan[mk]||[];
-    const card=document.createElement('div'); card.className='mealcard';
-    let inner='<div class="mh"><span class="mn">'+MEAL_LABELS[mk]+'</span></div>';
-    if(items.length){
-      inner+='<div class="mentries">';
-      items.forEach((it,idx)=>{
-        const ingredHtml = (it.ingredients&&it.ingredients.length) ? '<small style="display:block;color:var(--ink-faint);font-size:11.5px;margin-top:2px">'+escapeHtml(it.ingredients.join(', '))+'</small>' : '';
-        const macHtml = it.kcal ? (Math.round(it.kcal)+' kcal · <span class="p">'+Math.round(it.protein||0)+'g</span>') : '';
-        inner+='<div class="nentry" data-mk="'+mk+'" data-idx="'+idx+'"><span class="nn">'+escapeHtml(it.name)+ingredHtml+'</span><span class="nk">'+macHtml+'</span></div>';
-      });
-      inner+='</div>';
-    } else {
-      inner+='<div class="mentries"><div class="empty">Nothing planned yet</div></div>';
-    }
-    inner+='<button class="madd" data-mk="'+mk+'">+ Plan a meal</button>';
-    card.innerHTML=inner; host.appendChild(card);
-  });
-  host.querySelectorAll('.nentry').forEach(el=>el.addEventListener('click',()=>{
-    const mk=el.dataset.mk, idx=Number(el.dataset.idx);
-    if(confirm('Remove this planned meal?')){ dayPlan[mk].splice(idx,1); savePlan(); renderPlanStrip(); renderPlanHost(); renderGrocery(); }
-  }));
-  host.querySelectorAll('.madd').forEach(el=>el.addEventListener('click',()=>openPlanDialog(el.dataset.mk)));
-}
-
-const planDlg=$('planDialog'); let planMealKey='breakfast';
-function openPlanDialog(mk){
-  planMealKey=mk;
-  $('planDialogTitle').textContent='Plan '+MEAL_LABELS[mk].toLowerCase();
-  const sel=$('planRecipe'); sel.innerHTML='<option value="custom">— Custom meal —</option>';
-  RECIPES.forEach((r,i)=>{ if(!r.meal||r.meal===mk||mk==='snacks'){ const o=document.createElement('option'); o.value='r'+i; o.textContent=r.name+' ('+r.kcal+' kcal)'; sel.appendChild(o); } });
-  sel.value='custom';
-  $('planCustomFields').style.display='';
-  $('planName').value=''; $('planKcal').value=''; $('planProt').value=''; $('planIngred').value='';
-  if(typeof planDlg.showModal==='function') planDlg.showModal();
-}
-$('planRecipe').addEventListener('change',()=>{
-  $('planCustomFields').style.display = $('planRecipe').value==='custom' ? '' : 'none';
-});
-$('planForm').addEventListener('submit',()=>{
-  const dayPlan = weekPlan[selectedPlanDay] || (weekPlan[selectedPlanDay]={breakfast:[],lunch:[],dinner:[],snacks:[]});
-  const src=$('planRecipe').value;
-  let entry;
-  if(src==='custom'){
-    const nm=$('planName').value.trim(); if(!nm) return;
-    const ingredients=$('planIngred').value.split(',').map(s=>s.trim()).filter(Boolean);
-    entry={name:nm,kcal:Number($('planKcal').value)||0,protein:Number($('planProt').value)||0,ingredients};
-  } else {
-    const r=RECIPES[Number(src.slice(1))];
-    entry={name:r.name,kcal:r.kcal,protein:r.protein,ingredients:(r.ingredients||[]).slice()};
-  }
-  if(!dayPlan[planMealKey]) dayPlan[planMealKey]=[];
-  dayPlan[planMealKey].push(entry);
-  savePlan(); renderPlanStrip(); renderPlanHost(); renderGrocery();
-});
-$('planCancel').addEventListener('click',()=>planDlg.close());
-
-/* ===================== GROCERY LIST ===================== */
-function normIngredient(s){ return s.trim().replace(/\s+/g,' '); }
-function computeGroceryAuto(){
-  const map=new Map();
-  for(let i=0;i<7;i++){
-    const dp=weekPlan[i]; if(!dp) continue;
-    MEAL_KEYS.forEach(mk=>{
-      (dp[mk]||[]).forEach(item=>{
-        (item.ingredients||[]).forEach(ing=>{
-          const clean=normIngredient(ing); if(!clean) return;
-          const key=clean.toLowerCase();
-          if(!map.has(key)) map.set(key,clean);
-        });
-      });
-    });
-  }
-  return [...map.entries()].sort((a,b)=>a[1].localeCompare(b[1]));
-}
-function loadGroceryChecked(){ const r=store.get('dailyos.grocery.checked'); if(r){try{const o=JSON.parse(r); if(o&&typeof o==='object') return o;}catch(e){}} return {}; }
-function saveGroceryChecked(){ store.set('dailyos.grocery.checked', JSON.stringify(groceryChecked)); }
-function loadGroceryManual(){ const r=store.get('dailyos.grocery.manual'); if(r){try{const a=JSON.parse(r); if(Array.isArray(a)) return a;}catch(e){}} return []; }
-function saveGroceryManual(){ store.set('dailyos.grocery.manual', JSON.stringify(groceryManual)); }
-let groceryChecked=loadGroceryChecked();
-let groceryManual=loadGroceryManual();
-
-function renderGrocery(){
-  const autoItems=computeGroceryAuto();
-  const autoHost=$('groceryAutoHost');
-  if(!autoItems.length){
-    autoHost.innerHTML='<div class="mealcard"><div class="empty" style="padding:14px 16px;border-top:0">Nothing planned yet — add meals in the Meal Plan tab and their ingredients will show up here.</div></div>';
-  } else {
-    let html='<div class="mealcard"><div class="mentries" style="padding-top:2px">';
-    autoItems.forEach(([key,disp])=>{
-      const checked = !!groceryChecked[key];
-      html+='<div class="gitem'+(checked?' checked':'')+'" data-key="'+encodeURIComponent(key)+'"><input type="checkbox" '+(checked?'checked':'')+'><span class="gn">'+escapeHtml(disp)+'</span></div>';
-    });
-    html+='</div></div>';
-    autoHost.innerHTML=html;
-    autoHost.querySelectorAll('.gitem').forEach(el=>{
-      el.querySelector('input').addEventListener('change',(ev)=>{
-        const key=decodeURIComponent(el.dataset.key);
-        if(ev.target.checked) groceryChecked[key]=true; else delete groceryChecked[key];
-        saveGroceryChecked(); el.classList.toggle('checked',ev.target.checked);
-      });
-    });
-  }
-
-  const manHost=$('groceryManualHost');
-  if(!groceryManual.length){
-    manHost.innerHTML='<div class="mealcard"><div class="empty" style="padding:14px 16px;border-top:0">Nothing added yet — type something above.</div></div>';
-  } else {
-    let html='<div class="mealcard"><div class="mentries" style="padding-top:2px">';
-    groceryManual.forEach((it)=>{
-      html+='<div class="gitem'+(it.checked?' checked':'')+'" data-id="'+it.id+'"><input type="checkbox" '+(it.checked?'checked':'')+'><span class="gn">'+escapeHtml(it.name)+'</span><button class="gdel" aria-label="Remove item">×</button></div>';
-    });
-    html+='</div></div>';
-    manHost.innerHTML=html;
-    manHost.querySelectorAll('.gitem').forEach(el=>{
-      const id=el.dataset.id;
-      el.querySelector('input').addEventListener('change',(ev)=>{
-        const it=groceryManual.find(x=>String(x.id)===id); if(it){ it.checked=ev.target.checked; saveGroceryManual(); el.classList.toggle('checked',ev.target.checked); }
-      });
-      el.querySelector('.gdel').addEventListener('click',()=>{
-        groceryManual=groceryManual.filter(x=>String(x.id)!==id); saveGroceryManual(); renderGrocery();
-      });
-    });
-  }
-}
-$('groceryAddBtn').addEventListener('click',()=>{
-  const input=$('groceryAddInput'); const val=input.value.trim();
-  if(!val) return;
-  groceryManual.push({id:Date.now()+Math.random().toString(36).slice(2),name:val,checked:false});
-  saveGroceryManual(); input.value=''; renderGrocery();
-});
-$('groceryAddInput').addEventListener('keydown',(e)=>{ if(e.key==='Enter'){ e.preventDefault(); $('groceryAddBtn').click(); } });
-$('groceryClearChecked').addEventListener('click',()=>{
-  groceryManual = groceryManual.filter(x=>!x.checked);
-  saveGroceryManual();
-  Object.keys(groceryChecked).forEach(k=>delete groceryChecked[k]);
-  saveGroceryChecked();
-  renderGrocery();
-});
 
 /* ---------- init ---------- */
 renderSchedStrip(); updateDayHeading(); renderDay(); renderNow();
 renderWeekStrip(); renderWorkout();
 renderFlowCard();
-renderTargetsForm(); renderFuel(); renderMeals(); renderRecipes();
-renderPlanStrip(); renderPlanHost();
-renderGrocery();
+renderRecipes();
 setInterval(()=>{ renderNow(); renderDay(); }, 30000);
 </script>
 </body>
