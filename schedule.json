@@ -9,7 +9,7 @@
     {
       "s": "06:15",
       "e": "07:15",
-      "t": "Train (gym — 3 min drive)",
+      "t": "Lift (heavy): squat/trap-bar deadlift 4x5, Bulgarian split squat 3x8/leg, weighted pull-up 4x6-8, Copenhagen plank 3x20-30s/side",
       "k": "move"
     },
     {
@@ -119,7 +119,7 @@
     {
       "s": "06:15",
       "e": "07:15",
-      "t": "Train (gym — 3 min drive)",
+      "t": "Conditioning: 6-8x30s hard / 90s easy intervals (bike or incline), sauna after",
       "k": "move"
     },
     {
@@ -167,43 +167,31 @@
     {
       "s": "15:00",
       "e": "15:15",
-      "t": "Break",
+      "t": "Leave for coaching / drive to CFS",
       "k": "pause"
     },
     {
-      "s": "15:15",
-      "e": "17:00",
-      "t": "Work — block 4",
-      "k": "focus"
+      "s": "15:30",
+      "e": "17:30",
+      "t": "Coaching (Carolina Friends) — practice ~5pm, games run later",
+      "k": "move"
     },
     {
-      "s": "17:00",
-      "e": "18:15",
-      "t": "Free / hydrate before run",
-      "k": "pause"
-    },
-    {
-      "s": "18:30",
-      "e": "19:00",
-      "t": "Run (1.5–2 mi)",
-      "k": "steps"
-    },
-    {
-      "s": "19:00",
-      "e": "19:15",
-      "t": "Cool down + knee stretch",
+      "s": "17:30",
+      "e": "18:00",
+      "t": "Drive home + shower",
       "k": "recover"
     },
     {
-      "s": "19:15",
-      "e": "20:00",
-      "t": "Shower + dinner",
+      "s": "18:15",
+      "e": "19:00",
+      "t": "Dinner (flexible — later on game nights)",
       "k": "fuel"
     },
     {
-      "s": "20:00",
+      "s": "19:00",
       "e": "20:30",
-      "t": "Free block",
+      "t": "Free time",
       "k": "pause"
     },
     {
@@ -240,24 +228,30 @@
     },
     {
       "s": "06:15",
-      "e": "06:45",
-      "t": "Treadmill walk + knee mobility (3 min drive)",
+      "e": "06:30",
+      "t": "Treadmill walk + knee mobility (warm-up)",
       "k": "steps"
     },
     {
-      "s": "06:45",
-      "e": "07:05",
+      "s": "06:30",
+      "e": "07:10",
+      "t": "Lift (heavy): RDL/single-leg RDL 4x5-6, Nordic hamstring curl 3x6-8, landmine press or bench 4x6-8, heavy farmer's carry 3 trips",
+      "k": "move"
+    },
+    {
+      "s": "07:10",
+      "e": "07:25",
       "t": "Sauna",
       "k": "recover"
     },
     {
-      "s": "07:05",
-      "e": "07:50",
+      "s": "07:25",
+      "e": "08:10",
       "t": "Shower + breakfast",
       "k": "fuel"
     },
     {
-      "s": "07:50",
+      "s": "08:10",
       "e": "09:00",
       "t": "Free / flex morning",
       "k": "pause"
@@ -357,7 +351,7 @@
     {
       "s": "06:15",
       "e": "07:15",
-      "t": "Train (gym — 3 min drive)",
+      "t": "Conditioning: 20-30 min easy zone-2 (bike/incline walk), sauna after",
       "k": "move"
     },
     {
@@ -405,25 +399,25 @@
     {
       "s": "15:00",
       "e": "15:15",
-      "t": "Break",
+      "t": "Leave for coaching / drive to CFS",
       "k": "pause"
     },
     {
-      "s": "15:15",
-      "e": "17:00",
-      "t": "Work — block 4",
-      "k": "focus"
+      "s": "15:30",
+      "e": "17:30",
+      "t": "Coaching (Carolina Friends) — practice ~5pm, games run later",
+      "k": "move"
     },
     {
-      "s": "17:15",
-      "e": "17:45",
-      "t": "Evening walk",
-      "k": "steps"
+      "s": "17:30",
+      "e": "18:00",
+      "t": "Drive home + shower",
+      "k": "recover"
     },
     {
-      "s": "18:00",
-      "e": "18:45",
-      "t": "Dinner",
+      "s": "18:15",
+      "e": "19:00",
+      "t": "Dinner (flexible — later on game nights)",
       "k": "fuel"
     },
     {
@@ -467,7 +461,7 @@
     {
       "s": "06:15",
       "e": "07:15",
-      "t": "Train (gym — 3 min drive)",
+      "t": "Power/explosive: trap-bar jump squats 5x3, box step-up w/ knee drive 4x5/leg, Pallof press or rotational throw 3x8/side, calf raises 3x12-15",
       "k": "move"
     },
     {
@@ -515,25 +509,25 @@
     {
       "s": "15:00",
       "e": "15:15",
-      "t": "Break",
+      "t": "Leave for coaching / drive to CFS",
       "k": "pause"
     },
     {
-      "s": "15:15",
-      "e": "17:00",
-      "t": "Work — block 4",
-      "k": "focus"
+      "s": "15:30",
+      "e": "17:30",
+      "t": "Coaching (Carolina Friends) — practice ~5pm, games run later",
+      "k": "move"
     },
     {
-      "s": "17:15",
-      "e": "17:45",
-      "t": "Evening walk",
-      "k": "steps"
+      "s": "17:30",
+      "e": "18:00",
+      "t": "Drive home + shower",
+      "k": "recover"
     },
     {
-      "s": "18:00",
-      "e": "18:45",
-      "t": "Dinner",
+      "s": "18:15",
+      "e": "19:00",
+      "t": "Dinner (flexible — later on game nights)",
       "k": "fuel"
     },
     {
