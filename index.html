@@ -4,9 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Daily Operating System</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%8B%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#F5F5F7;
@@ -17,27 +18,26 @@
     --surface-soft:#2C2C2E;
     --line:rgba(255,255,255,.13);
     --line-strong:rgba(255,255,255,.22);
-    --accent:#2997FF;      /* Apple's signature dark-mode blue — primary actions, links */
-    /* semantic palette, drawn from Apple's own system colors so each "kind" reads as native */
-    --move:#FF375F;        /* strength / effort / gym — Move-ring red */
+    --accent:#2997FF;
+    --move:#FF375F;        /* gym strength */
     --move-wash:rgba(255,55,95,.15);
-    --recover:#32D74B;     /* recovery / mobility / knee+stability — system green */
+    --recover:#32D74B;     /* wake / hydrate */
     --recover-wash:rgba(50,215,75,.15);
-    --fuel:#FF9F0A;        /* meals / fuel — system orange */
+    --fuel:#FF9F0A;        /* game day */
     --fuel-wash:rgba(255,159,10,.15);
-    --focus:#BF5AF2;       /* deep work — system purple */
+    --focus:#BF5AF2;       /* unplug / no screens */
     --focus-wash:rgba(191,90,242,.15);
-    --pause:#8E8E93;       /* short breaks — system gray */
-    --sleep:#5E5CE6;       /* sleep — system indigo */
-    --steps:#64D2FF;       /* walking / running / cardio — system teal */
+    --sleep:#5E5CE6;       /* sleep */
+    --steps:#64D2FF;       /* run */
     --steps-wash:rgba(100,210,255,.15);
+    --gray:#8E8E93;        /* rest */
     --radius:22px;
     --radius-sm:16px;
     --shadow:0 1px 0 rgba(255,255,255,.05) inset, 0 18px 40px rgba(0,0,0,.45);
     --shadow-lg:0 1px 0 rgba(255,255,255,.06) inset, 0 30px 70px rgba(0,0,0,.6);
     --maxw:920px;
     --sans:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Inter",system-ui,sans-serif;
-    --mono:ui-monospace,"SF Mono","IBM Plex Mono",monospace;
+    --mono:"Space Grotesk",ui-monospace,"SF Mono",monospace;
   }
   *{box-sizing:border-box}
   html,body{margin:0}
@@ -51,26 +51,12 @@
   }
   .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
 
-  /* ---------- header ---------- */
-  header.app{
-    max-width:var(--maxw);margin:0 auto;padding:56px 20px 0;
-  }
+  header.app{max-width:var(--maxw);margin:0 auto;padding:56px 20px 0}
   .brand{display:flex;flex-direction:column;gap:8px}
-  .brand h1{
-    font-family:var(--sans);font-weight:700;letter-spacing:-.03em;
-    font-size:clamp(34px,7vw,52px);margin:0;line-height:1.02;color:var(--ink);
-  }
-  .brand .tag{
-    font-family:var(--sans);font-weight:400;font-size:17px;
-    color:var(--ink-soft);letter-spacing:-.01em;
-  }
+  .brand h1{font-family:var(--sans);font-weight:700;letter-spacing:-.03em;font-size:clamp(34px,7vw,52px);margin:0;line-height:1.02;color:var(--ink)}
+  .brand .tag{font-family:var(--sans);font-weight:400;font-size:17px;color:var(--ink-soft);letter-spacing:-.01em}
   .navWrap{position:relative;margin-top:26px;display:inline-block}
-  .hamburger{
-    display:flex;align-items:center;gap:10px;appearance:none;cursor:pointer;
-    background:var(--surface);border:1px solid var(--line);border-radius:999px;
-    padding:11px 20px 11px 16px;box-shadow:var(--shadow);
-    transition:background .18s ease,transform .12s ease;
-  }
+  .hamburger{display:flex;align-items:center;gap:10px;appearance:none;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:11px 20px 11px 16px;box-shadow:var(--shadow);transition:background .18s ease,transform .12s ease}
   .hamburger:hover{background:var(--surface-soft);transform:translateY(-1px)}
   .hamburger:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   .hamburger[aria-expanded="true"]{border-color:var(--line-strong)}
@@ -78,21 +64,9 @@
   .hbBars span{display:block;height:2px;background:var(--ink);border-radius:2px}
   .hbLabel{font-family:var(--sans);font-weight:600;font-size:14px;color:var(--ink)}
   .hbCaret{font-family:var(--sans);font-size:11px;color:var(--ink-faint);margin-left:1px}
-
-  nav.tabs{
-    position:absolute;top:calc(100% + 10px);left:0;z-index:30;
-    display:flex;flex-direction:column;gap:2px;min-width:236px;
-    background:rgba(29,29,31,.82);backdrop-filter:blur(24px) saturate(1.6);
-    -webkit-backdrop-filter:blur(24px) saturate(1.6);
-    border:1px solid var(--line);border-radius:18px;
-    box-shadow:var(--shadow-lg);padding:7px;
-  }
+  nav.tabs{position:absolute;top:calc(100% + 10px);left:0;z-index:30;display:flex;flex-direction:column;gap:2px;min-width:200px;background:rgba(29,29,31,.82);backdrop-filter:blur(24px) saturate(1.6);-webkit-backdrop-filter:blur(24px) saturate(1.6);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow-lg);padding:7px}
   nav.tabs[hidden]{display:none}
-  nav.tabs button{
-    appearance:none;background:none;border:0;cursor:pointer;text-align:left;
-    font-family:var(--sans);font-weight:500;font-size:14.5px;color:var(--ink-soft);
-    padding:11px 14px;border-radius:12px;transition:background .12s ease,color .12s ease;
-  }
+  nav.tabs button{appearance:none;background:none;border:0;cursor:pointer;text-align:left;font-family:var(--sans);font-weight:500;font-size:14.5px;color:var(--ink-soft);padding:11px 14px;border-radius:12px;transition:background .12s ease,color .12s ease}
   nav.tabs button:hover{background:rgba(255,255,255,.06);color:var(--ink)}
   nav.tabs button[aria-selected="true"]{background:var(--accent);color:#fff}
   nav.tabs button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
@@ -102,90 +76,70 @@
   .panel.active{display:block}
   @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
-  /* ---------- NOW hero (signature) ---------- */
-  .now{
-    background:linear-gradient(165deg,#1D1D1F 0%,#0E0E10 100%);
-    color:var(--ink);border-radius:28px;
-    padding:30px 28px 28px;box-shadow:var(--shadow-lg);overflow:hidden;position:relative;
-    border:1px solid var(--line);
-  }
-  .now::before{
-    content:"";position:absolute;inset:0;pointer-events:none;
-    background:radial-gradient(130% 150% at 100% -20%, rgba(255,55,95,.16), transparent 55%);
-  }
-  .now .eyebrow{
-    font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
-    color:var(--ink-faint);display:flex;justify-content:space-between;align-items:center;gap:10px;position:relative;
-  }
-  .now .clock{color:var(--ink);font-weight:600}
-  .now h2{
-    font-family:var(--sans);font-weight:700;letter-spacing:-.03em;
-    font-size:clamp(28px,6vw,42px);margin:12px 0 4px;line-height:1.04;position:relative;
-  }
-  .now .meta{font-size:15px;color:var(--ink-soft);position:relative}
+  .now{background:linear-gradient(165deg,#1D1D1F 0%,#0E0E10 100%);color:var(--ink);border-radius:28px;padding:26px 26px 28px;box-shadow:var(--shadow-lg);overflow:hidden;position:relative;border:1px solid var(--line)}
+  .now::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(130% 150% at 100% -20%, rgba(255,55,95,.14), transparent 55%)}
+  .now .eyebrow{font-size:12.5px;color:var(--ink-faint);display:flex;justify-content:space-between;align-items:center;gap:10px;position:relative}
+  .now .clock{color:var(--ink);font-weight:600;font-family:var(--mono);font-variant-numeric:tabular-nums}
+  .nowMain{display:flex;align-items:center;gap:22px;margin-top:18px;position:relative;flex-wrap:wrap}
+  .ring{position:relative;width:128px;height:128px;flex:none}
+  .ring svg{width:100%;height:100%;transform:rotate(-90deg);display:block}
+  .ring circle{fill:none;stroke-width:10}
+  .ringTrack{stroke:rgba(255,255,255,.09)}
+  .ringProgress{stroke:var(--move);stroke-linecap:round;stroke-dasharray:339.292;stroke-dashoffset:339.292;transition:stroke-dashoffset .7s cubic-bezier(.16,1,.3,1),stroke .3s ease}
+  .ringCenter{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:1px}
+  .ringNum{font-family:var(--mono);font-weight:700;font-size:25px;color:var(--ink);line-height:1;letter-spacing:-.01em}
+  .ringUnit{font-size:10.5px;color:var(--ink-faint)}
+  .nowInfo{flex:1;min-width:190px}
+  .now h2{font-family:var(--sans);font-weight:700;letter-spacing:-.03em;font-size:clamp(22px,4.6vw,30px);margin:0 0 5px;line-height:1.1}
+  .now .meta{font-size:14.5px;color:var(--ink-soft)}
   .now .meta b{color:var(--ink);font-weight:600}
-  .now .bar{height:4px;background:rgba(255,255,255,.1);border-radius:6px;margin:20px 0 4px;overflow:hidden;position:relative}
-  .now .bar span{display:block;height:100%;background:var(--move);border-radius:6px;transition:width .6s ease}
-  .now .next{margin-top:14px;font-size:13.5px;color:var(--ink-soft);display:flex;align-items:center;gap:8px;position:relative}
+  .now .next{margin-top:13px;font-size:13.5px;color:var(--ink-soft);display:flex;align-items:center;gap:8px}
   .now .next .mono{color:var(--ink)}
   .now .dot{width:6px;height:6px;border-radius:50%;background:var(--recover);flex:none}
 
-  .section-head{
-    display:flex;align-items:baseline;justify-content:space-between;gap:12px;
-    margin:44px 0 16px;flex-wrap:wrap;
-  }
-  .section-head h3{
-    font-family:var(--sans);font-weight:700;font-size:20px;margin:0;letter-spacing:-.02em;color:var(--ink);
-  }
+  /* wake-up streak card */
+  @keyframes streakPulse{0%{box-shadow:0 0 0 0 rgba(50,215,75,.55)}70%{box-shadow:0 0 0 16px rgba(50,215,75,0)}100%{box-shadow:0 0 0 0 rgba(50,215,75,0)}}
+  .streak.milestone{animation:streakPulse 1.3s ease}
+  .streak{display:flex;align-items:center;gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:18px 20px;margin-top:14px;box-shadow:var(--shadow)}
+  .streak .flame{font-size:30px;line-height:1;flex:none}
+  .streak .info{flex:1;min-width:0}
+  .streak .count{font-family:var(--mono);font-weight:700;font-size:21px;color:var(--ink);letter-spacing:-.01em}
+  .streak .sub{font-size:12.5px;color:var(--ink-soft);margin-top:2px}
+  .streak button{flex:none}
+  button.imup{appearance:none;cursor:pointer;font-family:var(--sans);font-weight:700;font-size:14px;border-radius:999px;padding:12px 20px;border:1px solid var(--recover);background:var(--recover-wash);color:var(--recover);transition:transform .1s ease,background .15s ease}
+  button.imup:hover{background:rgba(50,215,75,.24)}
+  button.imup:active{transform:translateY(1px)}
+  button.imup.done{background:var(--recover);color:#04170a;border-color:var(--recover)}
+  button.imup:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  .section-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:40px 0 16px;flex-wrap:wrap}
+  .section-head h3{font-family:var(--sans);font-weight:700;font-size:20px;margin:0;letter-spacing:-.02em;color:var(--ink)}
   .section-head .hint{font-size:12.5px;color:var(--ink-faint)}
 
-  /* ---------- schedule list ---------- */
   .day{display:flex;flex-direction:column;gap:9px}
-  .block{
-    background:var(--surface);border:1px solid var(--line);border-radius:18px;
-    padding:14px 18px;display:flex;gap:14px;align-items:center;
-    box-shadow:var(--shadow);transition:transform .15s ease,background .15s ease;
-    cursor:pointer;position:relative;
-  }
-  .block::before{
-    content:"";position:absolute;left:0;top:16px;bottom:16px;width:3px;border-radius:3px;
-    background:var(--pause);
-  }
-  .block{padding-left:22px}
+  .block{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px 18px 14px 22px;display:flex;gap:14px;align-items:center;box-shadow:var(--shadow);transition:transform .15s ease,background .15s ease;cursor:pointer;position:relative}
+  .block::before{content:"";position:absolute;left:0;top:16px;bottom:16px;width:3px;border-radius:3px;background:var(--gray)}
   .block:hover{transform:translateX(2px);background:var(--surface-soft)}
   .block:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-  .block .time{
-    font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);
-    min-width:92px;line-height:1.3;flex:none;
-  }
+  .block .time{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);min-width:92px;line-height:1.3;flex:none}
   .block .time .end{color:var(--ink-faint);font-size:11px}
   .block .body{flex:1;min-width:0}
   .block .title{font-weight:500;font-size:14.5px;line-height:1.35;color:var(--ink)}
-  .block .kind{
-    font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
-    color:var(--ink-faint);margin-top:3px;
-  }
+  .block .kind{font-size:11.5px;color:var(--ink-faint);margin-top:3px;display:flex;align-items:center;gap:6px}
+  .block .kind::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.55}
   .block .dur{font-family:var(--mono);font-size:11px;color:var(--ink-faint);flex:none}
   .block.is-now{background:var(--surface-soft);box-shadow:0 0 0 1.5px var(--accent), var(--shadow)}
-  .block.is-now .nowtag{
-    font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;background:var(--accent);color:#fff;
-    padding:2px 7px;border-radius:99px;margin-left:8px;
-  }
-  /* kind colors via accent bar */
-  .block[data-kind="move"]::before{background:var(--move)}
-  .block[data-kind="recover"]::before{background:var(--recover)}
-  .block[data-kind="fuel"]::before{background:var(--fuel)}
-  .block[data-kind="focus"]::before{background:var(--focus)}
-  .block[data-kind="pause"]::before{background:var(--pause)}
+  .block.is-now .nowtag{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;background:var(--accent);color:#fff;padding:2px 7px;border-radius:99px;margin-left:8px}
+  .block[data-kind="wake"]::before{background:var(--recover)}
+  .block[data-kind="hydrate"]::before{background:var(--recover)}
+  .block[data-kind="gym"]::before{background:var(--move)}
+  .block[data-kind="run"]::before{background:var(--steps)}
+  .block[data-kind="game"]::before{background:var(--fuel)}
+  .block[data-kind="unplug"]::before{background:var(--focus)}
   .block[data-kind="sleep"]::before{background:var(--sleep)}
-  .block[data-kind="steps"]::before{background:var(--steps)}
 
   .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
-  button.btn{
-    appearance:none;font-family:var(--sans);font-weight:600;font-size:14px;cursor:pointer;
-    border-radius:999px;padding:11px 20px;border:1px solid var(--line-strong);
-    background:var(--surface);color:var(--ink);transition:background .15s ease,transform .1s ease;
-  }
+  button.btn{appearance:none;font-family:var(--sans);font-weight:600;font-size:14px;cursor:pointer;border-radius:999px;padding:11px 20px;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);transition:background .15s ease,transform .1s ease}
   button.btn:hover{background:var(--surface-soft)}
   button.btn:active{transform:translateY(1px)}
   button.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
@@ -197,41 +151,34 @@
   .legend span{display:inline-flex;align-items:center;gap:6px}
   .legend i{width:8px;height:8px;border-radius:50%;display:inline-block}
 
-  /* ---------- editor dialog ---------- */
-  dialog.editor{
-    border:0;border-radius:24px;padding:0;max-width:380px;width:92vw;
-    box-shadow:0 30px 80px rgba(0,0,0,.6);color:var(--ink);background:var(--surface);
-    border:1px solid var(--line);
+  .todayGrid{display:block}
+  @media(min-width:860px){
+    .todayGrid{display:grid;grid-template-columns:360px 1fr;gap:28px;align-items:start}
+    .todaySide{position:sticky;top:24px}
   }
+
+  dialog.editor{border:0;border-radius:24px;padding:0;max-width:380px;width:92vw;box-shadow:0 30px 80px rgba(0,0,0,.6);color:var(--ink);background:var(--surface);border:1px solid var(--line)}
   dialog.editor::backdrop{background:rgba(0,0,0,.6);backdrop-filter:blur(4px)}
   .editor .ehead{padding:20px 22px 0}
   .editor h4{font-family:var(--sans);font-weight:700;margin:0;font-size:18px;color:var(--ink)}
   .editor form{padding:16px 22px 22px;display:flex;flex-direction:column;gap:13px}
   .editor label{font-size:11.5px;color:var(--ink-soft);font-weight:600;display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.05em}
-  .editor input,.editor select{
-    width:100%;font-family:var(--sans);font-size:14px;padding:10px 12px;border:1px solid var(--line-strong);
-    border-radius:12px;background:var(--surface-soft);color:var(--ink);
-  }
+  .editor input,.editor select{width:100%;font-family:var(--sans);font-size:14px;padding:10px 12px;border:1px solid var(--line-strong);border-radius:12px;background:var(--surface-soft);color:var(--ink)}
   .editor .row{display:flex;gap:10px}
   .editor .row>div{flex:1}
   .editor input.mono,.editor input[type=time]{font-family:var(--mono)}
   .editor .actions{display:flex;justify-content:space-between;gap:8px;margin-top:6px}
   .editor input:focus,.editor select:focus{outline:2px solid var(--accent);outline-offset:1px}
 
-  /* ---------- training / weekstrip (reused by schedule + meal plan) ---------- */
   .weekstrip{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;margin-bottom:20px}
-  .weekstrip button{
-    appearance:none;cursor:pointer;border:1px solid var(--line);background:var(--surface);
-    border-radius:14px;padding:11px 4px 10px;text-align:center;transition:transform .12s ease,background .12s ease;
-    box-shadow:var(--shadow);
-  }
+  .weekstrip button{appearance:none;cursor:pointer;border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:11px 4px 10px;text-align:center;transition:transform .12s ease,background .12s ease;box-shadow:var(--shadow)}
   .weekstrip button:hover{transform:translateY(-2px);background:var(--surface-soft)}
-  .weekstrip button[data-focus="move"] .wd{color:var(--move)}
-  .weekstrip button[data-focus="recover"] .wd{color:var(--recover)}
+  .weekstrip button[data-focus="gym"] .wd{color:var(--move)}
+  .weekstrip button[data-focus="run"] .wd{color:var(--steps)}
+  .weekstrip button[data-focus="game"] .wd{color:var(--fuel)}
   .weekstrip button[data-focus="rest"] .wd{color:var(--ink-faint)}
   .weekstrip button[aria-selected="true"]{background:var(--accent);border-color:var(--accent)}
-  .weekstrip button[aria-selected="true"] .wd,
-  .weekstrip button[aria-selected="true"] .wf{color:#fff}
+  .weekstrip button[aria-selected="true"] .wd,.weekstrip button[aria-selected="true"] .wf{color:#fff}
   .weekstrip button.today{box-shadow:0 0 0 2px var(--move), var(--shadow)}
   .weekstrip .wd{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;color:var(--ink-faint);display:block}
   .weekstrip .wf{font-family:var(--sans);font-weight:600;font-size:11.5px;margin-top:4px;line-height:1.15;color:var(--ink)}
@@ -240,37 +187,75 @@
   .workout{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:24px 24px 10px;box-shadow:var(--shadow)}
   .workout .whead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:16px}
   .workout .whead h3{font-family:var(--sans);font-weight:700;font-size:23px;margin:0;letter-spacing:-.02em;color:var(--ink)}
-  .workout .whead .focus{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--move);background:var(--move-wash);padding:4px 10px;border-radius:999px}
-  .workout .whead .focus.recover{color:var(--recover);background:var(--recover-wash)}
-  .grp{margin:18px 0}
-  .grp .gtitle{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:9px}
+  .workout .whead .stats{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .workout .whead .focus{font-size:12.5px;color:var(--move);background:var(--move-wash);padding:5px 12px;border-radius:999px;font-weight:500}
+  .workout .whead .focus.steps{color:var(--steps);background:var(--steps-wash)}
+  .workout .whead .exCount{font-family:var(--mono);font-size:12.5px;color:var(--ink-faint)}
+  .grp{margin:20px 0}
+  .grp .gtitle{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--ink-soft);font-weight:600;margin-bottom:9px}
+  .grp .gnum{font-family:var(--mono);font-size:10.5px;color:var(--ink-faint);width:18px;height:18px;border-radius:50%;border:1px solid var(--line-strong);display:flex;align-items:center;justify-content:center;flex:none}
   .ex{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
   .ex:last-child{border-bottom:0}
   .ex .name{flex:1;font-weight:500;font-size:14.5px;color:var(--ink)}
   .ex .name small{display:block;font-weight:400;color:var(--ink-soft);font-size:12.5px;margin-top:2px}
   .ex .sets{font-family:var(--mono);font-size:13px;color:var(--ink);white-space:nowrap;flex:none}
-  .ex.knee{background:var(--recover-wash);margin:0 -12px;padding:11px 12px;border-radius:12px;border-bottom:0}
-  .ex.knee .name::before{content:"◖ stability ";font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--recover);font-weight:600}
+  .ex.plyo{background:var(--move-wash);margin:0 -12px;padding:11px 12px;border-radius:12px;border-bottom:0}
+  .ex.plyo .name b{color:var(--move);font-weight:600}
   .restday{background:var(--surface);border:1px solid var(--recover-wash);border-radius:var(--radius);padding:26px;color:var(--ink)}
   .restday h3{font-family:var(--sans);font-weight:700;margin:0 0 8px;font-size:20px;color:var(--recover)}
-  .gameday{background:var(--surface);border:1px solid var(--move-wash);border-radius:var(--radius);padding:26px;color:var(--ink)}
-  .gameday h3{font-family:var(--sans);font-weight:700;margin:0 0 12px;font-size:22px;color:var(--move)}
+  .gameday{background:var(--surface);border:1px solid var(--fuel-wash);border-radius:var(--radius);padding:26px;color:var(--ink)}
+  .gameday h3{font-family:var(--sans);font-weight:700;margin:0 0 12px;font-size:22px;color:var(--fuel)}
+  .runday{background:var(--surface);border:1px solid var(--steps-wash);border-radius:var(--radius);padding:26px;color:var(--ink)}
+  .runday h3{font-family:var(--sans);font-weight:700;margin:0 0 12px;font-size:22px;color:var(--steps)}
 
-  .callout{
-    background:var(--recover-wash);border:0;border-radius:14px;
-    padding:15px 17px;margin:18px 0;font-size:13.5px;color:var(--ink);
-  }
-  .callout b{color:var(--recover)}
-  .callout .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--recover);display:block;margin-bottom:6px}
+  /* ---------- habit grid ---------- */
+  .habitgrid{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 18px 8px;overflow-x:auto}
+  table.hgrid{border-collapse:collapse;width:100%;min-width:520px}
+  table.hgrid th,table.hgrid td{text-align:center;padding:8px 6px}
+  table.hgrid thead th{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--ink-faint);font-weight:500}
+  table.hgrid thead th.today{color:var(--accent)}
+  table.hgrid tbody th{text-align:left;font-family:var(--sans);font-size:13px;color:var(--ink-soft);font-weight:500;white-space:nowrap;padding-right:14px}
+  table.hgrid tbody tr{border-top:1px solid var(--line)}
+  table.hgrid input[type=checkbox]{width:19px;height:19px;accent-color:var(--recover);cursor:pointer}
+  table.hgrid input[type=checkbox]:disabled{cursor:default;opacity:.55}
 
-  /* ---------- yoga / prose ---------- */
+  /* ---------- consistency dashboard ---------- */
+  .statsCard{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px 22px 22px;margin-top:14px}
+  .statsHead{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+  .statsHead h4{font-family:var(--sans);font-weight:700;font-size:15px;margin:0;color:var(--ink)}
+  .segmented{display:inline-flex;background:var(--surface-soft);border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px}
+  .segmented button{appearance:none;cursor:pointer;border:0;background:none;font-family:var(--sans);font-weight:600;font-size:12.5px;color:var(--ink-soft);padding:6px 13px;border-radius:999px;transition:background .15s ease,color .15s ease}
+  .segmented button[aria-selected="true"]{background:var(--accent);color:#fff}
+  .segmented button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .statGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:12px;margin-top:2px}
+  .statTile{display:flex;flex-direction:column;align-items:center;gap:9px;background:var(--surface-soft);border:1px solid var(--line);border-radius:16px;padding:16px 8px 14px}
+  .statRing{position:relative;width:62px;height:62px}
+  .statRing svg{width:100%;height:100%;transform:rotate(-90deg);display:block}
+  .statRingTrack{fill:none;stroke-width:7;stroke:rgba(255,255,255,.09)}
+  .statRingFill{fill:none;stroke-width:7;stroke-linecap:round;transition:stroke-dashoffset .6s cubic-bezier(.16,1,.3,1)}
+  .statRingPct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:13px;color:var(--ink)}
+  .statLabel{font-size:11.5px;color:var(--ink-soft);text-align:center;line-height:1.25}
+  .statFrac{font-family:var(--mono);font-size:10.5px;color:var(--ink-faint)}
+  .statsEmpty{font-size:13.5px;color:var(--ink-faint);padding:6px 0}
+  .statsRange{font-size:11.5px;color:var(--ink-faint);margin-top:16px}
+
+  /* ---------- prose / yoga ---------- */
   .prose{max-width:660px}
-  .prose h3{font-family:var(--sans);font-weight:700;font-size:19px;margin:30px 0 8px;letter-spacing:-.02em;color:var(--ink)}
   .prose p{margin:0 0 12px;color:var(--ink-soft)}
   .flow{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:6px 20px;box-shadow:var(--shadow);margin:14px 0}
-  .flow .fh{display:flex;justify-content:space-between;align-items:baseline;padding:15px 0 11px;border-bottom:1px solid var(--line)}
-  .flow .fh h4{font-family:var(--sans);font-weight:700;margin:0;font-size:16px;color:var(--ink)}
-  .flow .fh .len{font-family:var(--mono);font-size:11.5px;color:var(--recover)}
+  .flowcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:6px 20px 20px;box-shadow:var(--shadow);touch-action:pan-y;user-select:none}
+  .flowcard:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .fcHead{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:15px 0 11px;border-bottom:1px solid var(--line)}
+  .fcTitle{text-align:center;flex:1}
+  .fcTitle h4{font-family:var(--sans);font-weight:700;margin:0;font-size:17px;color:var(--ink)}
+  .fcLen{font-size:11.5px;color:var(--focus)}
+  .fcNav{appearance:none;cursor:pointer;background:var(--surface-soft);border:1px solid var(--line);border-radius:50%;width:34px;height:34px;flex:none;font-size:17px;line-height:1;color:var(--ink);display:flex;align-items:center;justify-content:center;transition:background .12s ease}
+  .fcNav:hover{background:var(--line-strong)}
+  .fcNav:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .fcDesc{margin:13px 0 2px;font-size:13.5px;color:var(--ink-soft)}
+  .fcDots{display:flex;justify-content:center;gap:7px;padding-top:13px}
+  .fcDot{appearance:none;cursor:pointer;background:var(--line-strong);border:0;width:7px;height:7px;border-radius:50%;padding:0}
+  .fcDot.active{background:var(--focus);width:20px;border-radius:5px;transition:width .2s ease}
   .pose{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
   .pose:last-child{border-bottom:0}
   .pose .num{font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);min-width:20px;flex:none;padding-top:1px}
@@ -279,100 +264,7 @@
   .pose .pn small{display:block;color:var(--ink-soft);font-size:12.5px;margin-top:2px}
   .pose .hold{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);flex:none}
 
-  /* ---------- yoga flashcard ---------- */
-  .flowcard{
-    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
-    padding:6px 20px 20px;box-shadow:var(--shadow);touch-action:pan-y;user-select:none;
-  }
-  .flowcard:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-  .fcHead{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:15px 0 11px;border-bottom:1px solid var(--line)}
-  .fcTitle{text-align:center;flex:1}
-  .fcTitle h4{font-family:var(--sans);font-weight:700;margin:0;font-size:17px;color:var(--ink)}
-  .fcLen{font-size:11.5px;color:var(--recover)}
-  .fcNav{
-    appearance:none;cursor:pointer;background:var(--surface-soft);border:1px solid var(--line);
-    border-radius:50%;width:34px;height:34px;flex:none;font-size:17px;line-height:1;color:var(--ink);
-    display:flex;align-items:center;justify-content:center;transition:background .12s ease;
-  }
-  .fcNav:hover{background:var(--line-strong)}
-  .fcNav:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-  .fcDesc{margin:13px 0 2px;font-size:13.5px;color:var(--ink-soft)}
-  .fcDots{display:flex;justify-content:center;gap:7px;padding-top:13px}
-  .fcDot{appearance:none;cursor:pointer;background:var(--line-strong);border:0;width:7px;height:7px;border-radius:50%;padding:0}
-  .fcDot.active{background:var(--recover);width:20px;border-radius:5px;transition:width .2s ease}
-
   .footer{max-width:var(--maxw);margin:36px auto 0;padding:0 20px;color:var(--ink-faint);font-size:11.5px}
-
-  /* ---------- nutrition ---------- */
-  .fuelcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;box-shadow:var(--shadow)}
-  .fuelcard .eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:16px}
-  .macros{display:grid;grid-template-columns:1fr 1fr;gap:24px}
-  .macro .ml{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
-  .macro .lab{font-family:var(--sans);font-weight:700;font-size:13.5px;color:var(--ink)}
-  .macro .val{font-family:var(--mono);font-size:12px;color:var(--ink-soft)}
-  .macro .val b{font-size:19px;color:var(--ink)}
-  .macro .track{height:7px;background:var(--surface-soft);border-radius:8px;overflow:hidden}
-  .macro .track span{display:block;height:100%;border-radius:8px;transition:width .5s ease}
-  .macro.kcal .track span{background:var(--fuel)}
-  .macro.prot .track span{background:var(--move)}
-  .macro .rem{font-family:var(--mono);font-size:11px;color:var(--ink-faint);margin-top:7px}
-  @media(max-width:480px){.macros{grid-template-columns:1fr;gap:18px}}
-
-  .targetbox{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);margin:16px 0;overflow:hidden}
-  .targetbox>summary{cursor:pointer;list-style:none;padding:16px 22px;font-family:var(--sans);font-weight:600;font-size:14.5px;display:flex;justify-content:space-between;align-items:center;color:var(--ink)}
-  .targetbox>summary::-webkit-details-marker{display:none}
-  .targetbox>summary::after{content:"+";font-family:var(--sans);color:var(--ink-faint);font-size:18px}
-  .targetbox[open]>summary::after{content:"\2013"}
-  .tbody{padding:2px 22px 22px;border-top:1px solid var(--line)}
-  .field{margin-top:14px}
-  .field label{display:block;font-size:11.5px;font-weight:600;color:var(--ink-soft);margin-bottom:5px}
-  .field input,.field select{width:100%;font-family:var(--sans);font-size:14px;padding:10px 12px;border:1px solid var(--line-strong);border-radius:12px;background:var(--surface-soft);color:var(--ink)}
-  .field input.mono{font-family:var(--mono)}
-  .field input:focus,.field select:focus{outline:2px solid var(--accent);outline-offset:1px}
-  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-  .subhead{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin:22px 0 0}
-  .estimate{background:var(--fuel-wash);border:0;border-radius:12px;padding:13px 15px;margin-top:14px;font-size:13.5px;color:var(--ink);display:none}
-  .estimate.show{display:block}
-  .estimate b{color:#FFB84D}
-
-  .mealcard{background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);margin-bottom:10px;overflow:hidden}
-  .mealcard .mh{display:flex;justify-content:space-between;align-items:baseline;padding:15px 18px;gap:10px}
-  .mealcard .mn{font-family:var(--sans);font-weight:700;font-size:14.5px;color:var(--ink)}
-  .mealcard .mb{font-family:var(--mono);font-size:11.5px;color:var(--ink-faint)}
-  .mealcard .mb b{color:var(--ink)}
-  .mentries{padding:0 18px}
-  .nentry{display:flex;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line);cursor:pointer}
-  .nentry:hover{opacity:.7}
-  .nentry .nn{flex:1;font-size:14px;color:var(--ink)}
-  .nentry .nk{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);white-space:nowrap}
-  .nentry .nk .p{color:var(--move)}
-  .mealcard .empty{padding:10px 0 5px;font-size:13px;color:var(--ink-faint);border-top:1px solid var(--line)}
-  .mealcard .madd{display:block;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:12px 18px;cursor:pointer;font-family:var(--sans);font-weight:600;font-size:13px;color:var(--ink-faint)}
-  .mealcard .madd:hover{color:var(--ink)}
-  .mealcard .madd:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
-
-  .recipes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
-  .recipe{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow);display:flex;flex-direction:column}
-  .recipe .rtag{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--recover);margin-bottom:7px}
-  .recipe h4{font-family:var(--sans);font-weight:700;font-size:14.5px;margin:0 0 4px;line-height:1.2;color:var(--ink)}
-  .recipe p{margin:0 0 11px;font-size:12.5px;color:var(--ink-soft);flex:1}
-  .recipe .rmac{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);margin-bottom:12px}
-  .recipe .rmac .p{color:var(--move)}
-  .recipe button{align-self:flex-start}
-  @media(max-width:480px){.recipes{grid-template-columns:1fr}}
-
-  /* ---------- grocery list ---------- */
-  .addrow{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
-  .addrow input{flex:1;min-width:160px;font-family:var(--sans);font-size:14px;padding:10px 14px;border:1px solid var(--line-strong);border-radius:12px;background:var(--surface);color:var(--ink)}
-  .addrow input:focus{outline:2px solid var(--accent);outline-offset:1px}
-  .gitem{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
-  .gitem input[type=checkbox]{width:17px;height:17px;flex:none;accent-color:var(--move);cursor:pointer}
-  .gitem .gn{flex:1;font-size:14.5px;color:var(--ink)}
-  .gitem.checked .gn{color:var(--ink-faint);text-decoration:line-through}
-  .gitem .gdel{background:none;border:0;color:var(--ink-faint);cursor:pointer;font-size:18px;line-height:1;padding:2px 8px;flex:none}
-  .gitem .gdel:hover{color:var(--move)}
-  .gitem .gdel:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 
   @media (max-width:560px){
     .block .time{min-width:74px}
@@ -380,16 +272,14 @@
     .weekstrip{grid-template-columns:repeat(7,1fr);gap:4px}
     .weekstrip .wf{font-size:9.5px}
   }
-  @media (prefers-reduced-motion:reduce){
-    *{animation:none!important;transition:none!important}
-  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 <header class="app">
   <div class="brand">
     <h1>Daily OS</h1>
-    <span class="tag">Structure, strength, and recovery — built around training and match day.</span>
+    <span class="tag">Wake up, train hard, unplug, sleep — the anchors that actually matter.</span>
   </div>
   <div class="navWrap" id="navWrap">
     <button class="hamburger" id="menuToggle" aria-haspopup="true" aria-expanded="false" aria-controls="navMenu">
@@ -400,8 +290,7 @@
     <nav class="tabs" role="tablist" aria-label="Sections" id="navMenu" hidden>
       <button role="tab" id="tab-today" aria-selected="true" aria-controls="panel-today">Today</button>
       <button role="tab" id="tab-train" aria-selected="false" aria-controls="panel-train">Training</button>
-      <button role="tab" id="tab-yoga" aria-selected="false" aria-controls="panel-yoga">Yoga &amp; Recovery</button>
-      <button role="tab" id="tab-recipes" aria-selected="false" aria-controls="panel-recipes">Recipes</button>
+      <button role="tab" id="tab-yoga" aria-selected="false" aria-controls="panel-yoga">Yoga</button>
     </nav>
   </div>
 </header>
@@ -409,40 +298,88 @@
 <main>
   <!-- ===================== TODAY ===================== -->
   <section class="panel active" id="panel-today" role="tabpanel" aria-labelledby="tab-today">
-    <div class="now" id="nowCard">
-      <div class="eyebrow"><span id="nowDate">—</span><span class="clock mono" id="nowClock">--:--</span></div>
-      <h2 id="nowTitle">Right now</h2>
-      <div class="meta" id="nowMeta">Loading your day…</div>
-      <div class="bar"><span id="nowBar" style="width:0%"></span></div>
-      <div class="next"><span class="dot"></span><span>Next&nbsp; <span class="mono" id="nextTime">—</span> &nbsp;<span id="nextTitle">—</span></span></div>
-    </div>
+    <div class="todayGrid">
+      <div class="todaySide">
+        <div class="now" id="nowCard">
+          <div class="eyebrow"><span id="nowDate">—</span><span class="clock" id="nowClock">--:--</span></div>
+          <div class="nowMain">
+            <div class="ring" aria-hidden="true">
+              <svg viewBox="0 0 120 120">
+                <circle class="ringTrack" cx="60" cy="60" r="54"></circle>
+                <circle class="ringProgress" id="ringProgress" cx="60" cy="60" r="54"></circle>
+              </svg>
+              <div class="ringCenter">
+                <div class="ringNum" id="ringNum">--</div>
+                <div class="ringUnit" id="ringUnit">&nbsp;</div>
+              </div>
+            </div>
+            <div class="nowInfo">
+              <h2 id="nowTitle">Right now</h2>
+              <div class="meta" id="nowMeta">Loading your day…</div>
+              <div class="next"><span class="dot"></span><span>Next&nbsp; <span class="mono" id="nextTime">—</span> &nbsp;<span id="nextTitle">—</span></span></div>
+            </div>
+          </div>
+        </div>
 
-    <div class="section-head" style="margin-top:30px">
-      <h3>Which day's schedule?</h3>
-      <span class="hint">Now always tracks today, even while you're browsing another day below</span>
+        <div class="streak" id="streakCard">
+          <div class="flame">🔥</div>
+          <div class="info">
+            <div class="count mono" id="streakCount">0-day streak</div>
+            <div class="sub">Tap in the moment you're actually up — target is <span id="wakeTargetLabel" class="mono">6:00 am</span></div>
+          </div>
+          <button class="imup" id="imUpBtn">I'm up</button>
+        </div>
+      </div>
+
+      <div class="todayMain">
+        <div class="section-head" style="margin-top:0">
+          <h3>Which day's schedule?</h3>
+          <span class="hint">Today's anchors always drive "right now" above</span>
+        </div>
+        <div class="weekstrip" id="schedWeekStrip"></div>
+
+        <div class="section-head">
+          <h3 id="dayListHeading">Today</h3>
+          <span class="hint">Tap any block to edit it</span>
+        </div>
+        <div class="day" id="dayList"></div>
+
+        <div class="toolbar">
+          <button class="btn primary" id="addBlock">+ Add block</button>
+          <button class="btn ghost" id="resetDay">Reset to default</button>
+        </div>
+
+        <div class="legend">
+          <span><i style="background:var(--recover)"></i>Wake</span>
+          <span><i style="background:var(--recover)"></i>Hydrate</span>
+          <span><i style="background:var(--move)"></i>Gym</span>
+          <span><i style="background:var(--steps)"></i>Run</span>
+          <span><i style="background:var(--fuel)"></i>Game</span>
+          <span><i style="background:var(--focus)"></i>Unplug</span>
+          <span><i style="background:var(--sleep)"></i>Sleep</span>
+        </div>
+      </div>
     </div>
-    <div class="weekstrip" id="schedWeekStrip"></div>
 
     <div class="section-head">
-      <h3 id="dayListHeading">Today, top to bottom</h3>
-      <span class="hint">Tap any block to edit its time, name, or type</span>
+      <h3>This week's habits</h3>
+      <span class="hint">Only today is checkable — everything else is a record</span>
+    </div>
+    <div class="habitgrid">
+      <table class="hgrid" id="habitTable"></table>
     </div>
 
-    <div class="day" id="dayList"></div>
-
-    <div class="toolbar">
-      <button class="btn primary" id="addBlock">+ Add block</button>
-      <button class="btn ghost" id="resetDay">Reset to default day</button>
-    </div>
-
-    <div class="legend">
-      <span><i style="background:var(--focus)"></i>Focus</span>
-      <span><i style="background:var(--pause)"></i>Pause</span>
-      <span><i style="background:var(--fuel)"></i>Fuel</span>
-      <span><i style="background:var(--move)"></i>Train</span>
-      <span><i style="background:var(--steps)"></i>Walk/Run</span>
-      <span><i style="background:var(--recover)"></i>Recover</span>
-      <span><i style="background:var(--sleep)"></i>Sleep</span>
+    <div class="statsCard">
+      <div class="statsHead">
+        <h4>Consistency</h4>
+        <div class="segmented" id="statsRangeToggle" role="tablist" aria-label="Time range">
+          <button data-range="7" aria-selected="true">Week</button>
+          <button data-range="month" aria-selected="false">Month</button>
+          <button data-range="all" aria-selected="false">All time</button>
+        </div>
+      </div>
+      <div class="statGrid" id="statsRows"></div>
+      <div class="statsRange" id="statsRangeLabel"></div>
     </div>
   </section>
 
@@ -450,40 +387,20 @@
   <section class="panel" id="panel-train" role="tabpanel" aria-labelledby="tab-train" hidden>
     <div class="weekstrip" id="weekStrip"></div>
     <div id="workoutHost"></div>
-
-    <div class="callout">
-      <span class="k">The week</span>
-      Mon/Wed/Fri: heavy lift. Tue/Thu: conditioning, then coaching. Sat: match. Sun: rest.
-    </div>
-
-    <div class="callout">
-      <span class="k">Knee rule</span>
-      Left leg sets the pace on single-leg work. Control the eccentric. No sharp pain — swelling next day means back off.
-    </div>
   </section>
 
   <!-- ===================== YOGA ===================== -->
   <section class="panel" id="panel-yoga" role="tabpanel" aria-labelledby="tab-yoga" hidden>
-    <div class="prose">
-      <p style="font-size:15px;color:var(--ink)">Opens hips and hamstrings, trains balance for the knee.</p>
-
-      <div class="callout" style="margin-top:18px">
-        <span class="k">Knee-safe rules</span>
-        Pad the knee when kneeling. Skip deep flexion (full hero, deep lotus). Front knee tracks over ankle, never drifts in.
-      </div>
-
-    </div>
-
-    <div class="section-head" style="margin-top:22px">
-      <h3>Your flows</h3>
+    <div class="section-head" style="margin-top:0">
+      <h3>Flows</h3>
       <span class="hint">Swipe left/right, or use the arrows · 1 of 3</span>
     </div>
     <div class="flowcard" id="flowCard" tabindex="0">
       <div class="fcHead">
         <button class="fcNav" id="fcPrev" aria-label="Previous flow">‹</button>
         <div class="fcTitle">
-          <h4 id="fcName">Daily reset</h4>
-          <span class="fcLen mono" id="fcLen">~10 min</span>
+          <h4 id="fcName">Morning</h4>
+          <span class="fcLen mono" id="fcLen">~6 min</span>
         </div>
         <button class="fcNav" id="fcNext" aria-label="Next flow">›</button>
       </div>
@@ -491,27 +408,13 @@
       <div id="fcPoses"></div>
       <div class="fcDots" id="fcDots"></div>
     </div>
-
-    <div class="prose" style="margin-top:26px">
-      <h3>Reach for</h3>
-      <p><b>Tree pose / single-leg balance</b> — proprioception</p>
-      <p><b>Bridge / locust</b> — posterior chain, no deep flexion</p>
-      <p><b>Figure-four / supine pigeon</b> — hip opening, knee-safe</p>
-      <p><b>Legs-up-the-wall</b> — drains swelling, downshifts before sleep</p>
-    </div>
-  </section>
-
-  <!-- ===================== RECIPES ===================== -->
-  <section class="panel" id="panel-recipes" role="tabpanel" aria-labelledby="tab-recipes" hidden>
-    <div id="recipeHost"></div>
   </section>
 </main>
 
 <footer class="footer">
-  Your edits are saved on this device — each day of the week keeps its own schedule. This plan is a starting framework, not medical advice — your physical therapist's guidance comes first.
+  Your edits and check-ins are saved on this device. This plan is a starting framework, not medical advice.
 </footer>
 
-<!-- editor dialog -->
 <dialog class="editor" id="editor">
   <div class="ehead"><h4 id="editorTitle">Edit block</h4></div>
   <form method="dialog" id="editorForm">
@@ -519,15 +422,15 @@
       <div><label for="fStart">Start</label><input type="time" id="fStart" required></div>
       <div><label for="fEnd">End</label><input type="time" id="fEnd" required></div>
     </div>
-    <div><label for="fName">Name</label><input type="text" id="fName" maxlength="48" placeholder="e.g. Deep work" required></div>
+    <div><label for="fName">Name</label><input type="text" id="fName" maxlength="48" placeholder="e.g. Lower Body Power" required></div>
     <div><label for="fKind">Type</label>
       <select id="fKind">
-        <option value="focus">Focus — work</option>
-        <option value="pause">Pause — short break</option>
-        <option value="fuel">Fuel — meal</option>
-        <option value="move">Train — gym</option>
-        <option value="steps">Walk/Run — cardio</option>
-        <option value="recover">Recover — mobility / stretch</option>
+        <option value="wake">Wake + hydrate</option>
+        <option value="hydrate">Hydrate</option>
+        <option value="gym">Gym — strength</option>
+        <option value="run">Run</option>
+        <option value="game">Game</option>
+        <option value="unplug">Unplug — no screens</option>
         <option value="sleep">Sleep</option>
       </select>
     </div>
@@ -544,25 +447,27 @@
 <script>
 "use strict";
 
-/* ---------- safe storage (works on GitHub Pages / local file; degrades to memory) ---------- */
 const store = (() => {
   let mem = {};
   try {
     const k="__t"; localStorage.setItem(k,"1"); localStorage.removeItem(k);
     return {
-      get:(k)=>localStorage.getItem(k),
-      set:(k,v)=>localStorage.setItem(k,v),
-      del:(k)=>localStorage.removeItem(k)
+      get:(k)=>localStorage.getItem(k), set:(k,v)=>localStorage.setItem(k,v), del:(k)=>localStorage.removeItem(k),
+      keys:(prefix)=>Object.keys(localStorage).filter(k=>k.startsWith(prefix))
     };
   } catch(e){
-    return {get:(k)=>mem[k]??null, set:(k,v)=>{mem[k]=String(v)}, del:(k)=>{delete mem[k]}};
+    return {
+      get:(k)=>mem[k]??null, set:(k,v)=>{mem[k]=String(v)}, del:(k)=>{delete mem[k]},
+      keys:(prefix)=>Object.keys(mem).filter(k=>k.startsWith(prefix))
+    };
   }
 })();
 const $=id=>document.getElementById(id);
 function escapeHtml(s){ return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 function todayIndex(){ const d=new Date(); return (d.getDay()+6)%7; } // Mon=0 … Sun=6
+function isoDate(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 
-/* ---------- hamburger menu ---------- */
+/* ---------- hamburger + tabs ---------- */
 const menuToggle=$('menuToggle'), navMenu=$('navMenu'), menuLabel=$('menuCurrentLabel'), navWrap=$('navWrap');
 function closeMenu(){ navMenu.hidden=true; menuToggle.setAttribute('aria-expanded','false'); }
 function openMenu(){ navMenu.hidden=false; menuToggle.setAttribute('aria-expanded','true'); }
@@ -570,16 +475,13 @@ menuToggle.addEventListener('click',(e)=>{ e.stopPropagation(); if(navMenu.hidde
 document.addEventListener('click',(e)=>{ if(!navMenu.hidden && !navWrap.contains(e.target)) closeMenu(); });
 document.addEventListener('keydown',(e)=>{ if(e.key==='Escape') closeMenu(); });
 
-/* ---------- tabs ---------- */
 const tabs = document.querySelectorAll('nav.tabs button');
-const panels = {today:'panel-today', train:'panel-train', yoga:'panel-yoga', recipes:'panel-recipes'};
+const panels = {today:'panel-today', train:'panel-train', yoga:'panel-yoga'};
 tabs.forEach(t=>{
   t.addEventListener('click',()=>{
     tabs.forEach(x=>x.setAttribute('aria-selected','false'));
     t.setAttribute('aria-selected','true');
-    Object.values(panels).forEach(id=>{
-      const p=document.getElementById(id); p.classList.remove('active'); p.hidden=true;
-    });
+    Object.values(panels).forEach(id=>{ const p=document.getElementById(id); p.classList.remove('active'); p.hidden=true; });
     const key=t.id.replace('tab-','');
     const p=document.getElementById(panels[key]); p.classList.add('active'); p.hidden=false;
     menuLabel.textContent = t.textContent;
@@ -587,170 +489,89 @@ tabs.forEach(t=>{
   });
 });
 
-/* ===================== SCHEDULE (per day of week) ===================== */
-const KIND_LABEL = {focus:"Focus",pause:"Pause",fuel:"Fuel",move:"Train",recover:"Recover",sleep:"Sleep",steps:"Walk/Run"};
+/* ===================== SCHEDULE (anchors only, per day of week) ===================== */
+const KIND_LABEL = {wake:"Wake",hydrate:"Hydrate",gym:"Gym",run:"Run",game:"Game",unplug:"Unplug",sleep:"Sleep"};
+const KIND_VAR   = {wake:"recover",hydrate:"recover",gym:"move",run:"steps",game:"fuel",unplug:"focus",sleep:"sleep"};
 const FULL_DAY_NAMES=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
 
-const MON_BLOCKS = [
-  {s:"06:00",e:"06:15",t:"Wake + hydrate, knee prep",k:"recover"},
-  {s:"06:15",e:"07:30",t:"Training",k:"move"},
-  {s:"07:30",e:"08:15",t:"Shower + breakfast",k:"fuel"},
-  {s:"08:15",e:"09:00",t:"Free / flex morning",k:"pause"},
-  {s:"09:00",e:"11:00",t:"Work — block 1",k:"focus"},
-  {s:"11:00",e:"11:15",t:"Break",k:"pause"},
-  {s:"11:15",e:"12:30",t:"Work — block 2",k:"focus"},
-  {s:"12:30",e:"13:00",t:"Lunch + short walk",k:"fuel"},
-  {s:"13:00",e:"15:00",t:"Work — block 3",k:"focus"},
-  {s:"15:00",e:"15:15",t:"Break",k:"pause"},
-  {s:"15:15",e:"17:00",t:"Work — block 4",k:"focus"},
-  {s:"17:15",e:"17:45",t:"Evening walk",k:"steps"},
-  {s:"18:00",e:"18:45",t:"Dinner",k:"fuel"},
-  {s:"19:00",e:"20:30",t:"Free time",k:"pause"},
-  {s:"20:30",e:"21:00",t:"Wind-down prep",k:"recover"},
-  {s:"21:00",e:"21:45",t:"Reading (screens off)",k:"recover"},
-  {s:"21:45",e:"22:00",t:"Lights out prep",k:"pause"},
-  {s:"22:00",e:"05:45",t:"Sleep",k:"sleep"}
+const MON_BLOCKS=[
+  {s:"06:00",e:"06:15",t:"Wake + hydrate",k:"wake"},
+  {s:"06:15",e:"07:15",t:"Lower Body Power + Kettlebell",k:"gym"},
+  {s:"10:00",e:"10:05",t:"Hydrate",k:"hydrate"},
+  {s:"14:00",e:"14:05",t:"Hydrate",k:"hydrate"},
+  {s:"17:30",e:"17:35",t:"Hydrate",k:"hydrate"},
+  {s:"21:00",e:"22:00",t:"No screens",k:"unplug"},
+  {s:"22:00",e:"06:00",t:"Sleep",k:"sleep"}
 ];
-const TUE_BLOCKS = [
-  {s:"06:00",e:"06:15",t:"Wake + hydrate, knee prep",k:"recover"},
-  {s:"06:15",e:"07:15",t:"Training",k:"move"},
-  {s:"07:15",e:"08:00",t:"Shower + breakfast",k:"fuel"},
-  {s:"08:00",e:"09:00",t:"Free / flex morning",k:"pause"},
-  {s:"09:00",e:"11:00",t:"Work — block 1",k:"focus"},
-  {s:"11:00",e:"11:15",t:"Break",k:"pause"},
-  {s:"11:15",e:"12:30",t:"Work — block 2",k:"focus"},
-  {s:"12:30",e:"13:00",t:"Lunch + short walk",k:"fuel"},
-  {s:"13:00",e:"15:00",t:"Work — block 3",k:"focus"},
-  {s:"15:00",e:"15:15",t:"Leave for coaching / drive to CFS",k:"pause"},
-  {s:"15:30",e:"17:30",t:"Coaching (Carolina Friends) — practice ~5pm, games run later",k:"move"},
-  {s:"17:30",e:"18:00",t:"Drive home + shower",k:"recover"},
-  {s:"18:15",e:"19:00",t:"Dinner (flexible — later on game nights)",k:"fuel"},
-  {s:"19:00",e:"20:30",t:"Free time",k:"pause"},
-  {s:"20:30",e:"21:00",t:"Wind-down prep",k:"recover"},
-  {s:"21:00",e:"21:45",t:"Reading (screens off)",k:"recover"},
-  {s:"21:45",e:"22:00",t:"Lights out prep",k:"pause"},
-  {s:"22:00",e:"05:45",t:"Sleep",k:"sleep"}
+const TUE_BLOCKS=[
+  {s:"06:00",e:"06:15",t:"Wake + hydrate",k:"wake"},
+  {s:"06:15",e:"06:45",t:"3 mi @ ~10:00/mi",k:"run"},
+  {s:"10:00",e:"10:05",t:"Hydrate",k:"hydrate"},
+  {s:"14:00",e:"14:05",t:"Hydrate",k:"hydrate"},
+  {s:"17:30",e:"17:35",t:"Hydrate",k:"hydrate"},
+  {s:"21:00",e:"22:00",t:"No screens",k:"unplug"},
+  {s:"22:00",e:"06:00",t:"Sleep",k:"sleep"}
 ];
-const WED_BLOCKS = [
-  {s:"06:00",e:"06:15",t:"Wake + hydrate",k:"recover"},
-  {s:"06:15",e:"06:30",t:"Warm-up",k:"steps"},
-  {s:"06:30",e:"07:20",t:"Training",k:"move"},
-  {s:"07:20",e:"07:35",t:"Sauna",k:"recover"},
-  {s:"07:35",e:"08:15",t:"Shower + breakfast",k:"fuel"},
-  {s:"08:15",e:"09:00",t:"Free / flex morning",k:"pause"},
-  {s:"09:00",e:"11:00",t:"Work — block 1",k:"focus"},
-  {s:"11:00",e:"11:15",t:"Break",k:"pause"},
-  {s:"11:15",e:"12:30",t:"Work — block 2",k:"focus"},
-  {s:"12:30",e:"13:00",t:"Lunch + short walk",k:"fuel"},
-  {s:"13:00",e:"15:00",t:"Work — block 3",k:"focus"},
-  {s:"15:00",e:"15:15",t:"Break",k:"pause"},
-  {s:"15:15",e:"17:00",t:"Work — block 4",k:"focus"},
-  {s:"17:15",e:"18:00",t:"Evening walk",k:"steps"},
-  {s:"18:15",e:"19:00",t:"Dinner",k:"fuel"},
-  {s:"19:15",e:"20:30",t:"Free time",k:"pause"},
-  {s:"20:30",e:"21:00",t:"Wind-down prep",k:"recover"},
-  {s:"21:00",e:"21:45",t:"Reading (screens off)",k:"recover"},
-  {s:"21:45",e:"22:00",t:"Lights out prep",k:"pause"},
-  {s:"22:00",e:"05:45",t:"Sleep",k:"sleep"}
+const WED_BLOCKS=[
+  {s:"06:00",e:"06:15",t:"Wake + hydrate",k:"wake"},
+  {s:"06:15",e:"07:15",t:"Posterior Chain + Kettlebell",k:"gym"},
+  {s:"10:00",e:"10:05",t:"Hydrate",k:"hydrate"},
+  {s:"14:00",e:"14:05",t:"Hydrate",k:"hydrate"},
+  {s:"17:30",e:"17:35",t:"Hydrate",k:"hydrate"},
+  {s:"21:00",e:"22:00",t:"No screens",k:"unplug"},
+  {s:"22:00",e:"06:00",t:"Sleep",k:"sleep"}
 ];
-const THU_BLOCKS = [
-  {s:"06:00",e:"06:15",t:"Wake + hydrate, knee prep",k:"recover"},
-  {s:"06:15",e:"07:15",t:"Training",k:"move"},
-  {s:"07:15",e:"08:00",t:"Shower + breakfast",k:"fuel"},
-  {s:"08:00",e:"09:00",t:"Free / flex morning",k:"pause"},
-  {s:"09:00",e:"11:00",t:"Work — block 1",k:"focus"},
-  {s:"11:00",e:"11:15",t:"Break",k:"pause"},
-  {s:"11:15",e:"12:30",t:"Work — block 2",k:"focus"},
-  {s:"12:30",e:"13:00",t:"Lunch + short walk",k:"fuel"},
-  {s:"13:00",e:"15:00",t:"Work — block 3",k:"focus"},
-  {s:"15:00",e:"15:15",t:"Leave for coaching / drive to CFS",k:"pause"},
-  {s:"15:30",e:"17:30",t:"Coaching (Carolina Friends) — practice ~5pm, games run later",k:"move"},
-  {s:"17:30",e:"18:00",t:"Drive home + shower",k:"recover"},
-  {s:"18:15",e:"19:00",t:"Dinner (flexible — later on game nights)",k:"fuel"},
-  {s:"19:00",e:"20:30",t:"Free time",k:"pause"},
-  {s:"20:30",e:"21:00",t:"Wind-down prep",k:"recover"},
-  {s:"21:00",e:"21:45",t:"Reading (screens off)",k:"recover"},
-  {s:"21:45",e:"22:00",t:"Lights out prep",k:"pause"},
-  {s:"22:00",e:"05:45",t:"Sleep",k:"sleep"}
+const THU_BLOCKS=[
+  {s:"06:00",e:"06:15",t:"Wake + hydrate",k:"wake"},
+  {s:"06:15",e:"06:45",t:"3 mi @ ~10:00/mi",k:"run"},
+  {s:"10:00",e:"10:05",t:"Hydrate",k:"hydrate"},
+  {s:"14:00",e:"14:05",t:"Hydrate",k:"hydrate"},
+  {s:"17:30",e:"17:35",t:"Hydrate",k:"hydrate"},
+  {s:"21:00",e:"22:00",t:"No screens",k:"unplug"},
+  {s:"22:00",e:"06:00",t:"Sleep",k:"sleep"}
 ];
-const FRI_BLOCKS = [
-  {s:"06:00",e:"06:15",t:"Wake + hydrate, knee prep",k:"recover"},
-  {s:"06:15",e:"07:15",t:"Training",k:"move"},
-  {s:"07:15",e:"08:00",t:"Shower + breakfast",k:"fuel"},
-  {s:"08:00",e:"09:00",t:"Free / flex morning",k:"pause"},
-  {s:"09:00",e:"11:00",t:"Work — block 1",k:"focus"},
-  {s:"11:00",e:"11:15",t:"Break",k:"pause"},
-  {s:"11:15",e:"12:30",t:"Work — block 2",k:"focus"},
-  {s:"12:30",e:"13:00",t:"Lunch + short walk",k:"fuel"},
-  {s:"13:00",e:"15:00",t:"Work — block 3",k:"focus"},
-  {s:"15:00",e:"15:15",t:"Leave for coaching / drive to CFS",k:"pause"},
-  {s:"15:30",e:"17:30",t:"Coaching (Carolina Friends) — practice ~5pm, games run later",k:"move"},
-  {s:"17:30",e:"18:00",t:"Drive home + shower",k:"recover"},
-  {s:"18:15",e:"19:00",t:"Dinner (flexible — later on game nights)",k:"fuel"},
-  {s:"19:00",e:"20:30",t:"Free time",k:"pause"},
-  {s:"20:30",e:"21:00",t:"Wind-down prep",k:"recover"},
-  {s:"21:00",e:"21:45",t:"Reading (screens off)",k:"recover"},
-  {s:"21:45",e:"22:00",t:"Lights out prep",k:"pause"},
-  {s:"22:00",e:"05:45",t:"Sleep",k:"sleep"}
+const FRI_BLOCKS=[
+  {s:"06:00",e:"06:15",t:"Wake + hydrate",k:"wake"},
+  {s:"06:15",e:"07:15",t:"Full-Body Power + Upper",k:"gym"},
+  {s:"10:00",e:"10:05",t:"Hydrate",k:"hydrate"},
+  {s:"14:00",e:"14:05",t:"Hydrate",k:"hydrate"},
+  {s:"17:30",e:"17:35",t:"Hydrate",k:"hydrate"},
+  {s:"21:00",e:"22:00",t:"No screens",k:"unplug"},
+  {s:"22:00",e:"06:00",t:"Sleep",k:"sleep"}
 ];
-const SAT_BLOCKS = [
-  {s:"08:00",e:"08:15",t:"Wake + hydrate",k:"recover"},
-  {s:"08:15",e:"08:45",t:"Breakfast",k:"fuel"},
-  {s:"08:45",e:"09:15",t:"Pre-game warm-up + activation",k:"recover"},
-  {s:"09:30",e:"11:00",t:"Match",k:"move"},
-  {s:"11:00",e:"11:30",t:"Cooldown walk + hydrate",k:"steps"},
-  {s:"11:30",e:"12:15",t:"Lunch",k:"fuel"},
-  {s:"12:15",e:"17:00",t:"Free afternoon (errands, groceries)",k:"pause"},
-  {s:"17:00",e:"17:45",t:"Evening restorative yoga flow",k:"recover"},
-  {s:"18:00",e:"18:45",t:"Dinner",k:"fuel"},
-  {s:"19:00",e:"20:30",t:"Free time",k:"pause"},
-  {s:"20:30",e:"21:00",t:"Wind-down prep",k:"recover"},
-  {s:"21:00",e:"21:45",t:"Reading (screens off)",k:"recover"},
-  {s:"21:45",e:"22:00",t:"Lights out prep",k:"pause"},
-  {s:"22:00",e:"08:00",t:"Sleep",k:"sleep"}
+const SAT_BLOCKS=[
+  {s:"08:00",e:"08:15",t:"Wake + hydrate",k:"wake"},
+  {s:"08:15",e:"08:30",t:"Confirm kickoff time",k:"game"},
+  {s:"11:00",e:"11:05",t:"Hydrate",k:"hydrate"},
+  {s:"14:30",e:"14:35",t:"Hydrate",k:"hydrate"},
+  {s:"18:00",e:"18:05",t:"Hydrate",k:"hydrate"},
+  {s:"21:00",e:"22:00",t:"No screens",k:"unplug"},
+  {s:"22:00",e:"07:30",t:"Sleep",k:"sleep"}
 ];
-const SUN_BLOCKS = [
-  {s:"08:00",e:"08:15",t:"Wake",k:"recover"},
-  {s:"08:15",e:"08:45",t:"Breakfast",k:"fuel"},
-  {s:"09:00",e:"09:30",t:"Restorative yoga flow",k:"recover"},
-  {s:"09:45",e:"10:45",t:"Long easy walk",k:"steps"},
-  {s:"11:00",e:"12:00",t:"Free / reading",k:"pause"},
-  {s:"12:15",e:"13:00",t:"Lunch",k:"fuel"},
-  {s:"13:15",e:"14:00",t:"Meal prep for the week",k:"fuel"},
-  {s:"14:00",e:"14:45",t:"Plan the week (Substack, gym logistics)",k:"focus"},
-  {s:"15:00",e:"18:00",t:"Free afternoon",k:"pause"},
-  {s:"18:15",e:"19:00",t:"Dinner",k:"fuel"},
-  {s:"19:15",e:"20:30",t:"Free time",k:"pause"},
-  {s:"20:30",e:"21:00",t:"Wind-down prep",k:"recover"},
-  {s:"21:00",e:"21:45",t:"Reading (screens off)",k:"recover"},
-  {s:"21:45",e:"22:00",t:"Lights out prep",k:"pause"},
-  {s:"22:00",e:"08:00",t:"Sleep",k:"sleep"}
+const SUN_BLOCKS=[
+  {s:"07:30",e:"07:45",t:"Wake + hydrate",k:"wake"},
+  {s:"10:30",e:"10:35",t:"Hydrate",k:"hydrate"},
+  {s:"14:00",e:"14:05",t:"Hydrate",k:"hydrate"},
+  {s:"17:30",e:"17:35",t:"Hydrate",k:"hydrate"},
+  {s:"21:00",e:"22:00",t:"No screens",k:"unplug"},
+  {s:"22:00",e:"06:00",t:"Sleep",k:"sleep"}
 ];
-const DEFAULT_WEEK = {
-  0: MON_BLOCKS, 1: TUE_BLOCKS, 2: WED_BLOCKS,
-  3: THU_BLOCKS, 4: FRI_BLOCKS, 5: SAT_BLOCKS, 6: SUN_BLOCKS
-};
+const DEFAULT_WEEK = {0:MON_BLOCKS,1:TUE_BLOCKS,2:WED_BLOCKS,3:THU_BLOCKS,4:FRI_BLOCKS,5:SAT_BLOCKS,6:SUN_BLOCKS};
 const SCHED_DAYS = [
-  {d:'Mon',label:'Heavy Lift',focus:'move'},
-  {d:'Tue',label:'Conditioning + Coach',focus:'move'},
-  {d:'Wed',label:'Heavy Lift + Sauna',focus:'move'},
-  {d:'Thu',label:'Conditioning + Coach',focus:'move'},
-  {d:'Fri',label:'Power + Coach',focus:'move'},
-  {d:'Sat',label:'Match Day',focus:'move'},
-  {d:'Sun',label:'Rest',focus:'recover'}
+  {d:'Mon',label:'Lower+KB',focus:'gym'},
+  {d:'Tue',label:'Run 5K',focus:'run'},
+  {d:'Wed',label:'Post.Chain+KB',focus:'gym'},
+  {d:'Thu',label:'Run 5K',focus:'run'},
+  {d:'Fri',label:'Power+Upper',focus:'gym'},
+  {d:'Sat',label:'Game',focus:'game'},
+  {d:'Sun',label:'Rest',focus:'rest'}
 ];
 
 function loadWeek(){
   const result = {};
-  const legacy = store.get('dailyos.day');
   for(let i=0;i<7;i++){
     const raw = store.get('dailyos.week.'+i);
-    if(raw){
-      try{ const d=JSON.parse(raw); if(Array.isArray(d)&&d.length){ result[i]=d; continue; } }catch(e){}
-    }
-    if(legacy && i===todayIndex()){
-      try{ const d=JSON.parse(legacy); if(Array.isArray(d)&&d.length){ result[i]=d; continue; } }catch(e){}
-    }
+    if(raw){ try{ const d=JSON.parse(raw); if(Array.isArray(d)&&d.length){ result[i]=d; continue; } }catch(e){} }
     result[i]=DEFAULT_WEEK[i].map(b=>({...b}));
   }
   return result;
@@ -759,14 +580,10 @@ function saveWeekDay(i){ store.set('dailyos.week.'+i, JSON.stringify(weekDays[i]
 
 let weekDays = loadWeek();
 let selectedSchedDay = todayIndex();
-let day = weekDays[selectedSchedDay]; // the array currently viewed/edited on the Today tab
+let day = weekDays[selectedSchedDay];
 
 function toMin(hhmm){ const [h,m]=hhmm.split(':').map(Number); return h*60+m; }
-function fmt(hhmm){
-  const [h,m]=hhmm.split(':').map(Number);
-  const am = h<12; let hr = h%12; if(hr===0) hr=12;
-  return hr+':'+String(m).padStart(2,'0')+(am?' am':' pm');
-}
+function fmt(hhmm){ const [h,m]=hhmm.split(':').map(Number); const am=h<12; let hr=h%12; if(hr===0) hr=12; return hr+':'+String(m).padStart(2,'0')+(am?' am':' pm'); }
 function durMin(s,e){ let d=toMin(e)-toMin(s); if(d<=0) d+=24*60; return d; }
 function durLabel(d){ const h=Math.floor(d/60),m=d%60; return (h?h+'h':'')+(m?(h?' ':'')+m+'m':(h?'':'0m')); }
 
@@ -793,46 +610,37 @@ function renderDay(){
   });
 }
 
-/* ---- "now" logic (handles overnight sleep wrap) ---- */
 function nowMinutes(){ const d=new Date(); return d.getHours()*60+d.getMinutes(); }
-function inBlock(m,b){
-  const s=toMin(b.s),e=toMin(b.e);
-  if(e>s) return m>=s && m<e;
-  return m>=s || m<e; // wraps midnight
-}
-function blockProgress(m,b){
-  const s=toMin(b.s); let len=durMin(b.s,b.e);
-  let into = m-s; if(into<0) into+=24*60;
-  return Math.max(0,Math.min(1,into/len));
-}
+function inBlock(m,b){ const s=toMin(b.s),e=toMin(b.e); if(e>s) return m>=s && m<e; return m>=s || m<e; }
+function blockProgress(m,b){ const s=toMin(b.s); let len=durMin(b.s,b.e); let into=m-s; if(into<0) into+=24*60; return Math.max(0,Math.min(1,into/len)); }
 
-const nowTitle=document.getElementById('nowTitle');
-const nowMeta=document.getElementById('nowMeta');
-const nowBar=document.getElementById('nowBar');
-const nowClock=document.getElementById('nowClock');
-const nowDate=document.getElementById('nowDate');
-const nextTime=document.getElementById('nextTime');
-const nextTitle=document.getElementById('nextTitle');
+const nowTitle=$('nowTitle'),nowMeta=$('nowMeta'),nowClock=$('nowClock'),nowDate=$('nowDate'),nextTime=$('nextTime'),nextTitle=$('nextTitle');
+const ringProgress=$('ringProgress'), ringNum=$('ringNum'), ringUnit=$('ringUnit');
+const RING_CIRC = 2*Math.PI*54;
+
+function setRing(varName,frac,numText,unitText){
+  ringProgress.style.strokeDashoffset = RING_CIRC - (Math.max(0,Math.min(1,frac))*RING_CIRC);
+  ringProgress.style.stroke = getComputedStyle(document.documentElement).getPropertyValue('--'+varName).trim();
+  ringNum.textContent = numText;
+  ringUnit.textContent = unitText;
+}
 
 function renderNow(){
-  const d=new Date();
-  const m=nowMinutes();
+  const d=new Date(); const m=nowMinutes();
   nowClock.textContent = String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
   nowDate.textContent = d.toLocaleDateString(undefined,{weekday:'long',month:'short',day:'numeric'});
-
   const todaysBlocks = weekDays[todayIndex()];
   const sorted=[...todaysBlocks].sort((a,b)=>toMin(a.s)-toMin(b.s));
   const cur = sorted.find(b=>inBlock(m,b));
   if(cur){
     nowTitle.textContent = cur.t;
     const remain = Math.round((1-blockProgress(m,cur))*durMin(cur.s,cur.e));
-    nowMeta.innerHTML = KIND_LABEL[cur.k]+' · ends <b>'+fmt(cur.e)+'</b> · '+durLabel(remain)+' left';
-    nowBar.style.width = Math.round(blockProgress(m,cur)*100)+'%';
-    nowBar.style.background = getComputedStyle(document.documentElement).getPropertyValue('--'+(cur.k==='sleep'?'recover':cur.k)).trim();
+    nowMeta.innerHTML = KIND_LABEL[cur.k]+' · ends <b>'+fmt(cur.e)+'</b>';
+    setRing(KIND_VAR[cur.k], blockProgress(m,cur), durLabel(remain)||'0m', 'left');
   } else {
     nowTitle.textContent='Open time';
     nowMeta.innerHTML='Nothing scheduled right now';
-    nowBar.style.width='0%';
+    setRing('gray', 0, '—', 'open');
   }
   let nxt = sorted.find(b=>toMin(b.s)>m);
   if(!nxt) nxt = sorted[0];
@@ -853,42 +661,40 @@ function renderSchedStrip(){
   });
 }
 function updateDayHeading(){
-  $('dayListHeading').textContent = FULL_DAY_NAMES[selectedSchedDay]+', top to bottom' + (selectedSchedDay===todayIndex() ? '' : ' (not today)');
+  $('dayListHeading').textContent = FULL_DAY_NAMES[selectedSchedDay] + (selectedSchedDay===todayIndex() ? '' : ' (not today)');
 }
 
 /* ---- editor ---- */
-const editor=document.getElementById('editor');
-const fStart=document.getElementById('fStart'), fEnd=document.getElementById('fEnd');
-const fName=document.getElementById('fName'), fKind=document.getElementById('fKind');
-const editorTitle=document.getElementById('editorTitle');
+const editor=$('editor');
+const fStart=$('fStart'), fEnd=$('fEnd'), fName=$('fName'), fKind=$('fKind');
+const editorTitle=$('editorTitle');
 let editIndex=-1;
-
 function openEditor(i){
   editIndex=i;
   if(i>=0){
     const b=day[i];
     editorTitle.textContent='Edit block';
     fStart.value=b.s; fEnd.value=b.e; fName.value=b.t; fKind.value=b.k;
-    document.getElementById('deleteBlock').style.display='';
+    $('deleteBlock').style.display='';
   } else {
     editorTitle.textContent='Add block';
-    fStart.value='12:00'; fEnd.value='13:00'; fName.value=''; fKind.value='focus';
-    document.getElementById('deleteBlock').style.display='none';
+    fStart.value='12:00'; fEnd.value='12:15'; fName.value=''; fKind.value='wake';
+    $('deleteBlock').style.display='none';
   }
   if(typeof editor.showModal==='function') editor.showModal();
 }
-document.getElementById('editorForm').addEventListener('submit',e=>{
+$('editorForm').addEventListener('submit',e=>{
   const obj={s:fStart.value,e:fEnd.value,t:fName.value.trim()||'Untitled',k:fKind.value};
   if(editIndex>=0) day[editIndex]=obj; else day.push(obj);
   saveWeekDay(selectedSchedDay); renderDay(); renderNow();
 });
-document.getElementById('cancelEdit').addEventListener('click',()=>editor.close());
-document.getElementById('deleteBlock').addEventListener('click',()=>{
+$('cancelEdit').addEventListener('click',()=>editor.close());
+$('deleteBlock').addEventListener('click',()=>{
   if(editIndex>=0){ day.splice(editIndex,1); saveWeekDay(selectedSchedDay); renderDay(); renderNow(); }
   editor.close();
 });
-document.getElementById('addBlock').addEventListener('click',()=>openEditor(-1));
-document.getElementById('resetDay').addEventListener('click',()=>{
+$('addBlock').addEventListener('click',()=>openEditor(-1));
+$('resetDay').addEventListener('click',()=>{
   if(confirm('Reset '+FULL_DAY_NAMES[selectedSchedDay]+" back to its default schedule? Your edits to this day will be cleared.")){
     weekDays[selectedSchedDay]=DEFAULT_WEEK[selectedSchedDay].map(b=>({...b}));
     day=weekDays[selectedSchedDay];
@@ -896,97 +702,242 @@ document.getElementById('resetDay').addEventListener('click',()=>{
   }
 });
 
+/* ===================== WAKE-UP STREAK / HABIT GRID ===================== */
+const HABITS=[
+  {id:'wake',label:'Wake on time'},
+  {id:'workout',label:'Workout done'},
+  {id:'unplug',label:'Unplug'},
+  {id:'bed',label:'Bed on time'},
+  {id:'sauna',label:'Sauna (bonus)'}
+];
+function loadHabits(dateStr){ const raw=store.get('dailyos.habit.'+dateStr); if(raw){ try{return JSON.parse(raw);}catch(e){} } return {}; }
+function saveHabits(dateStr,obj){ store.set('dailyos.habit.'+dateStr, JSON.stringify(obj)); }
+function toggleHabit(dateStr,id){ const h=loadHabits(dateStr); h[id]=!h[id]; saveHabits(dateStr,h); return h[id]; }
+function setHabit(dateStr,id,val){ const h=loadHabits(dateStr); h[id]=val; saveHabits(dateStr,h); }
+
+function getWeekDates(){
+  const now=new Date(); const dow=(now.getDay()+6)%7;
+  const monday=new Date(now); monday.setDate(now.getDate()-dow);
+  const days=[]; for(let i=0;i<7;i++){ const d=new Date(monday); d.setDate(monday.getDate()+i); days.push(d); }
+  return days;
+}
+function computeStreak(id){
+  let streak=0; let d=new Date();
+  for(let i=0;i<365;i++){
+    const ds=isoDate(d); const h=loadHabits(ds);
+    if(h[id]){ streak++; } else if(i===0){ /* today not marked yet, don't break */ } else { break; }
+    d.setDate(d.getDate()-1);
+  }
+  return streak;
+}
+const STREAK_MILESTONES=[7,14,21,30,45,60,90,120,180,270,365];
+function renderStreak(){
+  const n=computeStreak('wake');
+  $('streakCount').textContent = n===1 ? '1-day streak' : n+'-day streak';
+  const ds=isoDate(new Date());
+  const doneToday = !!loadHabits(ds).wake;
+  const btn=$('imUpBtn');
+  btn.textContent = doneToday ? "✓ Up today" : "I'm up";
+  btn.classList.toggle('done', doneToday);
+  return n;
+}
+$('imUpBtn').addEventListener('click',()=>{
+  const before = computeStreak('wake');
+  const ds=isoDate(new Date());
+  setHabit(ds,'wake', !loadHabits(ds).wake);
+  const after = renderStreak();
+  renderHabitGrid();
+  renderStats();
+  if(after>before && STREAK_MILESTONES.includes(after)){
+    const card=$('streakCard');
+    card.classList.add('milestone');
+    setTimeout(()=>card.classList.remove('milestone'),1300);
+  }
+});
+function renderHabitGrid(){
+  const dates=getWeekDates();
+  const todayStr=isoDate(new Date());
+  let html='<thead><tr><th></th>';
+  dates.forEach(d=>{
+    const ds=isoDate(d);
+    html+='<th class="'+(ds===todayStr?'today':'')+'">'+FULL_DAY_NAMES[(d.getDay()+6)%7].slice(0,3)+'<br>'+d.getDate()+'</th>';
+  });
+  html+='</tr></thead><tbody>';
+  HABITS.forEach(h=>{
+    html+='<tr><th>'+h.label+'</th>';
+    dates.forEach(d=>{
+      const ds=isoDate(d);
+      const checked = !!loadHabits(ds)[h.id];
+      const editable = ds===todayStr;
+      html+='<td><input type="checkbox" data-date="'+ds+'" data-habit="'+h.id+'" '+(checked?'checked':'')+(editable?'':' disabled title="Only today can be checked here"')+'></td>';
+    });
+    html+='</tr>';
+  });
+  html+='</tbody>';
+  $('habitTable').innerHTML=html;
+  $('habitTable').querySelectorAll('input[type=checkbox]').forEach(cb=>{
+    cb.addEventListener('change',()=>{
+      setHabit(cb.dataset.date, cb.dataset.habit, cb.checked);
+      if(cb.dataset.habit==='wake') renderStreak();
+      renderStats();
+    });
+  });
+}
+
+/* ---- consistency dashboard: week / month / all-time, built from the same per-day habit records ---- */
+const HABIT_COLOR={wake:'recover',workout:'move',unplug:'focus',bed:'sleep',sauna:'fuel'};
+let statsRange=7;
+function allHabitDates(){
+  const prefix='dailyos.habit.';
+  return store.keys(prefix).map(k=>k.slice(prefix.length)).filter(d=>/^\d{4}-\d{2}-\d{2}$/.test(d)).sort();
+}
+function statsForRange(range){
+  const today=new Date();
+  let dates=[];
+  if(range==='month'){
+    const y=today.getFullYear(), m=today.getMonth();
+    const numDays=new Date(y,m+1,0).getDate();
+    for(let day=1;day<=numDays;day++){ dates.push(isoDate(new Date(y,m,day))); }
+  } else if(range==='all'){
+    const all=allHabitDates();
+    if(all.length===0) return null;
+    let d=new Date(all[0]+'T00:00:00');
+    while(d<=today){ dates.push(isoDate(d)); d.setDate(d.getDate()+1); }
+  } else {
+    let d=new Date(today);
+    for(let i=0;i<range;i++){ dates.push(isoDate(d)); d.setDate(d.getDate()-1); }
+    dates.reverse();
+  }
+  const totals={};
+  HABITS.forEach(h=>totals[h.id]={done:0,total:dates.length});
+  dates.forEach(ds=>{
+    const h=loadHabits(ds);
+    HABITS.forEach(hb=>{ if(h[hb.id]) totals[hb.id].done++; });
+  });
+  return {totals,days:dates.length,start:dates[0],end:dates[dates.length-1]};
+}
+const STAT_RING_CIRC = 2*Math.PI*26;
+function renderStats(){
+  const result=statsForRange(statsRange);
+  const rowsHost=$('statsRows'), rangeLabel=$('statsRangeLabel');
+  if(!result){
+    rowsHost.innerHTML='<div class="statsEmpty">No check-ins yet — start on the grid above or with the "I\'m up" button.</div>';
+    rangeLabel.textContent='';
+    return;
+  }
+  let html='';
+  HABITS.forEach(h=>{
+    const t=result.totals[h.id];
+    const pct = t.total ? Math.round((t.done/t.total)*100) : 0;
+    const off = STAT_RING_CIRC - (Math.min(1,t.done/(t.total||1)))*STAT_RING_CIRC;
+    html+='<div class="statTile"><div class="statRing"><svg viewBox="0 0 62 62">'+
+      '<circle class="statRingTrack" cx="31" cy="31" r="26"></circle>'+
+      '<circle class="statRingFill" cx="31" cy="31" r="26" style="stroke:var(--'+HABIT_COLOR[h.id]+');stroke-dasharray:'+STAT_RING_CIRC+';stroke-dashoffset:'+off+'"></circle>'+
+      '</svg><div class="statRingPct">'+pct+'%</div></div>'+
+      '<div class="statLabel">'+h.label+'</div><div class="statFrac">'+t.done+'/'+t.total+'</div></div>';
+  });
+  rowsHost.innerHTML=html;
+  const startFmt=new Date(result.start+'T00:00:00').toLocaleDateString(undefined,{month:'short',day:'numeric'});
+  const endFmt=new Date(result.end+'T00:00:00').toLocaleDateString(undefined,{month:'short',day:'numeric'});
+  rangeLabel.textContent = result.start===result.end ? startFmt : startFmt+' – '+endFmt+' · '+result.days+' days';
+}
+$('statsRangeToggle').querySelectorAll('button').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    $('statsRangeToggle').querySelectorAll('button').forEach(b=>b.setAttribute('aria-selected','false'));
+    btn.setAttribute('aria-selected','true');
+    statsRange = btn.dataset.range==='7' ? 7 : btn.dataset.range;
+    renderStats();
+  });
+});
+
 /* ===================== TRAINING ===================== */
 const WEEK = [
-  {d:"Mon",focus:"move",name:"Squat + Pull",sub:"Heavy lower + upper pull"},
-  {d:"Tue",focus:"move",name:"Conditioning",sub:"Intervals, then coaching"},
-  {d:"Wed",focus:"move",name:"Hinge + Push",sub:"Heavy lower + upper push"},
-  {d:"Thu",focus:"move",name:"Conditioning",sub:"Zone-2, then coaching"},
-  {d:"Fri",focus:"move",name:"Power",sub:"Explosive full-body, then coaching"},
-  {d:"Sat",focus:"move",name:"Soccer",sub:"Match day"},
-  {d:"Sun",focus:"recover",name:"Rest",sub:"Rest & mobility"}
+  {d:"Mon",focus:"gym",name:"Lower + KB",sub:"Plyo power + kettlebell"},
+  {d:"Tue",focus:"run",name:"Run 5K",sub:"~10:00/mi easy"},
+  {d:"Wed",focus:"gym",name:"Post. Chain + KB",sub:"Plyo + kettlebell hinge"},
+  {d:"Thu",focus:"run",name:"Run 5K",sub:"~10:00/mi easy"},
+  {d:"Fri",focus:"gym",name:"Power + Upper",sub:"Explosive + aesthetic"},
+  {d:"Sat",focus:"game",name:"Game",sub:"Match day"},
+  {d:"Sun",focus:"rest",name:"Rest",sub:"Full rest"}
 ];
 const WORKOUTS = {
-  0:{title:"Squat + Pull",focus:"Heavy lower + upper pull",groups:[
+  0:{title:"Lower Body Power + Kettlebell",focus:"Plyo + KB — squat pattern",groups:[
     {g:"Warm-up",items:[
-      {n:"Bike, easy",s:"5 min",d:"raise temperature, no fatigue"},
-      {n:"Banded terminal knee extension",s:"2 × 15",knee:true,d:"wake up the quad / VMO at end range"},
-      {n:"Glute bridge + hip airplanes",s:"2 × 10",d:"glutes online, hip control"}
+      {n:"High knees / jump rope",s:"3 min",d:""},
+      {n:"Bodyweight squat to reach",s:"2 × 10",d:""},
+      {n:"Banded lateral walk",s:"2 × 10 / side",d:""}
     ]},
-    {g:"Main",items:[
-      {n:"Back squat or trap-bar deadlift",s:"4 × 5",knee:true,d:"real weight — this is your top strength driver; add load week over week"},
-      {n:"Weighted pull-up or heavy row",s:"4 × 6-8",d:""}
+    {g:"Plyo",items:[
+      {n:"Box jump",s:"4 × 5",plyo:true,d:"moderate height, stick every landing"},
+      {n:"Broad jump",s:"3 × 5",plyo:true,d:"reset fully between reps"}
     ]},
-    {g:"Single-leg & accessories",items:[
-      {n:"Bulgarian split squat",s:"3 × 8 / leg",knee:true,d:"left leg leads and sets the reps; controlled, moderate depth"},
-      {n:"Copenhagen plank",s:"3 × 20-30s / side",d:"adductor & hip control"}
+    {g:"Kettlebell strength",items:[
+      {n:"KB goblet squat",s:"4 × 8",d:""},
+      {n:"KB front-rack reverse lunge",s:"3 × 8 / leg",d:""},
+      {n:"KB two-hand swing",s:"4 × 15",d:""}
     ]},
     {g:"Core",items:[
-      {n:"Hanging knee raise",s:"3 × 12",d:"no swinging"}
+      {n:"Hanging knee raise",s:"3 × 10",d:""},
+      {n:"Plank with shoulder taps",s:"3 × 30s",d:""}
     ]}
   ]},
-  2:{title:"Hinge + Push",focus:"Heavy lower + upper push",groups:[
+  2:{title:"Posterior Chain + Kettlebell",focus:"Plyo + KB — hinge pattern",groups:[
     {g:"Warm-up",items:[
-      {n:"Treadmill walk + knee mobility",s:"15 min",knee:true,d:"this is the AM block before lifting — see Today tab"}
+      {n:"Glute bridge",s:"2 × 12",d:""},
+      {n:"Band pull-apart",s:"2 × 15",d:""},
+      {n:"Hip hinge drill (dowel)",s:"2 × 10",d:""}
     ]},
-    {g:"Main",items:[
-      {n:"Romanian deadlift or single-leg RDL",s:"4 × 5-6",knee:true,d:"heavy top set; 3s eccentric, feel the hamstrings"},
-      {n:"Nordic hamstring curl",s:"3 × 6-8",d:"non-negotiable — strongly evidence-backed for cutting hamstring-strain risk"},
-      {n:"Landmine press or bench press",s:"4 × 6-8",d:""}
+    {g:"Plyo",items:[
+      {n:"Single-leg bound",s:"3 × 4 / leg",plyo:true,d:"stick the landing before the next rep"},
+      {n:"Depth drop to stick",s:"3 × 5",plyo:true,d:"low box, absorb quietly"}
     ]},
-    {g:"Accessories",items:[
-      {n:"Heavy farmer's carry",s:"3 trips",d:"as heavy as you can hold with good posture"}
+    {g:"Kettlebell strength",items:[
+      {n:"KB single-leg RDL",s:"4 × 8 / leg",d:""},
+      {n:"KB deadlift, heavy",s:"4 × 6",d:""},
+      {n:"KB single-arm swing",s:"3 × 12 / side",d:""}
     ]},
-    {g:"Recovery",items:[
-      {n:"Sauna",s:"10-15 min",d:"after the lift, not before — this is when it does the most for recovery"}
+    {g:"Core",items:[
+      {n:"Pallof press",s:"3 × 10 / side",d:""},
+      {n:"Dead bug",s:"3 × 10 / side",d:""}
     ]}
   ]},
-  4:{title:"Power",focus:"Explosive full-body",note:"Afternoon: Coaching at Carolina Friends, ~3:30–5:30pm (later on game nights) — see the Today tab.",groups:[
+  4:{title:"Power + Upper",focus:"Explosive full-body",groups:[
     {g:"Warm-up",items:[
-      {n:"Bike, easy",s:"5 min",d:""},
-      {n:"Banded terminal knee extension",s:"2 × 15",knee:true,d:""}
+      {n:"Arm circles + band pull-apart",s:"2 × 15",d:""},
+      {n:"Light jump squat",s:"2 × 8",d:""}
     ]},
-    {g:"Main",items:[
-      {n:"Trap-bar jump squat",s:"5 × 3",knee:true,d:"light load, moved fast — intent over weight"},
-      {n:"Box step-up with knee drive",s:"4 × 5 / leg",knee:true,d:"drive through the heel, control the way down"}
+    {g:"Plyo",items:[
+      {n:"Clap push-up or med-ball chest pass",s:"4 × 5",plyo:true,d:""},
+      {n:"Lateral bound",s:"3 × 6 / side",plyo:true,d:"stick every landing"}
     ]},
-    {g:"Core & calves",items:[
-      {n:"Pallof press or rotational med-ball throw",s:"3 × 8 / side",d:""},
-      {n:"Calf raise",s:"3 × 12-15",d:"full stretch at bottom"}
+    {g:"Kettlebell + upper",items:[
+      {n:"KB clean & press",s:"4 × 6 / side",d:""},
+      {n:"KB snatch",s:"3 × 8 / side",d:""},
+      {n:"Pull-ups (or KB rows)",s:"4 × 8",d:""}
+    ]},
+    {g:"Core / finisher",items:[
+      {n:"KB Turkish get-up",s:"3 × 3 / side",d:""},
+      {n:"Heavy farmer's carry",s:"3 trips",d:""}
     ]}
   ]}
 };
-const RECOVERY_DAYS = {
-  1:{title:"Conditioning",lines:[
-    "Intervals: 6–8 × 30s hard / 90s easy, bike or incline. Sauna after.",
-    "<b>Afternoon:</b> leave by 15:00 for coaching at Carolina Friends."
-  ]},
-  3:{title:"Conditioning",lines:[
-    "20–30 min easy zone-2 — bike, incline walk, or a jog. Sauna after.",
-    "<b>Afternoon:</b> leave by 15:00 for coaching at Carolina Friends."
-  ]},
-  6:{title:"Rest & mobility",lines:[
-    "Recover from the match. Rest first, mobility optional.",
-    "Knee good: <b>Evening restorative</b> flow + easy walk. Knee sore: legs up, ice, sleep."
-  ]}
-};
-const SOCCER_DAY = {title:"Match day",focus:"Soccer",
-  warmup:[
-    {n:"Dynamic movement prep",s:"5 min",d:"leg swings, walking lunges, high knees — raise temperature before anything else"},
-    {n:"Banded terminal knee extension",s:"2 × 15",knee:true,d:"wake the quad / VMO before cutting"},
-    {n:"Single-leg balance hold",s:"1 min / leg",knee:true,d:"switches the knee on, eyes open"}
-  ],
-  lines:[
-  "<b>Before you play:</b> don't walk into cuts cold — run the warm-up above in full before you touch a ball.",
-  "<b>The match is your conditioning</b> for the week — all the sprinting and change of direction means you don't need separate cardio.",
-  "<b>After:</b> easy walk to flush the legs, then the Evening restorative flow tonight. If the knee's puffy, elevate and ice.",
-  "This is your highest knee-demand day — decelerating and cutting are exactly what a rebuilt knee finds hardest, so listen to it and never play through sharp pain. How it feels Sunday morning tells you how hard you can push next week."
+const RUN_DAY = {title:"Run",lines:[
+  "Dynamic warm-up: leg swings + walking lunges — 3-5 min.",
+  "<b>Run 3 mi (~5K) at ~10:00/mi</b> — easy, conversational effort. About 30 minutes total.",
+  "Cool-down walk — 5 min, then hydrate."
+]};
+const GAME_DAY = {title:"Game day",lines:[
+  "Check your team's schedule for kickoff — this block is a placeholder, move it once you know the time.",
+  "Use the <b>Before-Game</b> flow in the Yoga tab to warm up 20-30 min before kickoff.",
+  "This is your highest-demand day for the legs — no separate conditioning needed."
+]};
+const REST_DAY = {title:"Rest",lines:[
+  "Full rest. No plyo, no lifting.",
+  "Use the <b>Before-Bed</b> flow tonight if you want to move at all — otherwise just recover."
 ]};
 
-const weekStrip=document.getElementById('weekStrip');
-const workoutHost=document.getElementById('workoutHost');
+const weekStrip=$('weekStrip'); const workoutHost=$('workoutHost');
 let selectedDay = todayIndex();
-
 function renderWeekStrip(){
   weekStrip.innerHTML='';
   const todayIdx=todayIndex();
@@ -1003,81 +954,70 @@ function renderWeekStrip(){
 function renderWorkout(){
   const w=WORKOUTS[selectedDay];
   if(w){
-    let html='<div class="workout"><div class="whead"><h3>'+WEEK[selectedDay].name+'</h3><span class="focus">'+w.focus+'</span></div>';
-    w.groups.forEach(grp=>{
-      html+='<div class="grp"><div class="gtitle">'+grp.g+'</div>';
+    const exCount = w.groups.reduce((sum,g)=>sum+g.items.length,0);
+    let html='<div class="workout"><div class="whead"><h3>'+w.title+'</h3><div class="stats"><span class="focus">'+w.focus+'</span><span class="exCount">'+exCount+' moves</span></div></div>';
+    w.groups.forEach((grp,gi)=>{
+      html+='<div class="grp"><div class="gtitle"><span class="gnum">'+(gi+1)+'</span>'+grp.g+'</div>';
       grp.items.forEach(it=>{
-        html+='<div class="ex'+(it.knee?' knee':'')+'"><div class="name">'+it.n+(it.d?'<small>'+it.d+'</small>':'')+'</div><div class="sets">'+it.s+'</div></div>';
+        const nameHtml = (it.plyo?'<b>Plyo</b> ':'') + it.n;
+        html+='<div class="ex'+(it.plyo?' plyo':'')+'"><div class="name">'+nameHtml+(it.d?'<small>'+it.d+'</small>':'')+'</div><div class="sets">'+it.s+'</div></div>';
       });
       html+='</div>';
     });
-    if(w.note){ html+='<div class="callout" style="margin:16px 0 6px">'+w.note+'</div>'; }
+    html+='</div>';
+    workoutHost.innerHTML=html;
+  } else if(selectedDay===1||selectedDay===3){
+    let html='<div class="runday"><h3>'+RUN_DAY.title+'</h3>';
+    RUN_DAY.lines.forEach(l=>html+='<p style="margin:0 0 10px;color:var(--ink-soft)">'+l+'</p>');
     html+='</div>';
     workoutHost.innerHTML=html;
   } else if(selectedDay===5){
-    let html='<div class="gameday"><h3>'+SOCCER_DAY.title+'</h3>';
-    if(SOCCER_DAY.warmup){
-      html+='<div class="grp"><div class="gtitle">Warm-up</div>';
-      SOCCER_DAY.warmup.forEach(it=>{
-        html+='<div class="ex'+(it.knee?' knee':'')+'"><div class="name">'+it.n+(it.d?'<small>'+it.d+'</small>':'')+'</div><div class="sets">'+it.s+'</div></div>';
-      });
-      html+='</div>';
-    }
-    SOCCER_DAY.lines.forEach(l=>html+='<p style="margin:0 0 10px;color:var(--ink-soft)">'+l+'</p>');
+    let html='<div class="gameday"><h3>'+GAME_DAY.title+'</h3>';
+    GAME_DAY.lines.forEach(l=>html+='<p style="margin:0 0 10px;color:var(--ink-soft)">'+l+'</p>');
     html+='</div>';
     workoutHost.innerHTML=html;
   } else {
-    const r=RECOVERY_DAYS[selectedDay];
-    let html='<div class="restday"><h3>'+r.title+'</h3>';
-    r.lines.forEach(l=>html+='<p style="margin:0 0 8px;color:var(--ink-soft)">'+l+'</p>');
+    let html='<div class="restday"><h3>'+REST_DAY.title+'</h3>';
+    REST_DAY.lines.forEach(l=>html+='<p style="margin:0 0 8px;color:var(--ink-soft)">'+l+'</p>');
     html+='</div>';
     workoutHost.innerHTML=html;
   }
 }
 
-/* ===================== YOGA FLOWS ===================== */
-const FLOW_DAILY=[
-  {n:"Cat–cow",h:"8 rounds",d:"warm the spine, sync with breath"},
-  {n:"Downward dog",h:"5 breaths",d:"pedal the heels to wake up calves & hamstrings"},
-  {n:"Low lunge (knee padded)",h:"5 / side",d:"pad the back knee; shorten the stance if it pinches"},
-  {n:"Half split",h:"5 / side",d:"hamstring length, gentle"},
-  {n:"Figure-four (supine)",h:"6 / side",d:"hip opening with zero knee load"},
-  {n:"Supine spinal twist",h:"6 / side",d:"decompress the lower back"},
-  {n:"Legs-up-the-wall",h:"2 min",d:"reset and breathe"}
+/* ===================== YOGA (3 flows only) ===================== */
+const FLOW_MORNING=[
+  {n:"Cat–cow",h:"6 rounds",d:"wake the spine"},
+  {n:"Downward dog",h:"5 breaths",d:"lengthen calves & hamstrings"},
+  {n:"Low lunge",h:"5 / side",d:"open the hips"},
+  {n:"Standing forward fold",h:"5 breaths",d:"blood flow, hamstrings"},
+  {n:"Mountain pose + 3 deep breaths",h:"3 breaths",d:"set the tone"}
 ];
-const FLOW_STABILITY=[
-  {n:"Sun salutation A",h:"3 rounds",d:"build heat"},
-  {n:"Chair pose",h:"5 breaths",d:"watch knees track over toes; don't cave inward"},
-  {n:"Warrior II",h:"5 / side",d:"front knee over ankle, strong base"},
-  {n:"High lunge",h:"5 / side",d:"shorten if the front knee complains"},
-  {n:"Tree pose",h:"5 / side",d:"the balance work your knee needs most"},
-  {n:"Bridge",h:"8 reps + 30s hold",d:"posterior chain without deep knee flexion"},
-  {n:"Locust",h:"3 × 5 breaths",d:"back & glute activation"},
-  {n:"Supine pigeon / figure-four",h:"6 / side",d:"open the hips back up"},
-  {n:"Savasana",h:"3 min",d:"let it settle"}
-];
-const FLOW_RESTORE=[
-  {n:"Legs-up-the-wall",h:"4 min",d:"great for a swollen or tired knee"},
-  {n:"Reclined bound angle (knees supported)",h:"3 min",d:"block or pillow under each knee"},
-  {n:"Supine twist",h:"2 / side",d:"slow, passive"},
-  {n:"Child's pose (knees wide, padded)",h:"2 min",d:"sit back only as far as comfortable"},
+const FLOW_BEDTIME=[
+  {n:"Legs-up-the-wall",h:"3 min",d:"drain the legs, downshift"},
+  {n:"Reclined bound angle",h:"2 min",d:"release the hips"},
+  {n:"Supine twist",h:"5 / side",d:"decompress the spine"},
+  {n:"Child's pose",h:"2 min",d:"quiet the mind"},
   {n:"Box breathing",h:"2 min",d:"4 in · 4 hold · 4 out · 4 hold"}
 ];
+const FLOW_GAME=[
+  {n:"Leg swings (front-back & side-side)",h:"10 / side",d:"dynamic hip mobility"},
+  {n:"Walking lunge with twist",h:"8 / side",d:"hips + spine"},
+  {n:"High knees",h:"30s",d:"raise heart rate"},
+  {n:"Single-leg balance",h:"30s / side",d:"wake up stability"},
+  {n:"World's greatest stretch",h:"5 / side",d:"full-body dynamic opener"}
+];
 const FLOWS=[
-  {name:"Daily reset",len:"~10 min",desc:"Do this on a work morning or after a long stretch of sitting — it's the flow that pairs with the \"Morning mobility\" and \"Wind-down\" blocks on your schedule.",poses:FLOW_DAILY},
-  {name:"Stability flow",len:"~25 min",desc:"A strong option whenever you want to layer in more balance work — Wednesday after the sauna or in the evening are both natural fits, and a real contributor to knee stability rather than a throwaway \"rest day.\"",poses:FLOW_STABILITY},
-  {name:"Restorative",len:"~15 min",desc:"Low effort, parasympathetic, and good for a knee that's swollen or achy after a hard session — slot it into the wind-down block.",poses:FLOW_RESTORE}
+  {name:"Morning",len:"~6 min",desc:"Right after you're up — quick and energizing.",poses:FLOW_MORNING},
+  {name:"Before Bed",len:"~8 min",desc:"Part of the wind-down window, no screens.",poses:FLOW_BEDTIME},
+  {name:"Before Game",len:"~10 min",desc:"Dynamic activation, 20-30 min before kickoff.",poses:FLOW_GAME}
 ];
 let flowIdx=0;
 function renderFlowCard(){
   const f=FLOWS[flowIdx];
-  $('fcName').textContent=f.name;
-  $('fcLen').textContent=f.len;
-  $('fcDesc').textContent=f.desc;
+  $('fcName').textContent=f.name; $('fcLen').textContent=f.len; $('fcDesc').textContent=f.desc;
   const host=$('fcPoses'); host.innerHTML='';
   f.poses.forEach((p,i)=>{
-    const el=document.createElement('div');
-    el.className='pose';
+    const el=document.createElement('div'); el.className='pose';
     el.innerHTML='<div class="num mono">'+String(i+1).padStart(2,'0')+'</div>'+
       '<div class="pn"><b>'+p.n+'</b>'+(p.d?'<small>'+p.d+'</small>':'')+'</div>'+
       '<div class="hold mono">'+p.h+'</div>';
@@ -1085,8 +1025,7 @@ function renderFlowCard(){
   });
   const dots=$('fcDots'); dots.innerHTML='';
   FLOWS.forEach((ff,i)=>{
-    const d=document.createElement('button');
-    d.className='fcDot'+(i===flowIdx?' active':'');
+    const d=document.createElement('button'); d.className='fcDot'+(i===flowIdx?' active':'');
     d.setAttribute('aria-label','Show '+ff.name);
     d.addEventListener('click',()=>{ flowIdx=i; renderFlowCard(); });
     dots.appendChild(d);
@@ -1110,49 +1049,11 @@ fcEl.addEventListener('keydown',e=>{
   else if(e.key==='ArrowLeft'){ e.preventDefault(); prevFlow(); }
 });
 
-/* ===================== RECIPES (vegetarian, by meal — TJ's / Harris Teeter) ===================== */
-const MEAL_LABELS={breakfast:'Breakfast',lunch:'Lunch',dinner:'Dinner'};
-const RECIPES=[
-  {name:'Mango-spinach protein smoothie',note:"TJ's frozen mango, spinach, Greek yogurt, protein powder, almond milk",meal:'breakfast',kcal:360,protein:32,carbs:44,fat:6},
-  {name:'Peanut butter banana oats',note:'Rolled oats, banana, PB, almond milk, chia',meal:'breakfast',kcal:420,protein:20,carbs:52,fat:15},
-  {name:'Black bean breakfast burrito',note:"Eggs, TJ's black beans, cheese, salsa, tortilla",meal:'breakfast',kcal:440,protein:26,carbs:40,fat:19},
-  {name:'Spiced chickpea & paneer scramble',note:'Chickpeas, paneer, turmeric, cumin, tomato',meal:'breakfast',kcal:410,protein:24,carbs:30,fat:20},
-  {name:'Avocado toast, fried eggs & chili flakes',note:"Sourdough, avocado, 2 eggs, TJ's chili onion crunch",meal:'breakfast',kcal:430,protein:20,carbs:34,fat:24},
-  {name:'Berry protein yogurt bowl',note:'Greek yogurt, mixed berries, granola, honey',meal:'breakfast',kcal:380,protein:30,carbs:42,fat:11},
-  {name:'Caprese pasta salad',note:"TJ's bocconcini, cherry tomatoes, basil, pasta",meal:'lunch',kcal:520,protein:22,carbs:64,fat:20},
-  {name:'Black bean & corn quesadillas',note:'Black beans, corn, cheddar, flour tortillas',meal:'lunch',kcal:490,protein:24,carbs:56,fat:18},
-  {name:'Thai peanut noodle bowl with tofu',note:"TJ's peanut sauce, rice noodles, tofu, edamame",meal:'lunch',kcal:540,protein:26,carbs:62,fat:20},
-  {name:'Loaded baked potato bar',note:'Baked potato, black beans, cheese, sour cream, scallions',meal:'lunch',kcal:500,protein:20,carbs:74,fat:16},
-  {name:'Chickpea tikka masala wrap',note:"TJ's chana tikka masala, naan or tortilla wrap",meal:'lunch',kcal:480,protein:20,carbs:58,fat:18},
-  {name:'Margherita flatbread pizza',note:"TJ's flatbread or naan, mozzarella, tomato, basil",meal:'lunch',kcal:510,protein:22,carbs:56,fat:21},
-  {name:'Bean & cheese enchiladas',note:'Corn tortillas, black beans, enchilada sauce, cheese',meal:'dinner',kcal:530,protein:24,carbs:60,fat:20},
-  {name:'Thai green curry with tofu',note:"TJ's green curry sauce, tofu, veggies, jasmine rice",meal:'dinner',kcal:540,protein:24,carbs:58,fat:22},
-  {name:'Palak paneer with rice',note:'Spinach, paneer, garlic-ginger, basmati rice',meal:'dinner',kcal:500,protein:26,carbs:48,fat:22},
-  {name:'Twice-baked loaded potatoes',note:'Potato skins, cheddar, black beans, sour cream',meal:'dinner',kcal:490,protein:20,carbs:64,fat:18},
-  {name:'Veggie burger & sweet potato fries',note:"TJ's veggie burger patty, bun, sweet potato fries",meal:'dinner',kcal:560,protein:24,carbs:66,fat:22},
-  {name:'Three-cheese baked ziti',note:'Ziti, marinara, ricotta, mozzarella, parmesan',meal:'dinner',kcal:550,protein:26,carbs:64,fat:20}
-];
-function renderRecipes(){
-  const host=$('recipeHost'); host.innerHTML='';
-  ['breakfast','lunch','dinner'].forEach(meal=>{
-    host.insertAdjacentHTML('beforeend','<div class="section-head" style="margin-top:'+(meal==='breakfast'?'0':'34px')+'"><h3>'+MEAL_LABELS[meal]+'</h3></div>');
-    const grid=document.createElement('div'); grid.className='recipes';
-    RECIPES.filter(r=>r.meal===meal).forEach(r=>{
-      const c=document.createElement('div'); c.className='recipe';
-      c.innerHTML='<h4>'+r.name+'</h4>'+
-        '<p>'+r.note+'</p>'+
-        '<div class="rmac">'+r.kcal+' kcal &middot; <span class="p">'+r.protein+'g P</span> &middot; '+r.carbs+'g C &middot; '+r.fat+'g F</div>';
-      grid.appendChild(c);
-    });
-    host.appendChild(grid);
-  });
-}
-
 /* ---------- init ---------- */
 renderSchedStrip(); updateDayHeading(); renderDay(); renderNow();
+renderStreak(); renderHabitGrid(); renderStats();
 renderWeekStrip(); renderWorkout();
 renderFlowCard();
-renderRecipes();
 setInterval(()=>{ renderNow(); renderDay(); }, 30000);
 </script>
 </body>
