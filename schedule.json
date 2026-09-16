@@ -3,108 +3,42 @@
     {
       "s": "06:00",
       "e": "06:15",
-      "t": "Wake + hydrate, knee prep",
-      "k": "recover"
+      "t": "Wake + hydrate",
+      "k": "wake"
     },
     {
       "s": "06:15",
       "e": "07:15",
-      "t": "Lift (heavy): squat/trap-bar deadlift 4x5, Bulgarian split squat 3x8/leg, weighted pull-up 4x6-8, Copenhagen plank 3x20-30s/side",
-      "k": "move"
+      "t": "Lower Body Power + Kettlebell",
+      "k": "gym"
     },
     {
-      "s": "07:15",
-      "e": "08:00",
-      "t": "Shower + breakfast",
-      "k": "fuel"
+      "s": "10:00",
+      "e": "10:05",
+      "t": "Hydrate",
+      "k": "hydrate"
     },
     {
-      "s": "08:00",
-      "e": "09:00",
-      "t": "Free / flex morning",
-      "k": "pause"
+      "s": "14:00",
+      "e": "14:05",
+      "t": "Hydrate",
+      "k": "hydrate"
     },
     {
-      "s": "09:00",
-      "e": "11:00",
-      "t": "Work — block 1",
-      "k": "focus"
-    },
-    {
-      "s": "11:00",
-      "e": "11:15",
-      "t": "Break",
-      "k": "pause"
-    },
-    {
-      "s": "11:15",
-      "e": "12:30",
-      "t": "Work — block 2",
-      "k": "focus"
-    },
-    {
-      "s": "12:30",
-      "e": "13:00",
-      "t": "Lunch + short walk",
-      "k": "fuel"
-    },
-    {
-      "s": "13:00",
-      "e": "15:00",
-      "t": "Work — block 3",
-      "k": "focus"
-    },
-    {
-      "s": "15:00",
-      "e": "15:15",
-      "t": "Break",
-      "k": "pause"
-    },
-    {
-      "s": "15:15",
-      "e": "17:00",
-      "t": "Work — block 4",
-      "k": "focus"
-    },
-    {
-      "s": "17:15",
-      "e": "17:45",
-      "t": "Evening walk",
-      "k": "steps"
-    },
-    {
-      "s": "18:00",
-      "e": "18:45",
-      "t": "Dinner",
-      "k": "fuel"
-    },
-    {
-      "s": "19:00",
-      "e": "20:30",
-      "t": "Free time",
-      "k": "pause"
-    },
-    {
-      "s": "20:30",
-      "e": "21:00",
-      "t": "Wind-down prep",
-      "k": "recover"
+      "s": "17:30",
+      "e": "17:35",
+      "t": "Hydrate",
+      "k": "hydrate"
     },
     {
       "s": "21:00",
-      "e": "21:45",
-      "t": "Reading (screens off)",
-      "k": "recover"
-    },
-    {
-      "s": "21:45",
       "e": "22:00",
-      "t": "Lights out prep",
-      "k": "pause"
+      "t": "No screens",
+      "k": "unplug"
     },
     {
       "s": "22:00",
-      "e": "05:45",
+      "e": "06:00",
       "t": "Sleep",
       "k": "sleep"
     }
@@ -113,108 +47,42 @@
     {
       "s": "06:00",
       "e": "06:15",
-      "t": "Wake + hydrate, knee prep",
-      "k": "recover"
+      "t": "Wake + hydrate",
+      "k": "wake"
     },
     {
       "s": "06:15",
-      "e": "07:15",
-      "t": "Conditioning: 6-8x30s hard / 90s easy intervals (bike or incline), sauna after",
-      "k": "move"
+      "e": "06:45",
+      "t": "3 mi @ ~10:00/mi",
+      "k": "run"
     },
     {
-      "s": "07:15",
-      "e": "08:00",
-      "t": "Shower + breakfast",
-      "k": "fuel"
+      "s": "10:00",
+      "e": "10:05",
+      "t": "Hydrate",
+      "k": "hydrate"
     },
     {
-      "s": "08:00",
-      "e": "09:00",
-      "t": "Free / flex morning",
-      "k": "pause"
-    },
-    {
-      "s": "09:00",
-      "e": "11:00",
-      "t": "Work — block 1",
-      "k": "focus"
-    },
-    {
-      "s": "11:00",
-      "e": "11:15",
-      "t": "Break",
-      "k": "pause"
-    },
-    {
-      "s": "11:15",
-      "e": "12:30",
-      "t": "Work — block 2",
-      "k": "focus"
-    },
-    {
-      "s": "12:30",
-      "e": "13:00",
-      "t": "Lunch + short walk",
-      "k": "fuel"
-    },
-    {
-      "s": "13:00",
-      "e": "15:00",
-      "t": "Work — block 3",
-      "k": "focus"
-    },
-    {
-      "s": "15:00",
-      "e": "15:15",
-      "t": "Leave for coaching / drive to CFS",
-      "k": "pause"
-    },
-    {
-      "s": "15:30",
-      "e": "17:30",
-      "t": "Coaching (Carolina Friends) — practice ~5pm, games run later",
-      "k": "move"
+      "s": "14:00",
+      "e": "14:05",
+      "t": "Hydrate",
+      "k": "hydrate"
     },
     {
       "s": "17:30",
-      "e": "18:00",
-      "t": "Drive home + shower",
-      "k": "recover"
-    },
-    {
-      "s": "18:15",
-      "e": "19:00",
-      "t": "Dinner (flexible — later on game nights)",
-      "k": "fuel"
-    },
-    {
-      "s": "19:00",
-      "e": "20:30",
-      "t": "Free time",
-      "k": "pause"
-    },
-    {
-      "s": "20:30",
-      "e": "21:00",
-      "t": "Wind-down prep",
-      "k": "recover"
+      "e": "17:35",
+      "t": "Hydrate",
+      "k": "hydrate"
     },
     {
       "s": "21:00",
-      "e": "21:45",
-      "t": "Reading (screens off)",
-      "k": "recover"
-    },
-    {
-      "s": "21:45",
       "e": "22:00",
-      "t": "Lights out prep",
-      "k": "pause"
+      "t": "No screens",
+      "k": "unplug"
     },
     {
       "s": "22:00",
-      "e": "05:45",
+      "e": "06:00",
       "t": "Sleep",
       "k": "sleep"
     }
@@ -224,119 +92,41 @@
       "s": "06:00",
       "e": "06:15",
       "t": "Wake + hydrate",
-      "k": "recover"
+      "k": "wake"
     },
     {
       "s": "06:15",
-      "e": "06:30",
-      "t": "Treadmill walk + knee mobility (warm-up)",
-      "k": "steps"
+      "e": "07:15",
+      "t": "Posterior Chain + Kettlebell",
+      "k": "gym"
     },
     {
-      "s": "06:30",
-      "e": "07:10",
-      "t": "Lift (heavy): RDL/single-leg RDL 4x5-6, Nordic hamstring curl 3x6-8, landmine press or bench 4x6-8, heavy farmer's carry 3 trips",
-      "k": "move"
+      "s": "10:00",
+      "e": "10:05",
+      "t": "Hydrate",
+      "k": "hydrate"
     },
     {
-      "s": "07:10",
-      "e": "07:25",
-      "t": "Sauna",
-      "k": "recover"
+      "s": "14:00",
+      "e": "14:05",
+      "t": "Hydrate",
+      "k": "hydrate"
     },
     {
-      "s": "07:25",
-      "e": "08:10",
-      "t": "Shower + breakfast",
-      "k": "fuel"
-    },
-    {
-      "s": "08:10",
-      "e": "09:00",
-      "t": "Free / flex morning",
-      "k": "pause"
-    },
-    {
-      "s": "09:00",
-      "e": "11:00",
-      "t": "Work — block 1",
-      "k": "focus"
-    },
-    {
-      "s": "11:00",
-      "e": "11:15",
-      "t": "Break",
-      "k": "pause"
-    },
-    {
-      "s": "11:15",
-      "e": "12:30",
-      "t": "Work — block 2",
-      "k": "focus"
-    },
-    {
-      "s": "12:30",
-      "e": "13:00",
-      "t": "Lunch + short walk",
-      "k": "fuel"
-    },
-    {
-      "s": "13:00",
-      "e": "15:00",
-      "t": "Work — block 3",
-      "k": "focus"
-    },
-    {
-      "s": "15:00",
-      "e": "15:15",
-      "t": "Break",
-      "k": "pause"
-    },
-    {
-      "s": "15:15",
-      "e": "17:00",
-      "t": "Work — block 4",
-      "k": "focus"
-    },
-    {
-      "s": "17:15",
-      "e": "18:00",
-      "t": "Evening walk",
-      "k": "steps"
-    },
-    {
-      "s": "18:15",
-      "e": "19:00",
-      "t": "Dinner",
-      "k": "fuel"
-    },
-    {
-      "s": "19:15",
-      "e": "20:30",
-      "t": "Free time",
-      "k": "pause"
-    },
-    {
-      "s": "20:30",
-      "e": "21:00",
-      "t": "Wind-down prep",
-      "k": "recover"
+      "s": "17:30",
+      "e": "17:35",
+      "t": "Hydrate",
+      "k": "hydrate"
     },
     {
       "s": "21:00",
-      "e": "21:45",
-      "t": "Reading (screens off)",
-      "k": "recover"
-    },
-    {
-      "s": "21:45",
       "e": "22:00",
-      "t": "Lights out prep",
-      "k": "pause"
+      "t": "No screens",
+      "k": "unplug"
     },
     {
       "s": "22:00",
-      "e": "05:45",
+      "e": "06:00",
       "t": "Sleep",
       "k": "sleep"
     }
@@ -345,108 +135,42 @@
     {
       "s": "06:00",
       "e": "06:15",
-      "t": "Wake + hydrate, knee prep",
-      "k": "recover"
+      "t": "Wake + hydrate",
+      "k": "wake"
     },
     {
       "s": "06:15",
-      "e": "07:15",
-      "t": "Conditioning: 20-30 min easy zone-2 (bike/incline walk), sauna after",
-      "k": "move"
+      "e": "06:45",
+      "t": "3 mi @ ~10:00/mi",
+      "k": "run"
     },
     {
-      "s": "07:15",
-      "e": "08:00",
-      "t": "Shower + breakfast",
-      "k": "fuel"
+      "s": "10:00",
+      "e": "10:05",
+      "t": "Hydrate",
+      "k": "hydrate"
     },
     {
-      "s": "08:00",
-      "e": "09:00",
-      "t": "Free / flex morning",
-      "k": "pause"
-    },
-    {
-      "s": "09:00",
-      "e": "11:00",
-      "t": "Work — block 1",
-      "k": "focus"
-    },
-    {
-      "s": "11:00",
-      "e": "11:15",
-      "t": "Break",
-      "k": "pause"
-    },
-    {
-      "s": "11:15",
-      "e": "12:30",
-      "t": "Work — block 2",
-      "k": "focus"
-    },
-    {
-      "s": "12:30",
-      "e": "13:00",
-      "t": "Lunch + short walk",
-      "k": "fuel"
-    },
-    {
-      "s": "13:00",
-      "e": "15:00",
-      "t": "Work — block 3",
-      "k": "focus"
-    },
-    {
-      "s": "15:00",
-      "e": "15:15",
-      "t": "Leave for coaching / drive to CFS",
-      "k": "pause"
-    },
-    {
-      "s": "15:30",
-      "e": "17:30",
-      "t": "Coaching (Carolina Friends) — practice ~5pm, games run later",
-      "k": "move"
+      "s": "14:00",
+      "e": "14:05",
+      "t": "Hydrate",
+      "k": "hydrate"
     },
     {
       "s": "17:30",
-      "e": "18:00",
-      "t": "Drive home + shower",
-      "k": "recover"
-    },
-    {
-      "s": "18:15",
-      "e": "19:00",
-      "t": "Dinner (flexible — later on game nights)",
-      "k": "fuel"
-    },
-    {
-      "s": "19:00",
-      "e": "20:30",
-      "t": "Free time",
-      "k": "pause"
-    },
-    {
-      "s": "20:30",
-      "e": "21:00",
-      "t": "Wind-down prep",
-      "k": "recover"
+      "e": "17:35",
+      "t": "Hydrate",
+      "k": "hydrate"
     },
     {
       "s": "21:00",
-      "e": "21:45",
-      "t": "Reading (screens off)",
-      "k": "recover"
-    },
-    {
-      "s": "21:45",
       "e": "22:00",
-      "t": "Lights out prep",
-      "k": "pause"
+      "t": "No screens",
+      "k": "unplug"
     },
     {
       "s": "22:00",
-      "e": "05:45",
+      "e": "06:00",
       "t": "Sleep",
       "k": "sleep"
     }
@@ -455,108 +179,42 @@
     {
       "s": "06:00",
       "e": "06:15",
-      "t": "Wake + hydrate, knee prep",
-      "k": "recover"
+      "t": "Wake + hydrate",
+      "k": "wake"
     },
     {
       "s": "06:15",
       "e": "07:15",
-      "t": "Power/explosive: trap-bar jump squats 5x3, box step-up w/ knee drive 4x5/leg, Pallof press or rotational throw 3x8/side, calf raises 3x12-15",
-      "k": "move"
+      "t": "Full-Body Power + Upper",
+      "k": "gym"
     },
     {
-      "s": "07:15",
-      "e": "08:00",
-      "t": "Shower + breakfast",
-      "k": "fuel"
+      "s": "10:00",
+      "e": "10:05",
+      "t": "Hydrate",
+      "k": "hydrate"
     },
     {
-      "s": "08:00",
-      "e": "09:00",
-      "t": "Free / flex morning",
-      "k": "pause"
-    },
-    {
-      "s": "09:00",
-      "e": "11:00",
-      "t": "Work — block 1",
-      "k": "focus"
-    },
-    {
-      "s": "11:00",
-      "e": "11:15",
-      "t": "Break",
-      "k": "pause"
-    },
-    {
-      "s": "11:15",
-      "e": "12:30",
-      "t": "Work — block 2",
-      "k": "focus"
-    },
-    {
-      "s": "12:30",
-      "e": "13:00",
-      "t": "Lunch + short walk",
-      "k": "fuel"
-    },
-    {
-      "s": "13:00",
-      "e": "15:00",
-      "t": "Work — block 3",
-      "k": "focus"
-    },
-    {
-      "s": "15:00",
-      "e": "15:15",
-      "t": "Leave for coaching / drive to CFS",
-      "k": "pause"
-    },
-    {
-      "s": "15:30",
-      "e": "17:30",
-      "t": "Coaching (Carolina Friends) — practice ~5pm, games run later",
-      "k": "move"
+      "s": "14:00",
+      "e": "14:05",
+      "t": "Hydrate",
+      "k": "hydrate"
     },
     {
       "s": "17:30",
-      "e": "18:00",
-      "t": "Drive home + shower",
-      "k": "recover"
-    },
-    {
-      "s": "18:15",
-      "e": "19:00",
-      "t": "Dinner (flexible — later on game nights)",
-      "k": "fuel"
-    },
-    {
-      "s": "19:00",
-      "e": "20:30",
-      "t": "Free time",
-      "k": "pause"
-    },
-    {
-      "s": "20:30",
-      "e": "21:00",
-      "t": "Wind-down prep",
-      "k": "recover"
+      "e": "17:35",
+      "t": "Hydrate",
+      "k": "hydrate"
     },
     {
       "s": "21:00",
-      "e": "21:45",
-      "t": "Reading (screens off)",
-      "k": "recover"
-    },
-    {
-      "s": "21:45",
       "e": "22:00",
-      "t": "Lights out prep",
-      "k": "pause"
+      "t": "No screens",
+      "k": "unplug"
     },
     {
       "s": "22:00",
-      "e": "05:45",
+      "e": "06:00",
       "t": "Sleep",
       "k": "sleep"
     }
@@ -566,177 +224,83 @@
       "s": "08:00",
       "e": "08:15",
       "t": "Wake + hydrate",
-      "k": "recover"
+      "k": "wake"
     },
     {
       "s": "08:15",
-      "e": "08:45",
-      "t": "Breakfast",
-      "k": "fuel"
-    },
-    {
-      "s": "08:45",
-      "e": "09:15",
-      "t": "Pre-game warm-up + activation",
-      "k": "recover"
-    },
-    {
-      "s": "09:30",
-      "e": "11:00",
-      "t": "Match",
-      "k": "move"
+      "e": "08:30",
+      "t": "Confirm kickoff time",
+      "k": "game"
     },
     {
       "s": "11:00",
-      "e": "11:30",
-      "t": "Cooldown walk + hydrate",
-      "k": "steps"
+      "e": "11:05",
+      "t": "Hydrate",
+      "k": "hydrate"
     },
     {
-      "s": "11:30",
-      "e": "12:15",
-      "t": "Lunch",
-      "k": "fuel"
-    },
-    {
-      "s": "12:15",
-      "e": "17:00",
-      "t": "Free afternoon (errands, groceries)",
-      "k": "pause"
-    },
-    {
-      "s": "17:00",
-      "e": "17:45",
-      "t": "Evening restorative yoga flow",
-      "k": "recover"
+      "s": "14:30",
+      "e": "14:35",
+      "t": "Hydrate",
+      "k": "hydrate"
     },
     {
       "s": "18:00",
-      "e": "18:45",
-      "t": "Dinner",
-      "k": "fuel"
-    },
-    {
-      "s": "19:00",
-      "e": "20:30",
-      "t": "Free time",
-      "k": "pause"
-    },
-    {
-      "s": "20:30",
-      "e": "21:00",
-      "t": "Wind-down prep",
-      "k": "recover"
+      "e": "18:05",
+      "t": "Hydrate",
+      "k": "hydrate"
     },
     {
       "s": "21:00",
-      "e": "21:45",
-      "t": "Reading (screens off)",
-      "k": "recover"
-    },
-    {
-      "s": "21:45",
       "e": "22:00",
-      "t": "Lights out prep",
-      "k": "pause"
+      "t": "No screens",
+      "k": "unplug"
     },
     {
       "s": "22:00",
-      "e": "08:00",
+      "e": "07:30",
       "t": "Sleep",
       "k": "sleep"
     }
   ],
   "6": [
     {
-      "s": "08:00",
-      "e": "08:15",
-      "t": "Wake",
-      "k": "recover"
+      "s": "07:30",
+      "e": "07:45",
+      "t": "Wake + hydrate",
+      "k": "wake"
     },
     {
-      "s": "08:15",
-      "e": "08:45",
-      "t": "Breakfast",
-      "k": "fuel"
-    },
-    {
-      "s": "09:00",
-      "e": "09:30",
-      "t": "Restorative yoga flow",
-      "k": "recover"
-    },
-    {
-      "s": "09:45",
-      "e": "10:45",
-      "t": "Long easy walk",
-      "k": "steps"
-    },
-    {
-      "s": "11:00",
-      "e": "12:00",
-      "t": "Free / reading",
-      "k": "pause"
-    },
-    {
-      "s": "12:15",
-      "e": "13:00",
-      "t": "Lunch",
-      "k": "fuel"
-    },
-    {
-      "s": "13:15",
-      "e": "14:00",
-      "t": "Meal prep for the week",
-      "k": "fuel"
+      "s": "10:30",
+      "e": "10:35",
+      "t": "Hydrate",
+      "k": "hydrate"
     },
     {
       "s": "14:00",
-      "e": "14:45",
-      "t": "Plan the week (Substack, gym logistics)",
-      "k": "focus"
+      "e": "14:05",
+      "t": "Hydrate",
+      "k": "hydrate"
     },
     {
-      "s": "15:00",
-      "e": "18:00",
-      "t": "Free afternoon",
-      "k": "pause"
-    },
-    {
-      "s": "18:15",
-      "e": "19:00",
-      "t": "Dinner",
-      "k": "fuel"
-    },
-    {
-      "s": "19:15",
-      "e": "20:30",
-      "t": "Free time",
-      "k": "pause"
-    },
-    {
-      "s": "20:30",
-      "e": "21:00",
-      "t": "Wind-down prep",
-      "k": "recover"
+      "s": "17:30",
+      "e": "17:35",
+      "t": "Hydrate",
+      "k": "hydrate"
     },
     {
       "s": "21:00",
-      "e": "21:45",
-      "t": "Reading (screens off)",
-      "k": "recover"
-    },
-    {
-      "s": "21:45",
       "e": "22:00",
-      "t": "Lights out prep",
-      "k": "pause"
+      "t": "No screens",
+      "k": "unplug"
     },
     {
       "s": "22:00",
-      "e": "08:00",
+      "e": "06:00",
       "t": "Sleep",
       "k": "sleep"
     }
+  ]
+}
   ]
 }
